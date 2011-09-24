@@ -48,7 +48,7 @@
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
-						<DefaultValue><![CDATA[1]]></DefaultValue>
+						<DefaultValue><![CDATA[0]]></DefaultValue>
 						<ParameterEditor>
 							<Id>1313770071768</Id>
 							<Name><![CDATA[]]></Name>
@@ -407,7 +407,7 @@ airport.planes.add(p);]]></Action>
 					<Id>1316891591468</Id>
 					<Name><![CDATA[plot]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>420</X><Y>340</Y>
+					<X>420</X><Y>360</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -455,10 +455,60 @@ airport.planes.add(p);]]></Action>
 						<Interpolation>LINEAR</Interpolation>
 					</DatasetExpression>
 					<SamplesToKeep>12000</SamplesToKeep>
-					<TimeWindowExpression><![CDATA[200]]></TimeWindowExpression>
+					<TimeWindowExpression><![CDATA[1000]]></TimeWindowExpression>
 					<CustomLabelFormat><![CDATA[dd.MM.yyyy HH:mm:ss]]></CustomLabelFormat>
 					<LabelFormat>MODEL_TIME_UNITS</LabelFormat>
     			</TimePlot>
+    			<PieChart>
+					<Id>1316899135818</Id>
+					<Name><![CDATA[chart]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>710</X><Y>230</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AutoUpdate>true</AutoUpdate>
+					<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Width>170</Width>
+					<Height>150</Height>
+					<BackgroundColor/>
+					<BorderColor/>
+					<ChartArea>
+						<XOffset>0</XOffset>
+						<YOffset>0</YOffset>
+						<Width>100</Width>
+						<Height>100</Height>
+						<BackgroundColor>-1</BackgroundColor>
+						<BorderColor/>
+						<GridColor>-12566464</GridColor>
+					</ChartArea>
+					<Legend>
+						<Place>SOUTH</Place>
+						<TextColor>-16777216</TextColor>
+						<Size>40</Size>
+					</Legend>
+					<Labels>
+						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
+						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
+						<TextColor>-12566464</TextColor>
+					</Labels>
+					<Persistent>true</Persistent>
+					<ShowLegend>true</ShowLegend>
+					<DataItem>
+					<Expression><![CDATA[airport.dispatcherOffice.NormalCount]]></Expression>
+					<Color>-16776961</Color>
+					<Expression2Flag>true</Expression2Flag>
+						<Title><![CDATA[normal]]></Title>
+					</DataItem>
+					<DataItem>
+					<Expression><![CDATA[airport.dispatcherOffice.AddAirportCount]]></Expression>
+					<Color>-65536</Color>
+					<Expression2Flag>true</Expression2Flag>
+						<Title><![CDATA[add airport]]></Title>
+					</DataItem>
+    			</PieChart>
 			</Charts>
 		</ActiveObjectClass>
 		<!--   =========   Active Object Class   ========  -->
@@ -510,7 +560,8 @@ if(isPriority)
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="private" StaticVariable="false">
 						<Type><![CDATA[MapObject]]></Type>        
-						<InitialValue><![CDATA[new Airport(get_Main().getEngine(), this, null)]]></InitialValue>                 	
+						<InitialValue><![CDATA[//new Airport(get_Main().getEngine(), this, null);
+get_Main().airport;]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -566,6 +617,7 @@ if(isPriority)
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="private" StaticVariable="false">
 						<Type><![CDATA[boolean]]></Type>        
+						<InitialValue><![CDATA[false]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -1099,7 +1151,7 @@ SetDestination(m_destination);]]></Action>
 speed = 17;
 updateVelocity();]]></Action>
 						<Timeout><![CDATA[1]]></Timeout>
-						<Condition><![CDATA[goAddCircle == true && dist < 1]]></Condition>
+						<Condition><![CDATA[(goAddCircle == true) && (dist < 1)]]></Condition>
 						<Rate><![CDATA[1]]></Rate>
 						<MessageType><![CDATA[String]]></MessageType>
 						<DefaultTransition>true</DefaultTransition>
@@ -1397,7 +1449,7 @@ if(isPriority)
 					<ShowLabel>true</ShowLabel>
 					<Properties TriggerType="rate" Mode="occuresOnce">
 						<Timeout><![CDATA[1]]></Timeout>
-						<Rate><![CDATA[1/triangular(10, 80, 120);]]></Rate>
+						<Rate><![CDATA[1/triangular(10, 90, 120);]]></Rate>
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1316887480719</OccurrenceDate>												
 						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
@@ -1512,7 +1564,8 @@ landingAllowed = true;]]></Body>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[goAddCircle = true;]]></Body>
+					<Body><![CDATA[updateVelocity();
+goAddCircle = true;]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -2044,32 +2097,6 @@ goToForeignAirport = true;]]></Body>
 					</Points>
 					<Closed>true</Closed>
 				</Polyline>
-				<Text>
-					<Id>1316886154958</Id>
-					<Name><![CDATA[text1]]></Name>
-					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-10</X><Y>10</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<AsObject>true</AsObject>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Lock>false</Lock>
-					<ShowIn3D>false</ShowIn3D>
-					<Z>0</Z>
-					<Rotation>0.0</Rotation>
-					<Color>-16777216</Color>
-					<ColorCode><![CDATA[Color.red]]></ColorCode>
-					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[isPriority ? "!" : ""]]></TextCode>
-					<Font>
-						<Name>SansSerif</Name>
-						<Size>10</Size>
-						<Style>0</Style>
-					</Font>
-					<Alignment>LEFT</Alignment>
-				</Text>
 			</Shapes>
 				</Group>
 			</Shapes>
@@ -2098,6 +2125,35 @@ goToForeignAirport = true;]]></Body>
 				<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
 			</DatasetsCreationProperties>
 
+			<Variables>
+				<Variable Class="PlainVariable">
+					<Id>1316899402742</Id>
+					<Name><![CDATA[AddAirportCount]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>550</X><Y>320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1316899405256</Id>
+					<Name><![CDATA[NormalCount]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>550</X><Y>340</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+			</Variables>
 			<Ports>
 				<Port>
 					<Id>1313850964393</Id>
@@ -3242,7 +3298,8 @@ get_Airport().get_Main().FindRunwayTimeout]]></Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onEnter1]]></Name>
-							<Value><![CDATA[entity.plane.AllowLanding()]]></Value>	
+							<Value><![CDATA[entity.plane.AllowLanding();
+NormalCount++;]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onEnter2]]></Name>
@@ -3684,7 +3741,8 @@ get_Airport().get_Main().FindRunwayTimeout]]></Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExit]]></Name>
-							<Value><![CDATA[entity.plane.CommandAddAirport()]]></Value>	
+							<Value><![CDATA[entity.plane.CommandAddAirport();
+AddAirportCount++;]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[queueCapacity]]></Name>
@@ -3840,7 +3898,7 @@ get_Airport().get_Main().FindRunwayTimeout]]></Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[delayTime]]></Name>
-							<Value><![CDATA[triangular( 1, 8, 20 )]]></Value>	
+							<Value><![CDATA[triangular( 1, 15, 25 )]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[resourcePool]]></Name>
@@ -5272,7 +5330,7 @@ else
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
-						<InitialValue><![CDATA[1]]></InitialValue>                 	
+						<InitialValue><![CDATA[0.2]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -5286,7 +5344,7 @@ else
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int]]></Type>        
-						<InitialValue><![CDATA[3]]></InitialValue>                 	
+						<InitialValue><![CDATA[2]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -5300,7 +5358,7 @@ else
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int]]></Type>        
-						<InitialValue><![CDATA[5]]></InitialValue>                 	
+						<InitialValue><![CDATA[2]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 			</Variables>
@@ -5549,7 +5607,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[10]]></MaxValue>
+						<MaxValue><![CDATA[2]]></MaxValue>
 						<LinkTo>true</LinkTo>
 						<Link>planesIntensity</Link>
 					</ExtendedProperties>
@@ -5573,7 +5631,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 						<DefaultValueCode><![CDATA[5]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[100]]></MaxValue>
+						<MaxValue><![CDATA[20]]></MaxValue>
 						<LinkTo>true</LinkTo>
 						<Link>dispatchersCount</Link>
 					</ExtendedProperties>
@@ -5597,7 +5655,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 						<DefaultValueCode><![CDATA[3]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[100]]></MaxValue>
+						<MaxValue><![CDATA[10]]></MaxValue>
 						<LinkTo>true</LinkTo>
 						<Link>runwaysCount</Link>
 					</ExtendedProperties>
@@ -5646,7 +5704,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[PlanesIntensity]]></ParameterName>
-					<ParameterValue><![CDATA[]]></ParameterValue>
+					<ParameterValue><![CDATA[planesIntensity]]></ParameterValue>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
