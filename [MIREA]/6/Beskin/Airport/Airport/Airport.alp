@@ -412,7 +412,18 @@ airport.planes.add(p);]]></Action>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Extends><![CDATA[MapObject]]></Extends>
-			<StartupCode><![CDATA[PriorityDeathEvent.reset();]]></StartupCode>
+			<StartupCode><![CDATA[PriorityDeathEvent.reset();
+if(isPriority)
+{
+	for(Object o:plane1.getShapes())
+	{
+		if(o instanceof ShapeLineFill)
+		{
+			ShapeLineFill sh = (ShapeLineFill)o;
+			sh.setFillColor(Color.red);
+		}
+	}
+}]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -758,9 +769,11 @@ airport.planes.add(p);]]></Action>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
 						<EntryAction><![CDATA[RunwayRelease.send(new RunwayReleaseMessage(this));
+PriorityDeathEvent.reset();
 speed = 0;
 landingAllowed = false;
-updateVelocity();]]></EntryAction>
+updateVelocity();
+get_Main().airport.Money += 100;]]></EntryAction>
 						<FillColor>-16711936</FillColor>
 					</Properties>
 				</StatechartElement>
@@ -1326,7 +1339,7 @@ if(isPriority)
 					<ShowLabel>true</ShowLabel>
 					<Properties TriggerType="rate" Mode="occuresOnce">
 						<Timeout><![CDATA[1]]></Timeout>
-						<Rate><![CDATA[1/triangular(10, 15, 60);]]></Rate>
+						<Rate><![CDATA[1/triangular(10, 80, 120);]]></Rate>
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1316887480719</OccurrenceDate>												
 						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
@@ -1334,6 +1347,7 @@ if(isPriority)
 						<Condition><![CDATA[false]]></Condition>
 						<Action><![CDATA[get_Main().airport.DeathFromPriority++;
 RunwayRelease.send(new RunwayReleaseMessage(this));
+get_Main().airport.Money -= 2000;
 get_Main().remove_planes(this);]]></Action>
 					</Properties>
 				</Event>
@@ -1453,7 +1467,8 @@ landingAllowed = true;]]></Body>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[goAddCircle = false;
-goToAddAirport = true;]]></Body>
+goToAddAirport = true;
+get_Main().airport.Money -= 300;]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -1986,8 +2001,8 @@ goToForeignAirport = true;]]></Body>
 					<ShowIn3D>false</ShowIn3D>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
-					<RotationCode><![CDATA[getTime()]]></RotationCode>
 					<Color>-16777216</Color>
+					<ColorCode><![CDATA[Color.red]]></ColorCode>
 					<Text><![CDATA[text]]></Text>
 					<TextCode><![CDATA[isPriority ? "!" : ""]]></TextCode>
 					<Font>
@@ -3999,6 +4014,7 @@ else
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Extends><![CDATA[MapObject]]></Extends>
+			<StartupCode><![CDATA[Money = 10000;]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -4040,6 +4056,19 @@ else
 					<ShowLabel>true</ShowLabel>
 					<Properties External="true" Constant="false" Array="false" Flow="false">
 						<Formula><![CDATA[0]]></Formula>
+					</Properties>
+				</Variable>
+				<Variable Class="FlowAuxVariable">
+					<Id>1316888737407</Id>
+					<Name><![CDATA[Money]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>710</X><Y>100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties External="true" Constant="false" Array="false" Flow="false">
+						<Formula><![CDATA[10000]]></Formula>
 					</Properties>
 				</Variable>
 				<Variable Class="CollectionVariable">
@@ -5556,6 +5585,10 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 				<Parameter>
 					<ParameterName><![CDATA[RunwaysCount]]></ParameterName>
 					<ParameterValue><![CDATA[runwaysCount]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[PlanesIntensity]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
