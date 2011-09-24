@@ -20,12 +20,6 @@
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
-			<StartupCode><![CDATA[for(int i = 0; i < PlanesCount; ++i)
-{
-	Plane p = add_planes();
-	p.SetDestination(airport);
-	airport.planes.add(p);
-}]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -45,7 +39,7 @@
 			<Variables>
 				<Variable Class="Parameter">
 					<Id>1313770071770</Id>
-					<Name><![CDATA[PlanesCount]]></Name>
+					<Name><![CDATA[PlanesIntensity]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-180</X><Y>10</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -53,8 +47,8 @@
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[int]]></Type>        
-						<DefaultValue><![CDATA[20]]></DefaultValue>
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[1]]></DefaultValue>
 						<ParameterEditor>
 							<Id>1313770071768</Id>
 							<Name><![CDATA[]]></Name>
@@ -164,7 +158,7 @@
 					<Id>1313851650928</Id>
 					<Name><![CDATA[connector]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-10</X><Y>670</Y>
+					<X>-10</X><Y>690</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -175,7 +169,7 @@
 					<TargetConnectableName>RunwayRequest</TargetConnectableName>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-120</X><Y>-390</Y></Point>
+						<Point><X>-120</X><Y>-410</Y></Point>
 					</Points>
 				</Connector>
 				<Connector>
@@ -193,16 +187,40 @@
 					<TargetConnectableName>RunwayRelease</TargetConnectableName>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>120</X><Y>390</Y></Point>
+						<Point><X>120</X><Y>410</Y></Point>
 					</Points>
 				</Connector>
 			</Connectors>
+			<Events>
+				<Event>
+					<Id>1316850214371</Id>
+					<Name><![CDATA[NewPlane]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-180</X><Y>130</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="rate" Mode="cyclic">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Rate><![CDATA[PlanesIntensity]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1316850214327</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[uniform(1, 3)]]></RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+						<Action><![CDATA[Plane p = add_planes();
+p.SetDestination(airport);
+airport.planes.add(p);]]></Action>
+					</Properties>
+				</Event>
+			</Events>
 			<EmbeddedObjects>
 				<EmbeddedObject>
 					<Id>1313694720790</Id>
 					<Name><![CDATA[airport]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-90</X><Y>530</Y>
+					<X>-90</X><Y>520</Y>
 					<Label><X>-10</X><Y>-20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -394,6 +412,7 @@
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Extends><![CDATA[MapObject]]></Extends>
+			<StartupCode><![CDATA[PriorityDeathEvent.reset();]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -478,6 +497,20 @@
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="private" StaticVariable="false">
 						<Type><![CDATA[boolean]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1316886032817</Id>
+					<Name><![CDATA[isPriority]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>680</X><Y>390</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<InitialValue><![CDATA[randomTrue(0.1);]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="FlowAuxVariable">
@@ -718,12 +751,16 @@
 					<Id>1313581810415</Id>
 					<Name><![CDATA[AtAirport]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>150</X><Y>100</Y>
+					<X>150</X><Y>50</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
+						<EntryAction><![CDATA[RunwayRelease.send(new RunwayReleaseMessage(this));
+speed = 0;
+landingAllowed = false;
+updateVelocity();]]></EntryAction>
 						<FillColor>-16711936</FillColor>
 					</Properties>
 				</StatechartElement>
@@ -737,7 +774,7 @@
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
-						<FillColor>-65536</FillColor>
+						<FillColor/>
 					</Properties>
 				</StatechartElement>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
@@ -818,6 +855,45 @@
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
+				<StatechartElement Class="FinalState" ParentState="ROOT_NODE">
+					<Id>1316851795794</Id>
+					<Name><![CDATA[finalState1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>200</X><Y>560</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+						<Action><![CDATA[get_Main().remove_planes(this)]]></Action>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="ROOT_NODE">
+					<Id>1316878610660</Id>
+					<Name><![CDATA[branch]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>180</X><Y>130</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="State" ParentState="ROOT_NODE">
+					<Id>1316878646247</Id>
+					<Name><![CDATA[Accident]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>40</X><Y>90</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties Width="100" Height="30">
+						<EntryAction><![CDATA[get_Main().airport.AccidentAtLanding++]]></EntryAction>
+						<FillColor>-65536</FillColor>
+					</Properties>
+				</StatechartElement>
 				<StatechartElement Class="EntryPoint" ParentState="ROOT_NODE">
 					<Id>1313581794291</Id>
 					<Name><![CDATA[planeBehaviour]]></Name>
@@ -845,13 +921,9 @@
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-50</Y></Point>
+						<Point><X>0</X><Y>-40</Y></Point>
 					</Points>
-					<Properties Source="1313581832969" Target="1313581810415" Trigger="condition">
-						<Action><![CDATA[RunwayRelease.send(new RunwayReleaseMessage(this));
-speed = 0;
-landingAllowed = false;
-updateVelocity();]]></Action>
+					<Properties Source="1313581832969" Target="1316878610660" Trigger="condition">
 						<Timeout><![CDATA[5]]></Timeout>
 						<Condition><![CDATA[dist < 0.1]]></Condition>
 						<Rate><![CDATA[1]]></Rate>
@@ -873,7 +945,7 @@ updateVelocity();]]></Action>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-50</X><Y>70</Y></Point>
+						<Point><X>-60</X><Y>70</Y></Point>
 					</Points>
 					<Properties Source="1313581906886" Target="1313581918711" Trigger="condition">
 						<Action><![CDATA[speed = 17;
@@ -892,14 +964,14 @@ SetDestination(get_Main().additionalAirPort);]]></Action>
 					<Id>1313582465692</Id>
 					<Name><![CDATA[transition12]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>240</X><Y>350</Y>
+					<X>220</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>40</X><Y>70</Y></Point>
+						<Point><X>70</X><Y>70</Y></Point>
 					</Points>
 					<Properties Source="1313581906886" Target="1313582005341" Trigger="condition">
 						<Timeout><![CDATA[1]]></Timeout>
@@ -1021,14 +1093,14 @@ updateVelocity();]]></Action>
 					<Id>1314260132801</Id>
 					<Name><![CDATA[transition]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>220</X><Y>130</Y>
+					<X>220</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>50</Y></Point>
+						<Point><X>0</X><Y>100</Y></Point>
 					</Points>
 					<Properties Source="1313581810415" Target="1313581832969" Trigger="timeout">
 						<Action><![CDATA[CommandForeignAirport();
@@ -1097,13 +1169,133 @@ updateVelocity();]]></Action>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1316851501664</Id>
+					<Name><![CDATA[transition8]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>290</X><Y>510</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>-83</X><Y>46</Y></Point>
+					</Points>
+					<Properties Source="1314260653556" Target="1316851795794" Trigger="condition">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate><![CDATA[1]]></Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA[Sample_Message]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1316851805339</Id>
+					<Name><![CDATA[transition9]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>120</X><Y>510</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>73</X><Y>46</Y></Point>
+					</Points>
+					<Properties Source="1314215646023" Target="1316851795794" Trigger="condition">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate><![CDATA[1]]></Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA[Sample_Message]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1316878625407</Id>
+					<Name><![CDATA[transition10]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>180</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>-40</Y></Point>
+					</Points>
+					<Properties Source="1316878610660" Target="1313581810415" Trigger="timeout">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate><![CDATA[1]]></Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA[Sample_Message]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1316878680747</Id>
+					<Name><![CDATA[transition13]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>168</X><Y>130</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>-38</X><Y>-10</Y></Point>
+					</Points>
+					<Properties Source="1316878610660" Target="1316878646247" Trigger="timeout">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Condition><![CDATA[randomTrue(0.02)//авария с вероятностью 2%]]></Condition>
+						<Rate><![CDATA[1]]></Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>false</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA[Sample_Message]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1316878690468</Id>
+					<Name><![CDATA[transition14]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>130</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>40</X><Y>-10</Y></Point>
+					</Points>
+					<Properties Source="1316878646247" Target="1313581810415" Trigger="timeout">
+						<Timeout><![CDATA[triangular(20, 90, 40)]]></Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate><![CDATA[1]]></Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA[Sample_Message]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
 			</StatechartElements>
 			<Events>
 				<Event>
 					<Id>1313769335588</Id>
 					<Name><![CDATA[RequestRunway]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>480</X><Y>410</Y>
+					<X>690</X><Y>430</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1116,7 +1308,33 @@ updateVelocity();]]></Action>
 						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
 						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
 						<Condition><![CDATA[m_destination == get_Main().airport && dist < 50]]></Condition>
-						<Action><![CDATA[RunwayRequest.send(new LandingRequest(this))]]></Action>
+						<Action><![CDATA[RunwayRequest.send(new LandingRequest(this, isPriority));
+if(isPriority)
+{
+	PriorityDeathEvent.restart();
+}]]></Action>
+					</Properties>
+				</Event>
+				<Event>
+					<Id>1316887480985</Id>
+					<Name><![CDATA[PriorityDeathEvent]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>690</X><Y>450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="rate" Mode="occuresOnce">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Rate><![CDATA[1/triangular(10, 15, 60);]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1316887480719</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+						<Action><![CDATA[get_Main().airport.DeathFromPriority++;
+RunwayRelease.send(new RunwayReleaseMessage(this));
+get_Main().remove_planes(this);]]></Action>
 					</Properties>
 				</Event>
 			</Events>
@@ -1753,35 +1971,34 @@ goToForeignAirport = true;]]></Body>
 					</Points>
 					<Closed>true</Closed>
 				</Polyline>
-			</Shapes>
-				</Group>
 				<Text>
-					<Id>1314170637588</Id>
-					<Name><![CDATA[text_dist1]]></Name>
+					<Id>1316886154958</Id>
+					<Name><![CDATA[text1]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-10</X><Y>10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
-					<XCode><![CDATA[GetX()]]></XCode>
-					<YCode><![CDATA[GetY()]]></YCode>
 					<AsObject>true</AsObject>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Lock>false</Lock>
 					<ShowIn3D>false</ShowIn3D>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
+					<RotationCode><![CDATA[getTime()]]></RotationCode>
 					<Color>-16777216</Color>
 					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[dist]]></TextCode>
+					<TextCode><![CDATA[isPriority ? "!" : ""]]></TextCode>
 					<Font>
 						<Name>SansSerif</Name>
-						<Size>8</Size>
+						<Size>10</Size>
 						<Style>0</Style>
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
+			</Shapes>
+				</Group>
 			</Shapes>
 		</ActiveObjectClass>
 		<!--   =========   Active Object Class   ========  -->
@@ -2332,6 +2549,63 @@ goToForeignAirport = true;]]></Body>
 						<Point><X>-70</X><Y>210</Y></Point>
 					</Points>
 				</Connector>
+				<Connector>
+					<Id>1316882885856</Id>
+					<Name><![CDATA[connector26]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>80</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1316882847293</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1316882859484</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>10</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1316882891504</Id>
+					<Name><![CDATA[connector27]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>140</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1316882859484</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1316882869085</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>10</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1316882901138</Id>
+					<Name><![CDATA[connector28]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>120</X><Y>210</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1316882859484</SourceEmbeddedObject>
+					<SourceConnectableName>access</SourceConnectableName>
+					<TargetEmbeddedObject>1313585170731</TargetEmbeddedObject>
+					<TargetConnectableName>port</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>80</X><Y>0</Y></Point>
+						<Point><X>80</X><Y>-60</Y></Point>
+						<Point><X>150</X><Y>-60</Y></Point>
+						<Point><X>150</X><Y>-40</Y></Point>
+					</Points>
+				</Connector>
 			</Connectors>
 			<EmbeddedObjects>
 				<EmbeddedObject>
@@ -2554,7 +2828,7 @@ goToForeignAirport = true;]]></Body>
 						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
 						<ClassName><![CDATA[Seize]]></ClassName>
 					</ActiveObjectClass>
-					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<GenericParametersSubstitute><![CDATA[LandingRequest]]></GenericParametersSubstitute>
 					<Parameters>
 						<Parameter>
 							<Name><![CDATA[quantity]]></Name>
@@ -2586,7 +2860,10 @@ goToForeignAirport = true;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[timeout]]></Name>
-							<Value><![CDATA[get_Airport().get_Main().FindRunwayTimeout]]></Value>	
+							<Value><![CDATA[entity.isPriority ?
+Integer.MAX_VALUE
+:
+get_Airport().get_Main().FindRunwayTimeout]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExitTimeout]]></Name>
@@ -2594,11 +2871,11 @@ goToForeignAirport = true;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[enablePreemption]]></Name>
-							<Value><![CDATA[]]></Value>	
+							<Value><![CDATA[true]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[priority]]></Name>
-							<Value><![CDATA[]]></Value>	
+							<Value><![CDATA[entity.isPriority ? 1 : 0]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExitPreempted]]></Name>
@@ -3399,6 +3676,200 @@ goToForeignAirport = true;]]></Body>
 					</Parameters>
 					<CollectionType>ARRAY_LIST_BASED</CollectionType>
 				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1316882847293</Id>
+					<Name><![CDATA[dispatcher]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>40</X><Y>180</Y>
+					<Label><X>-2</X><Y>-11</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Source]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[arrivalType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[rate]]></Name>
+							<Value><![CDATA[0.01666666666666]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[interarrivalTime]]></Name>
+							<Value><![CDATA[exponential( 60 )]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[rateTable]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[arrivalTable]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[entitiesPerArrival]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[limitArrivals]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maxArrivals]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[newEntity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[entityShape]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[uniqueShape]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableRotation]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1316882859484</Id>
+					<Name><![CDATA[distract]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>90</X><Y>160</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Service]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[quantity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[delayTime]]></Name>
+							<Value><![CDATA[triangular( 1, 8, 20 )]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[resourcePool]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnterDelay]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[queueCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[timeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enablePreemption]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[priority]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitPreempted]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuideQueue]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationTypeQueue]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForwardQueue]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuideDelay]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationTypeDelay]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForwardDelay]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1316882869085</Id>
+					<Name><![CDATA[manager]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>150</X><Y>180</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Sink]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
 			</EmbeddedObjects>
 			<Shapes>
 				<EmbeddedObjectPresentation>
@@ -3545,6 +4016,32 @@ else
 			</DatasetsCreationProperties>
 
 			<Variables>
+				<Variable Class="FlowAuxVariable">
+					<Id>1316880657314</Id>
+					<Name><![CDATA[AccidentAtLanding]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>450</X><Y>100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties External="true" Constant="false" Array="false" Flow="false">
+						<Formula><![CDATA[0]]></Formula>
+					</Properties>
+				</Variable>
+				<Variable Class="FlowAuxVariable">
+					<Id>1316887954486</Id>
+					<Name><![CDATA[DeathFromPriority]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>580</X><Y>100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties External="true" Constant="false" Array="false" Flow="false">
+						<Formula><![CDATA[0]]></Formula>
+					</Properties>
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1313770000968</Id>
 					<Name><![CDATA[planes]]></Name>
@@ -4679,7 +5176,7 @@ else
 			<Variables>
 				<Variable Class="PlainVariable">
 					<Id>1314269844061</Id>
-					<Name><![CDATA[planesCount]]></Name>
+					<Name><![CDATA[planesIntensity]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-110</X><Y>170</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -4687,8 +5184,8 @@ else
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[int]]></Type>        
-						<InitialValue><![CDATA[20]]></InitialValue>                 	
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[1]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -4773,7 +5270,7 @@ else
 					<Id>1314268937876</Id>
 					<Name><![CDATA[text2]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>400</X><Y>170</Y>
+					<X>440</X><Y>170</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4786,7 +5283,7 @@ else
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
 					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[PlanesCount.getValue()]]></TextCode>
+					<TextCode><![CDATA[PlanesIntensity.getValue()]]></TextCode>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
@@ -4798,7 +5295,7 @@ else
 					<Id>1314268983820</Id>
 					<Name><![CDATA[text3]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>50</X><Y>170</Y>
+					<X>50</X><Y>160</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4810,7 +5307,8 @@ else
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Число самолётов]]></Text>
+					<Text><![CDATA[Интенсивность
+появления самолётов(шт/мин)]]></Text>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
@@ -4822,7 +5320,7 @@ else
 					<Id>1314269078670</Id>
 					<Name><![CDATA[text4]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>400</X><Y>200</Y>
+					<X>440</X><Y>200</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4871,7 +5369,7 @@ else
 					<Id>1314269088868</Id>
 					<Name><![CDATA[text6]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>400</X><Y>230</Y>
+					<X>440</X><Y>230</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4948,9 +5446,9 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 				<Control Type="Slider">
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1314268817083</Id>
-					<Name><![CDATA[PlanesCount]]></Name>
+					<Name><![CDATA[PlanesIntensity]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>160</X><Y>160</Y>
+					<X>200</X><Y>160</Y>
 					<Label><X>-80</X><Y>20</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4964,9 +5462,9 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[100]]></MaxValue>
+						<MaxValue><![CDATA[10]]></MaxValue>
 						<LinkTo>true</LinkTo>
-						<Link>planesCount</Link>
+						<Link>planesIntensity</Link>
 					</ExtendedProperties>
 				</Control>
 				<Control Type="Slider">
@@ -4974,7 +5472,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 					<Id>1314269078677</Id>
 					<Name><![CDATA[DispatchersCount]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>160</X><Y>190</Y>
+					<X>200</X><Y>190</Y>
 					<Label><X>-80</X><Y>20</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4998,7 +5496,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 					<Id>1314269088874</Id>
 					<Name><![CDATA[RunwaysCount]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>160</X><Y>220</Y>
+					<X>200</X><Y>220</Y>
 					<Label><X>-80</X><Y>20</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5089,7 +5587,7 @@ getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></Actio
 			</PresentationProperties>
 			<ModelTimeProperties 
 				UseCalendar="false">
-				<StopOption><![CDATA[Stop at specified time]]></StopOption>
+				<StopOption><![CDATA[Never]]></StopOption>
 				<InitialDate><![CDATA[1313438711134]]></InitialDate>	
 				<InitialTime><![CDATA[0.0]]></InitialTime>	
 				<FinalDate><![CDATA[1313444711134]]></FinalDate>	
@@ -5111,13 +5609,20 @@ public class LandingRequest extends Entity
 {
 
 	 Plane plane;
+	 boolean isPriority;
 	
     /**
      * Конструктор, инициализирующий поля
      */     
+    public LandingRequest(Plane plane, boolean isPriority){
+		this.plane = plane;
+		this.isPriority = isPriority;
+    }  
+    
     public LandingRequest(Plane plane){
 		this.plane = plane;
-    }     
+		this.isPriority = false;
+    }  
 	
 	@Override
 	public String toString() {
@@ -5172,8 +5677,8 @@ public class RunwayReleaseMessage extends Entity
  */	
 public abstract class MapObject extends ActiveObject {
 	
-	protected double x = uniform(0, 800);
-	protected double y = uniform(0, 500);
+	protected double x = uniform(10, 790);
+	protected double y = uniform(10, 490);
 	
     MapObject(Engine engine, ActiveObject owner, ActiveObjectCollection<?> collection)
     {
