@@ -2837,7 +2837,7 @@ goToForeignAirport = true;]]></Body>
 						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
 						<ClassName><![CDATA[Seize]]></ClassName>
 					</ActiveObjectClass>
-					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<GenericParametersSubstitute><![CDATA[LandingRequest]]></GenericParametersSubstitute>
 					<Parameters>
 						<Parameter>
 							<Name><![CDATA[quantity]]></Name>
@@ -2877,11 +2877,11 @@ goToForeignAirport = true;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[enablePreemption]]></Name>
-							<Value><![CDATA[]]></Value>	
+							<Value><![CDATA[true]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[priority]]></Name>
-							<Value><![CDATA[]]></Value>	
+							<Value><![CDATA[entity.isPriority ? 1 : 0]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExitPreempted]]></Name>
