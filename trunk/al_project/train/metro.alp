@@ -1,0 +1,2284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+*************************************************
+	         AnyLogic Project File 
+*************************************************	         
+-->
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.4.1.200910151246" AlpVersion="6.2.3">
+<Model>
+	<Id>1317080429805</Id>
+	<Name><![CDATA[metro_0.4]]></Name>
+	<ExcludeFromBuild>false</ExcludeFromBuild>
+	<EngineVersion>6</EngineVersion>
+	<JavaPackageName><![CDATA[metro]]></JavaPackageName>
+	<ActiveObjectClasses>
+		<!--   =========   Active Object Class   ========  -->
+		<ActiveObjectClass>
+			<Id>1317080429806</Id>
+			<Name><![CDATA[Main]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
+			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<StartupCode><![CDATA[//track
+trackLineUp = railYard.getTrack( trackUp );
+trackLineDown = railYard.getTrack( trackDown );
+track_Entry = railYard.getTrack( depotEntry );
+track_Exit = railYard.getTrack( depotExit );
+switch_Entry = railYard.getSwitch( ovalEntry );
+switch_Exit = railYard.getSwitch( ovalExit );
+//------------------------------------
+Line qwertyLine = new Line(trackLineUp,trackLineDown);
+collection_lines.add(qwertyLine);
+//
+station1.stop_line = station_1_dowel_1;
+qwertyLine.AddStation(station1);
+//
+station2.stop_line = station_2_dowel_1; 
+qwertyLine.AddStation(station2);
+//
+station3.stop_line = station_3_dowel_1; 
+qwertyLine.AddStation(station3);
+//
+station4.stop_line = station_4_dowel_1;
+qwertyLine.AddStation(station4);
+//------------------------------------
+startModel.restart();
+//loco = railYard.addTrain( 1, trackEntry, 100 , true );
+//loco.setVelocity( 100 );
+//loco.setColor( red );
+//switchEntry.setSelectedTrack( track_1 );
+//loco.go_to_next();
+//loco.callbackAt( trackEntry , trackEntry.getLength()-10 , 9);
+//loco.callbackAt( trackEntry , station_1 );
+//event.restart();]]></StartupCode>
+			<Generic>false</Generic>
+			<GenericParameters><![CDATA[T]]></GenericParameters>
+			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
+			<SamplesToKeep>100</SamplesToKeep>
+			<AgentProperties>
+	 			<SpaceType>CONTINUOUS</SpaceType>			
+				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
+
+
+			</AgentProperties>
+
+			<DatasetsCreationProperties>
+				<AutoCreate>true</AutoCreate>
+				<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+			</DatasetsCreationProperties>
+
+			<Variables>
+				<Variable Class="PlainVariable">
+					<Id>1317080467855</Id>
+					<Name><![CDATA[trackLineUp]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>330</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317080473428</Id>
+					<Name><![CDATA[track_Exit]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317080477358</Id>
+					<Name><![CDATA[track_Entry]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>390</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317080479978</Id>
+					<Name><![CDATA[trackLineDown]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317115947414</Id>
+					<Name><![CDATA[switch_Entry]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Switch]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317115950067</Id>
+					<Name><![CDATA[switchMiddle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>350</X><Y>340</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Switch]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317115953124</Id>
+					<Name><![CDATA[switch_Exit]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Switch]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317907629302</Id>
+					<Name><![CDATA[loco]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>180</X><Y>290</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[TrainClass]]></Type>        
+						<InitialValue><![CDATA[new TrainClass();]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317997608821</Id>
+					<Name><![CDATA[track_4]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>350</X><Y>370</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="FlowAuxVariable">
+					<Id>1317981743126</Id>
+					<Name><![CDATA[PeopleInTrain]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>190</X><Y>240</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties External="false" Constant="false" Array="false" Flow="false">
+						<Formula><![CDATA[loco.personSizeTrain()]]></Formula>
+					</Properties>
+				</Variable>
+				<Variable Class="CollectionVariable">
+					<Id>1318306538379</Id>
+					<Name><![CDATA[station]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>510</X><Y>240</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" AccessType="public" StaticVariable="false">
+						<CollectionClass><![CDATA[ActiveObjectArrayList]]></CollectionClass>
+						<ElementClass><![CDATA[Station]]></ElementClass>
+					</Properties>   
+				</Variable>
+				<Variable Class="CollectionVariable">
+					<Id>1318669734997</Id>
+					<Name><![CDATA[collection_lines]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>510</X><Y>210</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" AccessType="public" StaticVariable="false">
+						<CollectionClass><![CDATA[java.util.ArrayList]]></CollectionClass>
+						<ElementClass><![CDATA[Line]]></ElementClass>
+					</Properties>   
+				</Variable>
+			</Variables>
+			<Dependences>
+				<PlainDependence SourceId="1317907629302" TargetId="1317981743126" Polarity="0">
+					<Height>10.0</Height>							
+					<Id>1318445680019</Id>
+					<Name><![CDATA[loco -> PeopleInTrain]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>0</X><Y>0</Y>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Color/>
+				</PlainDependence>
+			</Dependences>
+			<Events>
+				<Event>
+					<Id>1318235410612</Id>
+					<Name><![CDATA[startModel]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>110</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="timeout" Mode="userControls">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Rate><![CDATA[1]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1318235410501</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+						<Action><![CDATA[//переключение рельц
+switch_depos_traklineup();
+//создание поезда
+loco = railYard.addTrain( 1, track_Entry, 50 , true );
+loco.setVelocity( 100 );
+loco.setColor( red );
+loco.go(true);
+//loco.go_to();]]></Action>
+					</Properties>
+				</Event>
+			</Events>
+			<Functions>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[ActiveObjectArrayList]]></ReturnType>
+					<Id>1317972066048</Id>
+					<Name><![CDATA[getAllStations]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>630</X><Y>360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[return  station;]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1318239376506</Id>
+					<Name><![CDATA[switch_tracklineup_tracklinedown]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-80</X><Y>340</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[switch_Exit.setSelectedTrack(trackLineDown);
+switch_Entry.setSelectedTrack(track_Entry);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1318239464385</Id>
+					<Name><![CDATA[switch_depos_traklineup]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-80</X><Y>310</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[switch_Entry.setSelectedTrack(trackLineUp);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[Line]]></ReturnType>
+					<Id>1318544159573</Id>
+					<Name><![CDATA[FindCollection]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-80</X><Y>160</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[Trackline]]></Name>
+						<Type><![CDATA[Track]]></Type>
+					</Parameter>
+					<Body><![CDATA[for (Line var : collection_lines )
+{
+	if (var.forwardTrack == Trackline || var.backwardTrack == Trackline) {return var;}
+}
+return null;]]></Body>
+				</Function>
+			</Functions>
+			<EmbeddedObjects>
+				<EmbeddedObject>
+					<Id>1317080460260</Id>
+					<Name><![CDATA[railYard]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>300</X><Y>260</Y>
+					<Label><X>0</X><Y>-20</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.railyard]]></PackageName>
+						<ClassName><![CDATA[RailYard]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[TrainClass]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[railYardShapes]]></Name>
+							<Value><![CDATA[track_list]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[newCar]]></Name>
+							<Value><![CDATA[new TrainClass()]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnterYard]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitYard]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[callAtSwitchForFirstCarOnly]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onAtSwitch]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnterTrack]]></Name>
+							<Value><![CDATA[Line currentLine = FindCollection(loco.getTrack(true));
+Station nextStation = currentLine.GetNextStation(loco.getTrack(true),null);
+loco.callbackAt(loco.getTrack(true),nextStation.stop_line,nextStation);]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitTrack]]></Name>
+							<Value><![CDATA[if (track == track_Entry) {switch_depos_traklineup();}
+if (track == trackLineUp) {switch_tracklineup_tracklinedown();}]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onHit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onAtCallback]]></Name>
+							<Value><![CDATA[car.stop();
+car.train_station_stop = ((Station)info);
+((Station)info).setTrain(car); //как поезд пришел на станцию]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onClickCar]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[trackLineWidth]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[trackColorEmpty]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[trackColorNonEmpty]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[switchCircleColorIdle]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[switchCircleColorBusy]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[switchLineColor]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1318306178949</Id>
+					<Name><![CDATA[station1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>260</X><Y>65</Y>
+					<Label><X>-60</X><Y>25</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[metro]]></PackageName>
+						<ClassName><![CDATA[Station]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[]]></GenericParametersSubstitute>
+					<Parameters>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1318306180929</Id>
+					<Name><![CDATA[station2]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>410</X><Y>65</Y>
+					<Label><X>-60</X><Y>25</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[metro]]></PackageName>
+						<ClassName><![CDATA[Station]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[]]></GenericParametersSubstitute>
+					<Parameters>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1318306489895</Id>
+					<Name><![CDATA[station3]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>550</X><Y>65</Y>
+					<Label><X>-60</X><Y>25</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[metro]]></PackageName>
+						<ClassName><![CDATA[Station]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[]]></GenericParametersSubstitute>
+					<Parameters>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1318306493085</Id>
+					<Name><![CDATA[station4]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>690</X><Y>65</Y>
+					<Label><X>-60</X><Y>25</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[metro]]></PackageName>
+						<ClassName><![CDATA[Station]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[]]></GenericParametersSubstitute>
+					<Parameters>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+			</EmbeddedObjects>
+			<Shapes>
+				<Line>
+					<Id>1317913329743</Id>
+					<Name><![CDATA[station_1_dowel_1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>250</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<Dx>0</Dx>
+					<Dy>70</Dy>
+				</Line>
+				<Line>
+					<Id>1317913329745</Id>
+					<Name><![CDATA[station_2_dowel_1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>400</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<Dx>0</Dx>
+					<Dy>70</Dy>
+				</Line>
+				<Line>
+					<Id>1317913329747</Id>
+					<Name><![CDATA[station_3_dowel_1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>540</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<Dx>0</Dx>
+					<Dy>70</Dy>
+				</Line>
+				<Line>
+					<Id>1317913329749</Id>
+					<Name><![CDATA[station_4_dowel_1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>680</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<Dx>0</Dx>
+					<Dy>70</Dy>
+				</Line>
+				<Text>
+					<Id>1318312423772</Id>
+					<Name><![CDATA[text]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>250</X><Y>150</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[text]]></Text>
+					<TextCode><![CDATA[loco.getStationPoint()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>20</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Group>
+					<Id>1318445504470</Id>
+					<Name><![CDATA[track_list]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>560</X><Y>80</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<Rotation>0.0</Rotation>
+			<Shapes>
+				<Oval>
+					<Id>1318237654282</Id>
+					<Name><![CDATA[ovalEntry]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-410</X><Y>20</Y>
+					<Label><X>0</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<RadiusX>3</RadiusX>
+					<RadiusY>3</RadiusY>
+					<Rotation>0.0</Rotation>
+					<FillColor/>
+				</Oval>
+				<Polyline>
+					<Id>1318237657063</Id>
+					<Name><![CDATA[depotEntry]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-610</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>200</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Polyline>
+				<Curve ControlPoints="false">
+					<Id>1318424945192</Id>
+					<Name><![CDATA[trackUp]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-410</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>40</X><Y>-50</Y></Point>
+					   <Point><X>80</X><Y>-50</Y></Point>
+					   <Point><X>620</X><Y>-40</Y></Point>
+					   <Point><X>650</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Curve>
+				<Curve ControlPoints="false">
+					<Id>1318424949053</Id>
+					<Name><![CDATA[trackDown]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-410</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>650</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Curve>
+				<Polyline>
+					<Id>1318444402886</Id>
+					<Name><![CDATA[depotExit]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>240</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>100</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Polyline>
+				<Oval>
+					<Id>1318447309977</Id>
+					<Name><![CDATA[ovalExit]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>240</X><Y>20</Y>
+					<Label><X>0</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>0</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<RadiusX>2</RadiusX>
+					<RadiusY>2</RadiusY>
+					<Rotation>0.0</Rotation>
+					<FillColor/>
+				</Oval>
+			</Shapes>
+				</Group>
+			</Shapes>
+		</ActiveObjectClass>
+		<!--   =========   Active Object Class   ========  -->
+		<ActiveObjectClass>
+			<Id>1317907840041</Id>
+			<Name><![CDATA[Station]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
+			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<StartupCode><![CDATA[train_in_Delay.reset();
+train_out_delay.reset();]]></StartupCode>
+			<Generic>false</Generic>
+			<GenericParameters><![CDATA[T]]></GenericParameters>
+			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
+			<SamplesToKeep>100</SamplesToKeep>
+			<AgentProperties>
+	 			<SpaceType>CONTINUOUS</SpaceType>			
+				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
+
+
+			</AgentProperties>
+
+			<DatasetsCreationProperties>
+				<AutoCreate>true</AutoCreate>
+				<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+			</DatasetsCreationProperties>
+
+			<Variables>
+				<Variable Class="PlainVariable">
+					<Id>1317907848669</Id>
+					<Name><![CDATA[stop_line]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>410</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[ShapeLine]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1317911974292</Id>
+					<Name><![CDATA[train]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>160</X><Y>410</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[TrainClass]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1318437202472</Id>
+					<Name><![CDATA[trackForward]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1318437864548</Id>
+					<Name><![CDATA[trackBackward]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>470</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1318681047549</Id>
+					<Name><![CDATA[line]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>500</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Line]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="FlowAuxVariable">
+					<Id>1318309072692</Id>
+					<Name><![CDATA[PeopleInStation]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>360</X><Y>490</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties External="false" Constant="false" Array="false" Flow="false">
+						<Formula><![CDATA[queue_in.size()+queue_out.size()]]></Formula>
+					</Properties>
+				</Variable>
+			</Variables>
+			<Connectors>
+				<Connector>
+					<Id>1317976947772</Id>
+					<Name><![CDATA[connector]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>0</X><Y>590</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317970105073</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317976736797</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>20</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317977122340</Id>
+					<Name><![CDATA[connector1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>70</X><Y>590</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317976736797</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317977080235</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>50</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317977127800</Id>
+					<Name><![CDATA[connector2]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>150</X><Y>590</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317977080235</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317977099283</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>20</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317977199427</Id>
+					<Name><![CDATA[connector3]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>220</X><Y>590</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317977099283</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317977114275</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>40</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317987841667</Id>
+					<Name><![CDATA[connector4]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-10</X><Y>640</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317982978507</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317987786780</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>30</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317987847494</Id>
+					<Name><![CDATA[connector5]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>70</X><Y>640</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317987786780</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317983051203</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>40</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317987873138</Id>
+					<Name><![CDATA[connector6]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>140</X><Y>640</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317983051203</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317983026274</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>30</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317989742148</Id>
+					<Name><![CDATA[connector7]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>220</X><Y>640</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317983026274</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317989715958</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>10</X><Y>0</Y></Point>
+						<Point><X>10</X><Y>30</Y></Point>
+						<Point><X>-250</X><Y>30</Y></Point>
+						<Point><X>-250</X><Y>69</Y></Point>
+						<Point><X>-240</X><Y>70</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317989753974</Id>
+					<Name><![CDATA[connector8]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>30</X><Y>710</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317989715958</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317989730646</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>50</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+				<Connector>
+					<Id>1317989757467</Id>
+					<Name><![CDATA[connector9]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>130</X><Y>710</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<SourceEmbeddedObject>1317989730646</SourceEmbeddedObject>
+					<SourceConnectableName>out</SourceConnectableName>
+					<TargetEmbeddedObject>1317987834453</TargetEmbeddedObject>
+					<TargetConnectableName>in</TargetConnectableName>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>60</X><Y>0</Y></Point>
+					</Points>
+				</Connector>
+			</Connectors>
+			<Events>
+				<Event>
+					<Id>1317964401834</Id>
+					<Name><![CDATA[train_start]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>330</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="timeout" Mode="userControls">
+						<Timeout><![CDATA[triangular(3,7,5);]]></Timeout>
+						<Rate><![CDATA[1]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1317964401755</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+						<Action><![CDATA[this.door_in.setBlocked(true);
+train_in_Delay.restart();]]></Action>
+					</Properties>
+				</Event>
+				<Event>
+					<Id>1317981951362</Id>
+					<Name><![CDATA[train_in_Delay]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>370</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="condition" Mode="userControls">
+						<Timeout><![CDATA[this.delay_in.size()!= 0]]></Timeout>
+						<Rate><![CDATA[1]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1317981951299</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+						<Condition><![CDATA[this.delay_in.size() == 0]]></Condition>
+						<Action><![CDATA[//отключение события захада пассажиров по причине отъезда поезда
+train_out_delay.reset();
+//запихивание неуспевших выйти пассажиров а поезд 
+while  (queue_out_train.size() != 0 )
+{
+	train.addPerson(queue_out_train.removeFirst());
+}
+
+
+this.train.go_to(this.line.GetNextStation(this.train.getTrack(true),this));
+this.train = null;]]></Action>
+					</Properties>
+				</Event>
+				<Event>
+					<Id>1317990688340</Id>
+					<Name><![CDATA[train_out_delay]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>110</X><Y>330</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="condition" Mode="userControls">
+						<Timeout><![CDATA[1]]></Timeout>
+						<Rate><![CDATA[1]]></Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1317990688257</OccurrenceDate>												
+						<OccurrenceTime><![CDATA[0]]></OccurrenceTime>												
+						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
+						<Condition><![CDATA[queue_out_train.size() == 0]]></Condition>
+						<Action><![CDATA[this.door_in.setBlocked(false);]]></Action>
+					</Properties>
+				</Event>
+			</Events>
+			<Functions>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1317914888682</Id>
+					<Name><![CDATA[setTrain]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>10</X><Y>290</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[train]]></Name>
+						<Type><![CDATA[TrainClass]]></Type>
+					</Parameter>
+					<Body><![CDATA[this.train = train;
+//------------------
+//цепока выхода пассажиров
+this.door_out.setBlocked(false);
+
+ArrayList<Person> personToExit = this.train.getPersonExitList();
+for(Person p : personToExit)
+{
+	enter.take(p);
+}
+
+//ожиание захода пассажиров
+train_out_delay.restart();
+//ожидание отбытия поезда
+train_start.restart();]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[Station]]></ReturnType>
+					<Id>1317970781857</Id>
+					<Name><![CDATA[randomStationPerson]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-30</X><Y>530</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[stationlist]]></Name>
+						<Type><![CDATA[ActiveObjectArrayList<Station>]]></Type>
+					</Parameter>
+					<Body><![CDATA[//нельзя делать меньше одной станции
+assert(false==true);
+Station stat;
+do
+stat = stationlist.get((int)triangular(0,stationlist.size()-1));
+while (stat.stop_line == this.stop_line);
+return stat;]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[int]]></ReturnType>
+					<Id>1318234093328</Id>
+					<Name><![CDATA[getPeopleInStation]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>360</X><Y>530</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[return queue_in.size()+ queue_out.size();]]></Body>
+				</Function>
+			</Functions>
+			<EmbeddedObjects>
+				<EmbeddedObject>
+					<Id>1317970105073</Id>
+					<Name><![CDATA[source]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-40</X><Y>580</Y>
+					<Label><X>-2</X><Y>-11</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Source]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Person]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[arrivalType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[rate]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[interarrivalTime]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[rateTable]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[arrivalTable]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[entitiesPerArrival]]></Name>
+							<Value><![CDATA[40-queue_in.size()/25]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[limitArrivals]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maxArrivals]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[newEntity]]></Name>
+							<Value><![CDATA[new Person(randomStationPerson( line.GetAllStations()))]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[entityShape]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[uniqueShape]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableRotation]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317976736797</Id>
+					<Name><![CDATA[queue_in]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>20</X><Y>560</Y>
+					<Label><X>3</X><Y>-2</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Queue]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Person]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[1100]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onAtExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[timeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enablePreemption]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[priority]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitPreempted]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317977080235</Id>
+					<Name><![CDATA[door_in]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>120</X><Y>580</Y>
+					<Label><X>-2</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Hold]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[if (this.train.personSizeTrain()+1+this.delay_in.size() > this.train.trainSize) 
+{
+	this.door_in.setBlocked(true);
+}]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[initiallyBlocked]]></Name>
+							<Value><![CDATA[true]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317977099283</Id>
+					<Name><![CDATA[delay_in]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>170</X><Y>570</Y>
+					<Label><X>9</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Delay]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[delayTimeDefinedByPath]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[delayTime]]></Name>
+							<Value><![CDATA[triangular( 0.1, 0.25, 0.4 )]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[speed]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[84]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317977114275</Id>
+					<Name><![CDATA[exit]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>260</X><Y>580</Y>
+					<Label><X>-3</X><Y>-14</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Exit]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Person]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[train.addPerson(entity);]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317982978507</Id>
+					<Name><![CDATA[enter]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-40</X><Y>630</Y>
+					<Label><X>5</X><Y>-14</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Enter]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Person]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317983026274</Id>
+					<Name><![CDATA[delay_out_train]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>170</X><Y>620</Y>
+					<Label><X>9</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Delay]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[delayTimeDefinedByPath]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[delayTime]]></Name>
+							<Value><![CDATA[triangular( 0.1, 0.25, 0.4 )]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[speed]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[84]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317983051203</Id>
+					<Name><![CDATA[door_out]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>110</X><Y>630</Y>
+					<Label><X>-2</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Hold]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[initiallyBlocked]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317987786780</Id>
+					<Name><![CDATA[queue_out_train]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>20</X><Y>610</Y>
+					<Label><X>3</X><Y>-2</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Queue]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Person]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[300]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[true]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onAtExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[timeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enablePreemption]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[priority]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitPreempted]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[Animator.BAG]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317987834453</Id>
+					<Name><![CDATA[sink]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>190</X><Y>700</Y>
+					<Label><X>7</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Sink]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317989715958</Id>
+					<Name><![CDATA[queue_out]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-20</X><Y>680</Y>
+					<Label><X>3</X><Y>-2</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Queue]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[1000]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onAtExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[timeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitTimeout]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enablePreemption]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[priority]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExitPreempted]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1317989730646</Id>
+					<Name><![CDATA[delay_out]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>80</X><Y>690</Y>
+					<Label><X>9</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.xj.anylogic.libraries.enterprise]]></PackageName>
+						<ClassName><![CDATA[Delay]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParametersSubstitute><![CDATA[Entity]]></GenericParametersSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[delayTimeDefinedByPath]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[delayTime]]></Name>
+							<Value><![CDATA[triangular(2,5,8)]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[speed]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[capacity]]></Name>
+							<Value><![CDATA[15]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[maximumCapacity]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onEnter]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[onExit]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationGuide]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationType]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[animationForward]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[enableStats]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+					</Parameters>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+				</EmbeddedObject>
+			</EmbeddedObjects>
+		</ActiveObjectClass>
+	</ActiveObjectClasses>
+	<Experiments>	
+		<!--   =========   Simulation Experiment   ========  -->
+		<SimulationExperiment ActiveObjectClassId="1317080429806">
+			<Id>1317080429816</Id>
+			<Name><![CDATA[Simulation]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
+			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<Frame>
+				<X>0</X>
+				<Y>0</Y>
+				<Width>1060</Width>
+				<Height>600</Height>
+			</Frame>
+			<CommandLineArguments><![CDATA[]]></CommandLineArguments>
+			<MaximumMemory>64</MaximumMemory>
+			<RandomSeed>true</RandomSeed>
+			<SeedValue>1</SeedValue>
+			<RandomSelectionModeForSimultaneousEvents>false</RandomSelectionModeForSimultaneousEvents>
+			<VmArgs><![CDATA[]]></VmArgs>
+			<AbsoluteAccuracy>1.0E-5</AbsoluteAccuracy>
+			<RelativeAccuracy>1.0E-5</RelativeAccuracy>
+			<TimeAccuracy>1.0E-5</TimeAccuracy>
+			<FixedTimeStep>0.0010</FixedTimeStep>
+			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
+			<SnapshotFile></SnapshotFile>
+			<DiffEquationsNumericalMethod>EULER</DiffEquationsNumericalMethod>
+			<MixedEquationsNumericalMethod>RK45_NEWTON</MixedEquationsNumericalMethod>
+			<AlgebraicEquationsNumericalMethod>MODIFIED_NEWTON</AlgebraicEquationsNumericalMethod>
+			<Shapes>
+				<Text>
+					<Id>0</Id>
+					<Name><![CDATA[text]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>40</X><Y>30</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[metro]]></Text>
+					<Font>
+						<Name>Serif</Name>
+						<Size>28</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>0</Id>
+					<Name><![CDATA[text1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>40</X><Y>63</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[Страница настроек эксперимента]]></Text>
+					<Font>
+						<Name>Serif</Name>
+						<Size>16</Size>
+						<Style>2</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Shapes>
+			<Controls>
+				<Control Type="Button">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>0</Id>
+					<Name><![CDATA[button]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>40</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<BasicProperties Width="330" Height="30" 
+				AsObject="true">
+                        <EmbeddedIcon>false</EmbeddedIcon>				
+						<FillColor/>
+						<TextColor/>
+						<ActionCode><![CDATA[if ( getState() == IDLE )
+	run();
+getEngine().getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
+					</BasicProperties>
+					<ExtendedProperties>
+						<Font Name="Dialog" Size="11" Style="0"/>
+						<LabelText><![CDATA[Запустить модель и открыть презентацию класса Main]]></LabelText>
+						<LabelCode><![CDATA[getState() == IDLE ?
+	"Запустить модель и открыть презентацию класса Main" :
+	"Открыть презентацию класса Main"]]></LabelCode>
+					</ExtendedProperties>
+				</Control>
+			</Controls>
+			<Parameters>			
+			</Parameters>			
+			<PresentationProperties 
+				EnableAdaptiveFrameManagement="true" 
+				EnableAntiAliasing="true"
+				EnablePanning="true"
+				EnableZoom="true">
+				<ExecutionMode><![CDATA[realTimeScaled]]></ExecutionMode>
+				<CpuRatio><![CDATA[ratio_1_2]]></CpuRatio>	        
+				<Title><![CDATA[metro : Simulation]]></Title>	
+				<FramesPerSecond><![CDATA[20.0]]></FramesPerSecond>
+				<RealTimeScale>SCALE_1</RealTimeScale>
+				<UIProperty Name="Experiment Progress" Value="false"/>
+				<UIProperty Name="Simulation Progress" Value="true"/>
+				<UIProperty Name="Statusbar Events Per Second" Value="false"/>
+				<UIProperty Name="Statusbar Frames Per Second" Value="false"/>
+				<UIProperty Name="Statusbar Memory" Value="true"/>
+				<UIProperty Name="Statusbar Model Date" Value="false"/>
+				<UIProperty Name="Statusbar Model Step" Value="false"/>
+				<UIProperty Name="Statusbar Model Time" Value="true"/>
+				<UIProperty Name="Statusbar Real Time Of Simulation" Value="true"/>
+				<UIProperty Name="Statusbar Status" Value="true"/>
+				<UIProperty Name="Toolbar Animation setup" Value="false"/>
+				<UIProperty Name="Toolbar Execution control" Value="true"/>
+				<UIProperty Name="Toolbar File" Value="false"/>
+				<UIProperty Name="Toolbar Model navigation" Value="true"/>
+				<UIProperty Name="Toolbar Time scale setup" Value="true"/>
+				<UIProperty Name="Toolbar View" Value="false"/>
+			</PresentationProperties>
+			<ModelTimeProperties 
+				UseCalendar="false">
+				<StopOption><![CDATA[Stop at specified time]]></StopOption>
+				<InitialDate><![CDATA[1317080429815]]></InitialDate>	
+				<InitialTime><![CDATA[0.0]]></InitialTime>	
+				<FinalDate><![CDATA[1317086429815]]></FinalDate>	
+				<FinalTime><![CDATA[100.0]]></FinalTime>	
+				<ModelTimeUnit><![CDATA[Minute]]></ModelTimeUnit>	
+			</ModelTimeProperties>
+		</SimulationExperiment>	
+	</Experiments>
+	<JavaClasses>
+		<!--   =========   Java Class   ========  -->
+		<JavaClass>
+			<Id>1317959445568</Id>
+			<Name><![CDATA[TrainClass]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<Text><![CDATA[/**
+ * TrainClass
+ */	
+public class TrainClass extends RailCar implements java.io.Serializable {
+
+	ArrayList<Person> personList = new ArrayList<Person>(); //массив людей
+	Station train_station_stop;  //cтанция на которой остановился
+	Station station_point;       //станция назначения
+	int  trainSize;  //количество мест в поезде
+	
+	/*
+	// стоит ли поез на верхнем пути
+	public boolean isUpper()
+	{
+		//if ( this.getTrack(true) == array_station.get(0).track_up) {return true;}
+		return false;
+	}
+	*/
+	
+	/*
+	//ехать до следующей станиции
+	public void go_to_next()
+	{
+		//boolean isUpper;
+		//isUpper = isUpper();
+		
+		if (isUpper())     //проверка в конце пути  **обратный ход поезда
+		{
+			if (train_station_stop != null)										 //проверка в начале пути
+			{	
+				int size = array_station.size();
+				int i;
+				for (i = 0;i != size;++i)
+				{
+					if (array_station.get(i) == train_station_stop) {break;}
+				}
+				if (i < size-1)	    //если станция последняя то отправляет поезд вперед
+				{
+					station_point = array_station.get(i+1);
+					this.go_to( array_station.get(i+1) );
+				}
+				else this.go(true);         
+			}
+			else this.go_to(array_station.get(0));
+		}
+		else 
+		{
+			int size = array_station.size();
+			int i;
+			for (i = array_station.size()-1;i != -1;--i)
+			{
+				if (array_station.get(i) == train_station_stop) {break;}
+			}
+			if (i > 0)	
+			{
+				station_point = array_station.get(i-1);
+				this.go_to( array_station.get(i-1) );
+			}
+			else this.go(true);
+		}
+		//else this.go(true); //this.go_to(array_station.get(0));	
+		//}
+	}
+	*/
+	
+	//ехать к станции
+	public void go_to( Station station_metro )
+	{   
+		this.go(true);
+		if (station_metro != null)
+		{
+			this.callbackAt(this.getTrack(true), station_metro.stop_line , station_metro );
+		}
+	}
+	
+	
+	//добавить пассажира, если не полон поезд
+	void addPerson(Person person)
+	{
+		if (personList.size() < this.trainSize)
+		{
+			personList.add(person);
+		}
+	}
+	
+	//выпустить пассажиров
+	ArrayList<Person> getPersonExitList()
+	{
+		ArrayList<Person> personToExitList = new ArrayList<Person>();
+		for (int i = 0; i < personList.size();)
+		{
+			if (personList.get(i).station_point == this.train_station_stop)
+			{
+				personToExitList.add(personList.remove(i));
+			}
+			else i++;
+		}
+		return personToExitList;
+	}
+	
+	
+	//количество людей в поеде
+	int personSizeTrain()
+	{
+		return personList.size();
+	}
+	
+	String getStationPoint()
+	{
+		if (station_point == null)
+		{
+			return "NULL";			
+		}
+		return station_point.getName();
+	}
+	
+	/*int getStaionPoint()
+	{
+		if (train_station_stop != array_station.get(array_station.size()-1))     //проверка в конце пути  **обратный ход поезда
+		{
+			//if (train_station_stop != null)										 //проверка в начале пути
+			//{	
+				int size = array_station.size();
+				int i;
+				for (i = 0;i != size;++i)
+				{
+					if (array_station.get(i) == train_station_stop) {break;}
+				}
+				if (i < size-1)	{return array_station.get(i+1);}
+				//else this.go(true);
+			//}
+			//else this.go(true); //this.go_to(array_station.get(0));
+		}
+		else 
+		{
+			int size = array_station.size();
+			int i;
+			for (i = array_station.size()-1;i != -1;--i)
+			{
+				if (array_station.get(i) == train_station_stop) {break;}
+			}
+			if (i > 0)	{this.go_to( array_station.get(i-1) );}
+			else this.go(true);
+		}
+		//else this.go(true); //this.go_to(array_station.get(0));	
+		//}
+	}
+	*/
+	
+    /**
+     * Конструктор по умолчанию
+     */
+    public TrainClass(){
+    	 this.trainSize = 300;
+    }
+     
+	
+	@Override
+	public String toString() {			
+		return super.toString();
+	}
+
+	/**
+	 * Это число используется при сохранении состояния модели<br>
+	 * Его рекомендуется изменить в случае изменения класса
+	 */ 
+	private static final long serialVersionUID = 1L;
+
+}]]></Text>
+		</JavaClass>
+		<!--   =========   Java Class   ========  -->
+		<JavaClass>
+			<Id>1317969816106</Id>
+			<Name><![CDATA[Person]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<Text><![CDATA[/**
+ * Person
+ */	
+public class Person extends Entity {
+
+	Station station_point;
+	
+    /**
+     * Конструктор по умолчанию
+     */
+    public Person(Station station_loc){
+    	station_point = station_loc;
+    }
+     
+	
+	@Override
+	public String toString() {			
+		return super.toString();
+	}
+}]]></Text>
+		</JavaClass>
+		<!--   =========   Java Class   ========  -->
+		<JavaClass>
+			<Id>1318668740913</Id>
+			<Name><![CDATA[Line]]></Name>
+			<ExcludeFromBuild>false</ExcludeFromBuild>
+			<Text><![CDATA[/**
+ * Line
+ */	
+public class Line {
+
+
+	Track forwardTrack, backwardTrack;
+	ActiveObjectArrayList<Station> stations = new ActiveObjectArrayList<Station>();
+	
+	public ActiveObjectArrayList<Station> GetAllStations()
+	{
+		return stations;
+	}
+	
+	public Station GetNextStation(Track track, Station station)
+	{
+		Station result = null;
+		int stationIndex = -1;
+		//вычислим индекс station
+		if(station != null)
+		{
+			for (int i =0; i != stations.size(); ++i)
+			{
+				if (stations.get(i) == station) 
+				{
+					stationIndex = i;
+					break;
+				}
+			}
+		}
+		
+		//на какой ветке станция
+		if(track == forwardTrack)
+		{	
+			//вернуть первую станцию (прямой ход)
+			if(stationIndex == -1) {return stations.get(0);} 
+			//найти станцию и вернуть следующую (null, если последняя)
+			if(stationIndex != stations.size()-1) result = stations.get(stationIndex+1);
+		}
+		else if(track == backwardTrack)
+		{
+			if(stationIndex == -1) {return stations.get(stations.size()-1);} 
+			//найти станцию, вернуть предыдущую (null, если первая)	
+			if(stationIndex != 0) result = stations.get(stationIndex-1);
+		}
+		
+		return result;
+	}
+	
+	public void AddStation(Station _station)
+	{
+		_station.trackForward = forwardTrack;
+		_station.trackBackward = backwardTrack;
+		_station.line = this;
+		stations._add(_station);
+	}
+    /**
+     * Конструктор по умолчанию
+     */
+    public Line(Track _forwardTrack, Track _backwardTrack)
+    {
+   		this.forwardTrack  = _forwardTrack;
+   		this.backwardTrack = _backwardTrack; 
+    }
+     
+	
+	@Override
+	public String toString() {			
+		return super.toString();
+	}
+
+}]]></Text>
+		</JavaClass>
+	</JavaClasses>
+    <RequiredLibraryReference>
+		<LibraryName><![CDATA[com.xj.anylogic.libraries.railyard]]></LibraryName>
+		<VersionMajor>6</VersionMajor>
+		<VersionMinor>0</VersionMinor>
+		<VersionBuild>0</VersionBuild>
+    </RequiredLibraryReference>
+    <RequiredLibraryReference>
+		<LibraryName><![CDATA[com.xj.anylogic.libraries.enterprise]]></LibraryName>
+		<VersionMajor>6</VersionMajor>
+		<VersionMinor>0</VersionMinor>
+		<VersionBuild>2</VersionBuild>
+    </RequiredLibraryReference>
+</Model>
+</AnyLogicWorkspace>
