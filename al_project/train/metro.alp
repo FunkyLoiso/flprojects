@@ -29,8 +29,13 @@ trackLineUp = railYard.getTrack( trackUp );
 trackLineDown = railYard.getTrack( trackDown );
 track_Entry = railYard.getTrack( depotEntry );
 track_Exit = railYard.getTrack( depotExit );
+track_Entry_Circle = railYard.getTrack(deposEntryCircle);
+track_Exit_Circle = railYard.getTrack(deposExitCircle);
+switch_Entry_Circle = railYard.getSwitch( ovalEntryCircle );
+switch_Exit_Circle = railYard.getSwitch( ovalExitCircle );
 switch_Entry = railYard.getSwitch( ovalEntry );
 switch_Exit = railYard.getSwitch( ovalExit );
+
 //------------------------------------
 Line qwertyLine = new Line(trackLineUp,trackLineDown, track_Entry, track_Exit);
 collection_lines.add(qwertyLine);
@@ -129,7 +134,7 @@ startModel.restart();
 					<Id>1317115947414</Id>
 					<Name><![CDATA[switch_Entry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>210</X><Y>450</Y>
+					<X>80</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -140,9 +145,9 @@ startModel.restart();
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1317115950067</Id>
-					<Name><![CDATA[switchMiddle]]></Name>
+					<Name><![CDATA[switch_Exit_Circle]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>350</X><Y>340</Y>
+					<X>80</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -155,7 +160,7 @@ startModel.restart();
 					<Id>1317115953124</Id>
 					<Name><![CDATA[switch_Exit]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>210</X><Y>480</Y>
+					<X>80</X><Y>420</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -180,15 +185,41 @@ startModel.restart();
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1317997608821</Id>
-					<Name><![CDATA[track_4]]></Name>
+					<Name><![CDATA[track_Entry_Circle]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>350</X><Y>370</Y>
+					<X>210</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1318813753182</Id>
+					<Name><![CDATA[track_Exit_Circle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>210</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Track]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1318813755912</Id>
+					<Name><![CDATA[switch_Entry_Circle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>80</X><Y>450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[Switch]]></Type>        
 					</Properties>
 				</Variable>
 				<Variable Class="FlowAuxVariable">
@@ -455,8 +486,11 @@ if (track == trackLineDown) {switchTarckLineDownTrackEntry();}]]></Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onEnterTrack]]></Name>
-							<Value><![CDATA[if (track == track_Exit ) {loco.callbackAt(track,depos_exit,DEPOS_STOP_EXIT); return;}
-if (track == track_Entry) {loco.callbackAt(track,depos_entry,DEPOS_STOP_ENTRY); return;}
+							<Value><![CDATA[//if (track == track_Exit ) {loco.callbackAt(track,depos_exit,DEPOS_STOP_EXIT); return;}
+//if (track == track_Entry) {loco.callbackAt(track,depos_entry,DEPOS_STOP_ENTRY); return;}
+
+//if (track == depos)
+//if ()
 
 Line currentLine = FindCollection(loco.getTrack(true));
 loco.train_station_stop = currentLine.GetNextStation(loco.getTrack(true),null);
@@ -739,7 +773,7 @@ if (info == null)
 					<Id>1318237654282</Id>
 					<Name><![CDATA[ovalEntry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-410</X><Y>20</Y>
+					<X>-410</X><Y>19</Y>
 					<Label><X>0</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -750,11 +784,11 @@ if (info == null)
 					<ShowIn3D>false</ShowIn3D>
 					<Z>0</Z>
 					<ZHeight>0</ZHeight>
-					<LineWidth>1</LineWidth>
+					<LineWidth>0</LineWidth>
 					<LineColor>-16777216</LineColor>
 					<LineStyle>SOLID</LineStyle>
-					<RadiusX>3</RadiusX>
-					<RadiusY>3</RadiusY>
+					<RadiusX>4</RadiusX>
+					<RadiusY>4</RadiusY>
 					<Rotation>0.0</Rotation>
 					<FillColor/>
 				</Oval>
@@ -863,8 +897,8 @@ if (info == null)
 					<LineWidth>0</LineWidth>
 					<LineColor>-16777216</LineColor>
 					<LineStyle>SOLID</LineStyle>
-					<RadiusX>2</RadiusX>
-					<RadiusY>2</RadiusY>
+					<RadiusX>4</RadiusX>
+					<RadiusY>4</RadiusY>
 					<Rotation>0.0</Rotation>
 					<FillColor/>
 				</Oval>
@@ -899,13 +933,129 @@ if (info == null)
 					</Points>
 					<Closed>false</Closed>
 				</Polyline>
+				<Polyline>
+					<Id>1318813118544</Id>
+					<Name><![CDATA[deposExitCircle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>340</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>20</X><Y>-20</Y></Point>
+					   <Point><X>50</X><Y>-20</Y></Point>
+					   <Point><X>60</X><Y>-10</Y></Point>
+					   <Point><X>60</X><Y>10</Y></Point>
+					   <Point><X>50</X><Y>20</Y></Point>
+					   <Point><X>20</X><Y>20</Y></Point>
+					   <Point><X>0</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Polyline>
+				<Polyline>
+					<Id>1318813121305</Id>
+					<Name><![CDATA[deposEntryCircle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-510</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>-20</X><Y>20</Y></Point>
+					   <Point><X>-50</X><Y>20</Y></Point>
+					   <Point><X>-60</X><Y>10</Y></Point>
+					   <Point><X>-60</X><Y>-10</Y></Point>
+					   <Point><X>-50</X><Y>-20</Y></Point>
+					   <Point><X>-20</X><Y>-20</Y></Point>
+					   <Point><X>0</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Polyline>
+				<Oval>
+					<Id>1318813124316</Id>
+					<Name><![CDATA[ovalEntryCircle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-510</X><Y>20</Y>
+					<Label><X>0</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>0</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<RadiusX>4</RadiusX>
+					<RadiusY>4</RadiusY>
+					<Rotation>0.0</Rotation>
+					<FillColor/>
+				</Oval>
+				<Oval>
+					<Id>1318813126687</Id>
+					<Name><![CDATA[ovalExitCircle]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>340</X><Y>20</Y>
+					<Label><X>0</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>0</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<RadiusX>4</RadiusX>
+					<RadiusY>4</RadiusY>
+					<Rotation>0.0</Rotation>
+					<FillColor/>
+				</Oval>
 			</Shapes>
 				</Group>
 				<Line>
 					<Id>1318691210736</Id>
 					<Name><![CDATA[depos_exit]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>900</X><Y>110</Y>
+					<X>900</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -927,7 +1077,7 @@ if (info == null)
 					<Id>1318691225317</Id>
 					<Name><![CDATA[depos_entry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>50</X><Y>110</Y>
+					<X>50</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
