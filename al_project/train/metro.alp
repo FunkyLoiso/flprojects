@@ -7,7 +7,7 @@
 <AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.4.1.200910151246" AlpVersion="6.2.3">
 <Model>
 	<Id>1317080429805</Id>
-	<Name><![CDATA[metro3]]></Name>
+	<Name><![CDATA[metro]]></Name>
 	<ExcludeFromBuild>false</ExcludeFromBuild>
 	<EngineVersion>6</EngineVersion>
 	<JavaPackageName><![CDATA[metro]]></JavaPackageName>
@@ -18,8 +18,9 @@
 			<Name><![CDATA[Main]]></Name>
 			<ExcludeFromBuild>false</ExcludeFromBuild>
 			<AdditionalClassCode><![CDATA[//const
-static final int DEPOS_STOP = 0;
-static final int STATION_STOP = 1;]]></AdditionalClassCode>
+static final int DEPOS_STOP_EXIT = 0;
+static final int DEPOS_STOP_ENTRY = 1;
+static final int STATION_STOP = 2;]]></AdditionalClassCode>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
@@ -264,7 +265,7 @@ startModel.restart();
 						<RecurrenceCode><![CDATA[1]]></RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 						<Action><![CDATA[//переключение рельц
-switch_depos_traklineup();
+//switchDeposEntryTrakLineup();
 //создание поезда
 loco = railYard.addTrain( 1, track_Entry, 50 , true );
 loco.setVelocity( 100 );
@@ -290,7 +291,7 @@ loco.go(true);
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1318239376506</Id>
-					<Name><![CDATA[switch_tracklineup_tracklinedown]]></Name>
+					<Name><![CDATA[switchTrackLineupDeposExit]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-80</X><Y>240</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -298,12 +299,12 @@ loco.go(true);
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[switch_Exit.setSelectedTrack(trackLineUp);
-switch_Entry.setSelectedTrack(trackLineDown);]]></Body>
+//switch_Entry.setSelectedTrack(trackLineDown);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1318239464385</Id>
-					<Name><![CDATA[switch_depos_traklineup]]></Name>
+					<Name><![CDATA[switchDeposEntryTrakLineup]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-80</X><Y>210</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -362,7 +363,7 @@ return null;]]></Body>
 					<Id>1318697089870</Id>
 					<Name><![CDATA[stationStop]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-80</X><Y>440</Y>
+					<X>-80</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -377,7 +378,7 @@ _car.train_station_stop.setTrain(_car);]]></Body>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>971696885555</Id>
-					<Name><![CDATA[deposStop]]></Name>
+					<Name><![CDATA[deposStopExit]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>-80</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -388,8 +389,25 @@ _car.train_station_stop.setTrain(_car);]]></Body>
 						<Name><![CDATA[_car]]></Name>
 						<Type><![CDATA[TrainClass]]></Type>
 					</Parameter>
-					<Body><![CDATA[switchDeposExittrackLineDown();
+					<Body><![CDATA[//switchDeposExittrackLineDown();
 _car.go(false);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>971706858721</Id>
+					<Name><![CDATA[deposStopEntry]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-80</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[_car]]></Name>
+						<Type><![CDATA[TrainClass]]></Type>
+					</Parameter>
+					<Body><![CDATA[//switchDeposEntryTrakLineup();
+_car.go(true);]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -430,25 +448,34 @@ _car.go(false);]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onAtSwitch]]></Name>
-							<Value><![CDATA[]]></Value>	
+							<Value><![CDATA[if (track == track_Entry)   {switchDeposEntryTrakLineup();}
+if (track == trackLineUp)   {switchTrackLineupDeposExit();}
+if (track == track_Exit)    {switchDeposExittrackLineDown();}
+if (track == trackLineDown) {switchTarckLineDownTrackEntry();}]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onEnterTrack]]></Name>
-							<Value><![CDATA[if (track == track_Exit ) {loco.callbackAt(track,depos_exit,DEPOS_STOP); return;}
-if (track == track_Entry) {loco.callbackAt(track,depos_entry,DEPOS_STOP); return;}
+							<Value><![CDATA[if (track == track_Exit ) {loco.callbackAt(track,depos_exit,DEPOS_STOP_EXIT); return;}
+if (track == track_Entry) {loco.callbackAt(track,depos_entry,DEPOS_STOP_ENTRY); return;}
 
 Line currentLine = FindCollection(loco.getTrack(true));
 loco.train_station_stop = currentLine.GetNextStation(loco.getTrack(true),null);
-//if (loco.train_station_stop != null)
-//{
+if (loco.train_station_stop != null)
+{
 	loco.callbackAt(loco.getTrack(true),loco.train_station_stop.stop_line,STATION_STOP);
-//}]]></Value>	
+}]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onExitTrack]]></Name>
-							<Value><![CDATA[if (track == track_Entry) {switch_depos_traklineup();}
-if (track == trackLineUp) {switch_tracklineup_tracklinedown();}
-if (track == track_Exit) {loco.stop();}]]></Value>	
+							<Value><![CDATA[/*
+switch ((Track)track)
+{
+	case track_Entry:   switchDeposEntryTrakLineup();    break;
+	case trackLineUp:   switchTrackLineupDeposExit();    break;
+	case trackLineDown: switchDeposExittrackLineDown();  break;
+	case track_Exit:    switchTarckLineDownTrackEntry(); break;
+}
+*/]]></Value>	
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[onHit]]></Name>
@@ -458,8 +485,9 @@ if (track == track_Exit) {loco.stop();}]]></Value>
 							<Name><![CDATA[onAtCallback]]></Name>
 							<Value><![CDATA[switch ( (Integer)info )
 {
-	case DEPOS_STOP:   deposStop(car); break;     
-	case STATION_STOP: stationStop(car); break;   
+	case DEPOS_STOP_EXIT:   deposStopExit(car); break;     
+	case DEPOS_STOP_ENTRY:  deposStopEntry(car); break;
+	case STATION_STOP: 		stationStop(car); break;   
 }
 
 
@@ -672,7 +700,7 @@ if (info == null)
 					<Id>1318312423772</Id>
 					<Name><![CDATA[text]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>250</X><Y>150</Y>
+					<X>250</X><Y>155</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -734,7 +762,7 @@ if (info == null)
 					<Id>1318237657063</Id>
 					<Name><![CDATA[depotEntry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-610</X><Y>20</Y>
+					<X>-510</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -755,42 +783,10 @@ if (info == null)
 					<FillColor/>
 					<Points>
 					   <Point><X>0</X><Y>0</Y></Point>
-					   <Point><X>200</X><Y>0</Y></Point>
+					   <Point><X>100</X><Y>0</Y></Point>
 					</Points>
 					<Closed>false</Closed>
 				</Polyline>
-				<Curve ControlPoints="false">
-					<Id>1318424945192</Id>
-					<Name><![CDATA[trackUp]]></Name>
-					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-410</X><Y>20</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<AsObject>true</AsObject>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Lock>false</Lock>
-					<ShowIn3D>false</ShowIn3D>
-					<Z>0</Z>
-					<ZHeight>0</ZHeight>
-					<LineWidth>1</LineWidth>
-					<LineColor>-16777216</LineColor>
-					<LineStyle>SOLID</LineStyle>
-					<BeginArrowSize>1</BeginArrowSize>
-					<BeginArrowStyle>0</BeginArrowStyle>
-					<EndArrowSize>1</EndArrowSize>
-					<EndArrowStyle>0</EndArrowStyle>
-					<FillColor/>
-					<Points>
-					   <Point><X>0</X><Y>0</Y></Point>
-					   <Point><X>40</X><Y>-50</Y></Point>
-					   <Point><X>80</X><Y>-50</Y></Point>
-					   <Point><X>620</X><Y>-40</Y></Point>
-					   <Point><X>650</X><Y>0</Y></Point>
-					</Points>
-					<Closed>false</Closed>
-				</Curve>
 				<Curve ControlPoints="false">
 					<Id>1318424949053</Id>
 					<Name><![CDATA[trackDown]]></Name>
@@ -872,6 +868,37 @@ if (info == null)
 					<Rotation>0.0</Rotation>
 					<FillColor/>
 				</Oval>
+				<Polyline>
+					<Id>1318808319066</Id>
+					<Name><![CDATA[trackUp]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>-410</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<ZHeight>0</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineStyle>SOLID</LineStyle>
+					<BeginArrowSize>1</BeginArrowSize>
+					<BeginArrowStyle>0</BeginArrowStyle>
+					<EndArrowSize>1</EndArrowSize>
+					<EndArrowStyle>0</EndArrowStyle>
+					<FillColor/>
+					<Points>
+					   <Point><X>0</X><Y>0</Y></Point>
+					   <Point><X>50</X><Y>-50</Y></Point>
+					   <Point><X>600</X><Y>-50</Y></Point>
+					   <Point><X>650</X><Y>0</Y></Point>
+					</Points>
+					<Closed>false</Closed>
+				</Polyline>
 			</Shapes>
 				</Group>
 				<Line>
@@ -900,7 +927,7 @@ if (info == null)
 					<Id>1318691225317</Id>
 					<Name><![CDATA[depos_entry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>-50</X><Y>110</Y>
+					<X>50</X><Y>110</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -918,6 +945,31 @@ if (info == null)
 					<Dx>0</Dx>
 					<Dy>-20</Dy>
 				</Line>
+				<Text>
+					<Id>1318808470687</Id>
+					<Name><![CDATA[text1]]></Name>
+					<ExcludeFromBuild>false</ExcludeFromBuild>
+					<X>350</X><Y>130</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<AsObject>true</AsObject>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Lock>false</Lock>
+					<ShowIn3D>false</ShowIn3D>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[text]]></Text>
+					<TextCode><![CDATA[loco.getTrack(true).toString()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
 			</Shapes>
 		</ActiveObjectClass>
 		<!--   =========   Active Object Class   ========  -->
@@ -1223,7 +1275,7 @@ train_out_delay.reset();]]></StartupCode>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties TriggerType="timeout" Mode="userControls">
-						<Timeout><![CDATA[triangular(3,7,5);]]></Timeout>
+						<Timeout><![CDATA[triangular(1,2,3);]]></Timeout>
 						<Rate><![CDATA[1]]></Rate>
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1317964401755</OccurrenceDate>												
