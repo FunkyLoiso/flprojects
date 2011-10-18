@@ -232,7 +232,7 @@ startModel.restart();
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties External="false" Constant="false" Array="false" Flow="false">
-						<Formula><![CDATA[loco.personSizeTrain()]]></Formula>
+						<Formula><![CDATA[//loco.personSizeTrain()]]></Formula>
 					</Properties>
 				</Variable>
 				<Variable Class="CollectionVariable">
@@ -267,7 +267,7 @@ startModel.restart();
 			<Dependences>
 				<PlainDependence SourceId="1317907629302" TargetId="1317981743126" Polarity="0">
 					<Height>10.0</Height>							
-					<Id>1318445680019</Id>
+					<Id>1318890535469</Id>
 					<Name><![CDATA[loco -> PeopleInTrain]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
 					<X>0</X><Y>0</Y>
@@ -489,14 +489,14 @@ if (track == trackLineDown) {switchTarckLineDownTrackEntry();}]]></Value>
 							<Value><![CDATA[//if (track == track_Exit ) {loco.callbackAt(track,depos_exit,DEPOS_STOP_EXIT); return;}
 //if (track == track_Entry) {loco.callbackAt(track,depos_entry,DEPOS_STOP_ENTRY); return;}
 
-//if (track == depos)
-//if ()
+if (track == track_Entry_Circle)  {return;}
+if (track == track_Exit_Circle)   {return;}
 
-Line currentLine = FindCollection(loco.getTrack(true));
-loco.train_station_stop = currentLine.GetNextStation(loco.getTrack(true),null);
-if (loco.train_station_stop != null)
+Line currentLine = FindCollection(car.getTrack(true));
+car.train_station_stop = currentLine.GetNextStation(car.getTrack(true),null);
+if (car.train_station_stop != null)
 {
-	loco.callbackAt(loco.getTrack(true),loco.train_station_stop.stop_line,STATION_STOP);
+	car.callbackAt(car.getTrack(true),car.train_station_stop.stop_line,STATION_STOP);
 }]]></Value>	
 						</Parameter>
 						<Parameter>
@@ -747,7 +747,7 @@ if (info == null)
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
 					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[loco.getStationPoint()]]></TextCode>
+					<TextCode><![CDATA[//loco.getStationPoint()]]></TextCode>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>20</Size>
@@ -1055,7 +1055,7 @@ if (info == null)
 					<Id>1318691210736</Id>
 					<Name><![CDATA[depos_exit]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>900</X><Y>80</Y>
+					<X>890</X><Y>90</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1077,7 +1077,7 @@ if (info == null)
 					<Id>1318691225317</Id>
 					<Name><![CDATA[depos_entry]]></Name>
 					<ExcludeFromBuild>false</ExcludeFromBuild>
-					<X>50</X><Y>80</Y>
+					<X>60</X><Y>90</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1112,7 +1112,7 @@ if (info == null)
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
 					<Text><![CDATA[text]]></Text>
-					<TextCode><![CDATA[loco.getTrack(true).toString()]]></TextCode>
+					<TextCode><![CDATA[//loco.getTrack(true).toString()]]></TextCode>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
