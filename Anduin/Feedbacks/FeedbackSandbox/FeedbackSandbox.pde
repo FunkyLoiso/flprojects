@@ -319,7 +319,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 
 
 Servo srv;
-int pos = 0;
+int pos = 20;
 int srvShift = 1;
 /*==============================================================================
  * SETUP()
@@ -386,6 +386,8 @@ void sendValueAsFour7bitBytes(unsigned long value)
   Serial.print(value >> 21 & B01111111, BYTE); // MSB
 }
 
+boolean doMotion = false;
+unsigned long motionMillis = 0;
 /*==============================================================================
  * LOOP()
  *============================================================================*/
@@ -407,13 +409,34 @@ void loop()
    * 60 bytes. use a timer to sending an event character every 4 ms to
    * trigger the buffer to dump. */
 
-  if(millis() - currentMillis > 15)
+  if(millis() - currentMillis > 2000)
   {
     currentMillis = millis();
-    if(pos == 0) srvShift = 1;
-    else if(pos == 180) srvShift = -1;
-    pos += srvShift;
-//    srv.write(pos);
+    doMotion = true;
+  }
+   
+  if(millis() - motionMillis > 5 && doMotion) 
+ {
+    motionMillis = millis();
+    if(pos == 20)
+    {
+      srvShift = 1;
+      pos += srvShift;
+      doMotion = false;
+    }
+    else if(pos == 160)
+    {
+      srvShift = -1;
+      pos += srvShift;
+      doMotion = false;
+    }
+    else
+    {
+      pos += srvShift;
+  //  if(pos == 20) srv.write(pos = 160);
+  //  else if (pos == 160) srv.write(pos = 20);
+      srv.write(pos);
+    }
   }
 
 
