@@ -1,0 +1,103 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG DIALOGEX 0, 0, 305, 166
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "win32 meets OpenGL"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Информация об OpenGL",GC_INFO,7,7,291,66
+    LTEXT           "Производитель:",ID_STATIC,14,21,58,11
+    LTEXT           "Видеокарта:",IDC_STATIC,14,39,58,11
+    LTEXT           "Версия GL:",IDC_STATIC,14,57,58,11
+    LTEXT           "",L_VENDOR,98,21,192,11
+    LTEXT           "",L_CARD,98,39,192,11
+    LTEXT           "",L_VER,98,57,192,11
+    GROUPBOX        "Размер окна",GB_RES,7,80,178,55
+    GROUPBOX        "Опции",GB_OPTIONS,200,80,98,55
+    CONTROL         "Полноэкранный режим",CHB_FS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,118,156,11
+    CONTROL         "VSync",CHB_VS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,206,97,85,11
+    CONTROL         "Multisampling",CHB_MS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,206,118,85,11
+    PUSHBUTTON      ">",B_START,7,144,268,14
+    PUSHBUTTON      "v",B_CANCEL,282,144,16,14
+    COMBOBOX        CB_RES,19,96,156,70,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+#endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
