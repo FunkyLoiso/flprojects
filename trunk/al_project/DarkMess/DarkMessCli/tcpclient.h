@@ -21,7 +21,11 @@ private slots:
 
 private:
     QTcpSocket soc;
-    
+    QString name;
+    QTextStream in;
+    QTextStream out;
+    QByteArray FuckName();
+
 };
 
 #endif // TCPCLIENT_H

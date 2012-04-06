@@ -1,6 +1,7 @@
 #ifndef TCPSERVER_H
 #define TCPSERVER_H
 
+
 #include <QObject>
 #include <QTcpServer>
 
@@ -18,11 +19,23 @@ signals:
 public slots:
 
 private:
-    QTcpServer srv;
-    QVector<QTcpSocket*> socs;
+    QTextStream in;
+    QTextStream out;
+
+
 
     void timerEvent(QTimerEvent *event);
     
+    struct soc_struct
+    {
+        QString name;
+        QTcpSocket* soc;
+    };
+
+    QTcpServer srv;
+    //QVector<QTcpSocket*> socs;
+    QVector<soc_struct> socs;
+
 };
 
 #endif // TCPSERVER_H
