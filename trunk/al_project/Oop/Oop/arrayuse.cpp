@@ -40,6 +40,7 @@ bool ArrayUse::ShowMass(int index)    // получить массив по ин
 
 bool ArrayUse::FillInMassRandom(int index) //рандомное заполнение массива по индексу
 {
+
     for (int ordinate = 0;ordinate<mass[index].size();ordinate++)   //X
     {
         for (int abscissa = 0; abscissa<mass[index][ordinate].size();abscissa++) //Y
@@ -50,11 +51,14 @@ bool ArrayUse::FillInMassRandom(int index) //рандомное заполнен
     return true;
 }
 
-bool ArrayUse::FillInMassSelf(int index, int _ordinate, int _abscissa)
+bool ArrayUse::FillInMassSelf(int index, int _abscissa, int _ordinate)
 {
     int tmp;
+    int lol;
     for (int ordinate = 0;ordinate<mass[index].size();ordinate++)   //X
     {
+
+        lol = mass[index][ordinate].size();
         for (int abscissa = 0; abscissa<mass[index][ordinate].size();abscissa++) //Y
         {
             if (_ordinate==-1 and _abscissa==-1)
@@ -67,11 +71,11 @@ bool ArrayUse::FillInMassSelf(int index, int _ordinate, int _abscissa)
                 while (!std::cin.good());
                 mass[index][ordinate][abscissa] = tmp;
             }
-            else if (_ordinate==ordinate and _abscissa==abscissa)
+            else if (_ordinate==ordinate && _abscissa==abscissa)
                  {
                     do
                     {
-                        std::cout << "input[" << ordinate << ">" <<"[" << abscissa << "]:";
+                        std::cout << "input[" << ordinate << "]" <<"[" << abscissa << "]:";
                         std::cin >> tmp;
                     }
                     while (!std::cin.good());
@@ -115,13 +119,17 @@ bool ArrayUse::DelMass(int index)   // удаление массива по ин
 
 bool ArrayUse::CompMass(int index_one, bool ver_one, int line_one, int index_two, bool ver_two, int line_two)    // сравнение матриц
 {
-    if (ArrayUse::line_sum(index_one-1,ver_one,line_one-1)>ArrayUse::line_sum(index_two-1,ver_two,line_two-1))
+    if (ArrayUse::line_sum(index_one,ver_one,line_one)>ArrayUse::line_sum(index_two,ver_two,line_two))
     {
-        std::cout << "\n" << ArrayUse::line_sum(index_one-1,ver_one,line_one-1) << ">" << ArrayUse::line_sum(index_two-1,ver_two,line_two-1) << "\n";
+        std::cout << "\n" << ArrayUse::line_sum(index_one,ver_one,line_one) << ">" << ArrayUse::line_sum(index_two,ver_two,line_two) << "\n";
     }
+    else if (ArrayUse::line_sum(index_one,ver_one,line_one)==ArrayUse::line_sum(index_two,ver_two,line_two))
+         {
+            std::cout << "\n" << ArrayUse::line_sum(index_one,ver_one,line_one) << "=" << ArrayUse::line_sum(index_two,ver_two,line_two) << "\n";
+         }
     else
     {
-        std::cout << "\n" << ArrayUse::line_sum(index_one-1,ver_one,line_one-1) << "<" << ArrayUse::line_sum(index_two-1,ver_two,line_two-1) << "\n";
+        std::cout << "\n" << ArrayUse::line_sum(index_one,ver_one,line_one) << "<" << ArrayUse::line_sum(index_two,ver_two,line_two) << "\n";
     }
     return 0;
 }
