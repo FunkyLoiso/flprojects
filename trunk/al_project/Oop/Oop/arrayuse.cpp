@@ -9,10 +9,15 @@ ArrayUse::ArrayUse(): in(stdin),out(stdout)   //конструктор
 {
 
     qsrand((QTime(0,0,0).msecsTo(QTime::currentTime()))); //инифиализация генератора случайных чисел
-//    ArrayUse::AddMass(2,2);
-//    ArrayUse::AddMass(1,1);
-//    ArrayUse::AddMass(3,3);
-//    ArrayUse::AddMass(4,2);
+    ArrayUse::AddMass(2,2);
+    ArrayUse::AddMass(1,1);
+    ArrayUse::AddMass(3,3);
+    ArrayUse::AddMass(4,2);
+    ArrayUse::FillInMassRandom(0);
+    ArrayUse::FillInMassRandom(1);
+    ArrayUse::FillInMassRandom(2);
+    ArrayUse::FillInMassRandom(3);
+//    std::cout << ArrayUse::TestBorderMatrix(3,true);
 //    for (int i=0; i
 //         <mass.size();i++)
 //    {
@@ -43,6 +48,51 @@ bool ArrayUse::FillInMassRandom(int index) //рандомное заполнен
         }
     }
     return true;
+}
+
+bool ArrayUse::FillInMassSelf(int index, int _ordinate, int _abscissa)
+{
+    int tmp;
+    for (int ordinate = 0;ordinate<mass[index].size();ordinate++)   //X
+    {
+        for (int abscissa = 0; abscissa<mass[index][ordinate].size();abscissa++) //Y
+        {
+            if (_ordinate==-1 and _abscissa==-1)
+            {
+                do
+                {
+                    std::cout << "input[" << ordinate << "][" << abscissa << "]:";
+                    std::cin >> tmp;
+                }
+                while (!std::cin.good());
+                mass[index][ordinate][abscissa] = tmp;
+            }
+            else if (_ordinate==ordinate and _abscissa==abscissa)
+                 {
+                    do
+                    {
+                        std::cout << "input[" << ordinate << ">" <<"[" << abscissa << "]:";
+                        std::cin >> tmp;
+                    }
+                    while (!std::cin.good());
+                    mass[index][ordinate][abscissa] = tmp;
+                 }
+        }
+    }
+    return true;
+}
+
+int ArrayUse::TestBorderMatrix(int index, bool test)
+{
+    if (!test)
+    {
+       return mass[index-1].size();  //X
+    }
+    else
+    {
+       return mass[index-1][0].size(); //Y
+    }
+    //return true;
 }
 
 bool ArrayUse::AddMass(int abscissa, int ordinate)   // добавить новую матрицу в массив матриц
@@ -80,13 +130,11 @@ bool ArrayUse::CheckSizeMatrix(int index, int line_one, bool ver)    //пров�
 {
     if (ver)
     {
-//        int lol = mass[index][0].size();
         if (line_one-1 > mass[index-1][0].size() || line_one-1<0) {return false;}
         return true;
     }
     else
     {
-//        int lol1 = mass[index][0].size();
         if (line_one-1 > mass[index-1].size() || line_one-1<0) {return false;}
         return true;
     }
