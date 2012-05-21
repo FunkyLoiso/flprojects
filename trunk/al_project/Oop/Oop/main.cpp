@@ -38,10 +38,12 @@ int main(int argc, char *argv[])
         choice = menu();
         switch (choice)
         {
-            case 's':
+
+        case 's':
                 cout << "\n" << "size_matrixs:" << matrix.GetNumberMass() << endl;
                 break;
-            case 'v':
+
+        case 'v':
             if (!matrix.GetNumberMass()) { cout << "\n" <<"matrix not exist \n";   break;}
                 do {
                     cout << "enter index:";
@@ -55,7 +57,8 @@ int main(int argc, char *argv[])
                 cout << "\n" << "matrix:\n";
                 matrix.ShowMass(index);// << endl;
                 break;
-            case 'f':
+
+        case 'f':
                 if (!matrix.GetNumberMass()) {cout << "\n" <<"matrix not exist \n"; break;}
 
                 do {
@@ -71,7 +74,8 @@ int main(int argc, char *argv[])
                 cout << "\n" << "matrix:\n";
                 matrix.ShowMass(index);
                 break;
-            case 'u':
+
+        case 'u':
                 if (!matrix.GetNumberMass()) {cout << "\n" <<"matrix not exist \n"; break;}
 
                 do {
@@ -108,7 +112,8 @@ int main(int argc, char *argv[])
                 cout << "\n" << "matrix:\n";
                 matrix.ShowMass(index);
                 break;
-            case 'a':
+
+        case 'a':
                 int x,y;
                 cout << "line:";
                 cin >> x;
@@ -116,7 +121,8 @@ int main(int argc, char *argv[])
                 cin >> y;
                 matrix.AddMass(y,x);   //перепутал нужно на оборот (короче тут правильный вариант)
                 break;
-            case 'd':
+
+        case 'd':
                 if (!matrix.GetNumberMass()) {cout << "\n" <<"matrix not exist \n"; break;}
                 do {
                     cout << "enter index:";
@@ -129,7 +135,8 @@ int main(int argc, char *argv[])
                 }while(index-1>=matrix.GetNumberMass() || index-1<0);
                 matrix.DelMass(index);
                 break;
-            case 'c':
+
+        case 'c':
             if (!matrix.GetNumberMass()) {cout << "\n" <<"matrix not exist \n"; break;}
 
                 int index_one;
@@ -200,7 +207,8 @@ int main(int argc, char *argv[])
 
                 matrix.CompMass(index_one-1,ch_one,line_one-1,index_two-1,ch_two,line_two-1);
                 break;
-            case 'q':
+
+        case 'q':
             cout << "enter any key";
             return 0;
          }
