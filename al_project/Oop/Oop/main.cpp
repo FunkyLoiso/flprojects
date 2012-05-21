@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
                     }
                 }while(!(matrix.CheckSizeMatrix(index_two, line_two, ch_two)));
 
-                matrix.CompMass(index_one,ch_one,line_one,index_two,ch_two,line_two);
+                matrix.CompMass(index_one-1,ch_one,line_one-1,index_two-1,ch_two,line_two-1);
                 break;
             case 'q':
             cout << "enter any key";
