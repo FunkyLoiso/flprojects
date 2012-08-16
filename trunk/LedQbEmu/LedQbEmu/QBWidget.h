@@ -9,6 +9,9 @@ public:
 	QBWidget(QWidget* parent = NULL);
 	~QBWidget(void);
 
+	void setSize(int x, int y, int z);
+	void setState(int x, int y, int z, bool isOn);
+
 protected:
 	void initializeGL();
 	void resizeGL(int width, int height);
@@ -31,6 +34,8 @@ private:
 	QColor m_colorBackground;
 	GLfloat m_onColor[4];
 	GLfloat m_offColor[4];
+
+	QVector< QVector< QVector<bool> > > m_leds;
 };
 
 #endif // QBWidget_h__
