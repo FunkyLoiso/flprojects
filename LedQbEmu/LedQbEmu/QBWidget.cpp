@@ -19,7 +19,7 @@ static void normalizeAngle(int &angle)
 
 
 QBWidget::QBWidget(QWidget* parent)
-:	QGLWidget(parent), m_xRot(0), m_yRot(0), m_zRot(0)
+:	QGLWidget(parent), m_xRot(0), m_yRot(0), m_zRot(0), m_leds(NULL)
 {
 	m_colorBackground = Qt::gray;
 
@@ -44,26 +44,39 @@ void QBWidget::initializeGL()
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	//glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	//glEnable(GL_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 	static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 }
 
 void QBWidget::resizeGL(int width, int height)
 {
-	int side = qMin(width, height);
-	glViewport((width - side) / 2, (height - side) / 2, side, side);
+	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-#ifdef QT_OPENGL_ES_1
-	glOrthof(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-#else
-	glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-#endif
+
+	//glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
+	//void glFrustum(	GLdouble  	left, 
+	//	GLdouble  	right, 
+	//	GLdouble  	bottom, 
+	//	GLdouble  	top, 
+	//	GLdouble  	nearVal, 
+	//	GLdouble  	farVal);
+	//glFrustum(-1.5, +1.5, -1.5, +1.5, 4.0, 15.0);
+
+	GLfloat zNear = 0.1f;
+	GLfloat zFar = 300.0f;
+	GLfloat fieldOfView = 60.0;
+
+	GLfloat aspect = float(width)/float(height);
+	GLfloat fH = tan( float(fieldOfView / 360.0f * 3.14159f) ) * zNear;
+	GLfloat fW = fH * aspect;
+	glFrustum( -fW, fW, -fH, fH, zNear, zFar );
+
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -71,13 +84,35 @@ void QBWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -10.0);
+	glTranslatef(0.0, 0.0, -15.0);
 	glRotatef(m_xRot / 16.0, 1.0, 0.0, 0.0);
 	glRotatef(m_yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(m_zRot / 16.0, 0.0, 0.0, 1.0);
+
+	float width = m_leds.size();
+	float depth = m_leds[0].size();
+	float height = m_leds[0][0].size();
+
+	GLfloat step = 10.0f / max(max(width, depth), height);
 	
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, m_onColor);
-	gltDrawSphere(0.3, 15, 15);
+	glTranslatef(-width/2*step, -depth/2*step, -height/2*step);
+
+	for(int cx = 0; cx != width; ++cx)
+	{
+		for(int cy = 0; cy != depth; ++cy)
+		{
+			for(int cz = 0; cz != height; ++cz)
+			{
+				glPushMatrix();
+
+				glTranslatef(cx * step, cy * step, cz * step);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, m_leds[cx][cy][cz] ? m_onColor : m_offColor);
+				gltDrawSphere(step/6, 5, 5);
+
+				glPopMatrix();
+			}
+		}
+	}
 }
 
 void QBWidget::gltDrawSphere(GLfloat fRadius, GLint iSlices, GLint iStacks)
@@ -156,7 +191,6 @@ void QBWidget::setXRotation(int angle)
 	normalizeAngle(angle);
 	if (angle != m_xRot) {
 		m_xRot = angle;
-		//emit xRotationChanged(angle);
 		updateGL();
 	}
 }
@@ -166,7 +200,6 @@ void QBWidget::setYRotation(int angle)
 	normalizeAngle(angle);
 	if (angle != m_yRot) {
 		m_yRot = angle;
-		//emit xRotationChanged(angle);
 		updateGL();
 	}
 }
@@ -176,7 +209,24 @@ void QBWidget::setZRotation(int angle)
 	normalizeAngle(angle);
 	if (angle != m_zRot) {
 		m_zRot = angle;
-		//emit xRotationChanged(angle);
 		updateGL();
 	}
+}
+
+void QBWidget::setSize(int x, int y, int z)
+{
+	m_leds.resize(x);
+	for(int cx = 0; cx != x; ++cx)
+	{
+		m_leds[cx].resize(y);
+		for(int cy = 0; cy != y; ++cy)
+		{
+			m_leds[cx][cy].resize(z);
+		}
+	}
+}
+
+void QBWidget::setState(int x, int y, int z, bool isOn)
+{
+	m_leds[x][y][z] = isOn;
 }
