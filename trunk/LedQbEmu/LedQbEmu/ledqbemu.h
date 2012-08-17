@@ -15,6 +15,8 @@ public:
 	~LedQbEmu();
 
 private:
+	void timerEvent(QTimerEvent *);
+
 	Ui::LedQbEmuClass ui;
 
 	QBWidget* m_qbWidget;

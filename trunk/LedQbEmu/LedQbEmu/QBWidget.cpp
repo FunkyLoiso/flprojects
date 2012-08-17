@@ -2,6 +2,7 @@
 
 #include <QtGui>
 #include <QtOpenGL>
+#include <QElapsedTimer>
 
 #include <math.h>
 
@@ -21,6 +22,21 @@ static void normalizeAngle(int &angle)
 QBWidget::QBWidget(QWidget* parent)
 :	QGLWidget(parent), m_xRot(0), m_yRot(0), m_zRot(0), m_leds(NULL)
 {
+
+}
+
+QBWidget::QBWidget(const QGLFormat &format, QWidget* parent)
+:	QGLWidget(format, parent), m_xRot(0), m_yRot(0), m_zRot(0), m_leds(NULL)
+{
+
+}
+
+QBWidget::~QBWidget(void)
+{
+}
+
+void QBWidget::initializeGL()
+{
 	m_colorBackground = Qt::gray;
 
 	m_onColor[0] = 0;
@@ -32,14 +48,12 @@ QBWidget::QBWidget(QWidget* parent)
 	m_offColor[1] = 0.2;
 	m_offColor[2] = 0;
 	m_offColor[3] = 1;
-}
 
-QBWidget::~QBWidget(void)
-{
-}
+	m_groundColor[0] = 0.7;
+	m_groundColor[1] = 0.7;
+	m_groundColor[2] = 0.7;
+	m_groundColor[3] = 1;
 
-void QBWidget::initializeGL()
-{
 	qglClearColor(m_colorBackground);
 
 	glEnable(GL_DEPTH_TEST);
@@ -49,6 +63,7 @@ void QBWidget::initializeGL()
 	glEnable(GL_LIGHT0);
 	glEnable(GL_MULTISAMPLE);
 	static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
+	//static GLfloat lightPosition[4] = { 0.0, 0.0, 0.0, 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 }
 
@@ -82,19 +97,139 @@ void QBWidget::resizeGL(int width, int height)
 
 void QBWidget::paintGL()
 {
+	static QElapsedTimer timer;
+	static int counter = 0;
+	static const int maxCount = 100;
+
+	if(++counter == maxCount)
+	{
+		m_fps = float(maxCount) / timer.elapsed() * 1000;
+		counter = 0;
+		timer.restart();
+	}
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -15.0);
+	//translate so we look towards center from (0, -15, 0)
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	glTranslatef(0.0, 16.0, 0.0);
+
 	glRotatef(m_xRot / 16.0, 1.0, 0.0, 0.0);
 	glRotatef(m_yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(m_zRot / 16.0, 0.0, 0.0, 1.0);
 
-	float width = m_leds.size();
-	float depth = m_leds[0].size();
-	float height = m_leds[0][0].size();
+	drawGround();
+	drawLeds();
+
+	//QTimer::singleShot(1, this, SLOT(updateGL()));
+}
+
+void QBWidget::mousePressEvent(QMouseEvent *event)
+{
+	m_lastPos = event->pos();
+}
+
+void QBWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	int dx = event->x() - m_lastPos.x();
+	int dy = event->y() - m_lastPos.y();
+
+	if (event->buttons() & Qt::LeftButton) {
+		setXRotation(m_xRot + 8 * dy);
+		setZRotation(m_zRot + 8 * dx);
+	} else if (event->buttons() & Qt::RightButton) {
+		setXRotation(m_xRot + 8 * dy);
+		setYRotation(m_yRot + 8 * dx);
+
+	}
+	m_lastPos = event->pos();
+}
+
+void QBWidget::setXRotation(int angle)
+{
+	normalizeAngle(angle);
+	if (angle != m_xRot)
+	{
+		m_xRot = angle;
+		updateGL();
+	}
+}
+
+void QBWidget::setYRotation(int angle)
+{
+	normalizeAngle(angle);
+	if (angle != m_yRot)
+	{
+		m_yRot = angle;
+		updateGL();
+	}
+}
+
+void QBWidget::setZRotation(int angle)
+{
+	normalizeAngle(angle);
+	if (angle != m_zRot)
+	{
+		m_zRot = angle;
+		updateGL();
+	}
+}
+
+void QBWidget::setSize(int x, int y, int z)
+{
+	m_leds.resize(x);
+	for(int cx = 0; cx != x; ++cx)
+	{
+		m_leds[cx].resize(y);
+		for(int cy = 0; cy != y; ++cy)
+		{
+			m_leds[cx][cy].resize(z);
+		}
+	}
+}
+
+void QBWidget::setState(int x, int y, int z, bool isOn)
+{
+	m_leds[x][y][z] = isOn;
+}
+
+void QBWidget::drawGround()
+{
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, m_groundColor);
+
+	GLfloat side = 40;//длина стороны
+	GLfloat texSide = 1;//Размер стороны одной "плитки"
+	GLfloat y = -5.4f;//где по y лежит
+	/*рисуем сам квадратик земли*/
+	glBegin(GL_QUADS);
+	{
+		glNormal3f(0, 0, 1);
+
+		glTexCoord2f(0, 0);
+		glVertex3f(-side/2,side/2, y);
+		glTexCoord2f(0, side/texSide);
+		glVertex3f(-side/2, -side/2, y);
+		glTexCoord2f(side/texSide, side/texSide);
+		glVertex3f(side/2, -side/2, y);
+		glTexCoord2f(side/texSide, 0);
+		glVertex3f(side/2, side/2, y);
+
+
+
+
+
+	}
+	glEnd();
+}
+
+void QBWidget::drawLeds()
+{
+	GLfloat width = m_leds.size();
+	GLfloat depth = m_leds[0].size();
+	GLfloat height = m_leds[0][0].size();
 
 	GLfloat step = 10.0f / max(max(width, depth), height);
-	
+
 	glTranslatef(-width/2*step, -depth/2*step, -height/2*step);
 
 	for(int cx = 0; cx != width; ++cx)
@@ -107,7 +242,7 @@ void QBWidget::paintGL()
 
 				glTranslatef(cx * step, cy * step, cz * step);
 				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, m_leds[cx][cy][cz] ? m_onColor : m_offColor);
-				gltDrawSphere(step/6, 5, 5);
+				drawSphere(step/10, 8, 4);
 
 				glPopMatrix();
 			}
@@ -115,7 +250,7 @@ void QBWidget::paintGL()
 	}
 }
 
-void QBWidget::gltDrawSphere(GLfloat fRadius, GLint iSlices, GLint iStacks)
+void QBWidget::drawSphere(GLfloat fRadius, GLint iSlices, GLint iStacks)
 {
 	GLfloat drho = (GLfloat)(3.141592653589) / (GLfloat) iStacks;
 	GLfloat dtheta = 2.0f * (GLfloat)(3.141592653589) / (GLfloat) iSlices;
@@ -164,69 +299,4 @@ void QBWidget::gltDrawSphere(GLfloat fRadius, GLint iSlices, GLint iStacks)
 
 		t -= dt;
 	}
-}
-
-void QBWidget::mousePressEvent(QMouseEvent *event)
-{
-	m_lastPos = event->pos();
-}
-
-void QBWidget::mouseMoveEvent(QMouseEvent *event)
-{
-	int dx = event->x() - m_lastPos.x();
-	int dy = event->y() - m_lastPos.y();
-
-	if (event->buttons() & Qt::LeftButton) {
-		setXRotation(m_xRot + 8 * dy);
-		setYRotation(m_yRot + 8 * dx);
-	} else if (event->buttons() & Qt::RightButton) {
-		setXRotation(m_xRot + 8 * dy);
-		setZRotation(m_zRot + 8 * dx);
-	}
-	m_lastPos = event->pos();
-}
-
-void QBWidget::setXRotation(int angle)
-{
-	normalizeAngle(angle);
-	if (angle != m_xRot) {
-		m_xRot = angle;
-		updateGL();
-	}
-}
-
-void QBWidget::setYRotation(int angle)
-{
-	normalizeAngle(angle);
-	if (angle != m_yRot) {
-		m_yRot = angle;
-		updateGL();
-	}
-}
-
-void QBWidget::setZRotation(int angle)
-{
-	normalizeAngle(angle);
-	if (angle != m_zRot) {
-		m_zRot = angle;
-		updateGL();
-	}
-}
-
-void QBWidget::setSize(int x, int y, int z)
-{
-	m_leds.resize(x);
-	for(int cx = 0; cx != x; ++cx)
-	{
-		m_leds[cx].resize(y);
-		for(int cy = 0; cy != y; ++cy)
-		{
-			m_leds[cx][cy].resize(z);
-		}
-	}
-}
-
-void QBWidget::setState(int x, int y, int z, bool isOn)
-{
-	m_leds[x][y][z] = isOn;
 }
