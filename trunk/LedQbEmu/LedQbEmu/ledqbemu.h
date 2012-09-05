@@ -4,6 +4,8 @@
 #include <QtGui/QMainWindow>
 #include "ui_ledqbemu.h"
 
+#include "Emulator.h"
+
 class QBWidget;
 
 class LedQbEmu : public QMainWindow
@@ -20,6 +22,7 @@ private:
 	Ui::LedQbEmuClass ui;
 
 	QBWidget* m_qbWidget;
+	Emulator m_emu;
 };
 
 #endif // LEDQBEMU_H

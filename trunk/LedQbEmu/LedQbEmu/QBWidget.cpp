@@ -118,7 +118,7 @@ void QBWidget::paintGL()
 	glRotatef(m_yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(m_zRot / 16.0, 0.0, 0.0, 1.0);
 
-	drawGround();
+	//drawGround();
 	drawLeds();
 
 	//QTimer::singleShot(1, this, SLOT(updateGL()));
@@ -186,11 +186,13 @@ void QBWidget::setSize(int x, int y, int z)
 			m_leds[cx][cy].resize(z);
 		}
 	}
+	updateGL();
 }
 
 void QBWidget::setState(int x, int y, int z, bool isOn)
 {
 	m_leds[x][y][z] = isOn;
+	//updateGL();
 }
 
 void QBWidget::drawGround()
