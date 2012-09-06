@@ -2,12 +2,14 @@
 
 #include "QBWidget.h"
 
+#define IS_BIT_SET(val, bit) (val & 1 << bit)
+#define SET_BIT(val, bit) (val |= 1 << bit)
+#define RESET_BIT(val, bit) (val & ~(1 << bit))
+
 Emulator::Emulator(void)
 :	m_dsp(NULL), m_digitalWriteDelay_mcs(0), m_latchIsHigh(true)
 {
-	m_levelStats.resize(8);
 	for(int i = 0; i < 8; ++i) m_lineStates[i].resize(8);
-	//start();
 }
 
 Emulator::~Emulator(void)
@@ -35,28 +37,29 @@ void Emulator::writeByte(qint8 val)
 	QMutexLocker locker(&m_operationMutex);
 	usleep(14 * m_digitalWriteDelay_mcs);
 
-	m_writeQueue.enqueue(val);
+	if(m_writeQueue.size() < 9) m_writeQueue.enqueue(val);
 }
 
 void Emulator::lightLeds()
 {
 	if(m_writeQueue.isEmpty()) return;
 
-	// move values from writeQueue to bit arrays
+	//first byte shows which levels are used
 	qint8 levels = m_writeQueue.dequeue();
+
+	//butes second to ninth show which leds in each line are used. Byte 2 is for y = 0 and so on
 	for(int i = 0; i < 8; ++i)
 	{
-		//if(levels & (1 << i)) m_levelStats.setBit(i);
-		m_levelStats.setBit(i, levels & (1 << i));
-	}
-	for(int i = 0; !m_writeQueue.isEmpty(); ++i)
-	{
-		qint8 val = m_writeQueue.dequeue();
-
-		for(int c = 0; c < 8; ++c)
-		{
-			m_lineStates[i].setBit(c, val & (1 << c));
+		if(!m_writeQueue.isEmpty())
+		{//we have a byte for this line
+			qint8 val = m_writeQueue.dequeue();
+	
+			for(int c = 0; c < 8; ++c)
+			{
+				m_lineStates[i].setBit(c, val & (1 << c));
+			}
 		}
+		else m_lineStates[i].fill(false);//we don't have a byte, this line is empty
 	}
 
 	//	light leds
@@ -65,7 +68,7 @@ void Emulator::lightLeds()
 			for(int z = 0; z < 8; ++z)
 			{
 				bool isOn = false;
-				if(m_levelStats.testBit(z))
+				if(IS_BIT_SET(levels, z))
 				{
 					isOn = m_lineStates[y].testBit(x);
 				}
