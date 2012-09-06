@@ -35,9 +35,6 @@ private:
 
 	QQueue<qint8> m_writeQueue;
 
-	QBitArray m_levelStats;
 	QBitArray m_lineStates[8];
-
-	//bool m_endFlag;
 };
 #endif // Emulator_h__

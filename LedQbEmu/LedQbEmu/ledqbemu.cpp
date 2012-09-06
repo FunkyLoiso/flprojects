@@ -32,9 +32,9 @@ void LedQbEmu::timerEvent(QTimerEvent *)
 
 	static int x = 0, y = 0, z = 0;
 
-	if(++x > 8) x = 0;
-	if(++y > 8) y = 0;
-	if(++z > 8) z = 0;
+	if(++x > 7) x = 0;
+	if(++y > 7) y = 0;
+	if(++z > 7) z = 0;
 
 	m_emu.setLatch(false);
 	m_emu.writeByte(1 << z);
