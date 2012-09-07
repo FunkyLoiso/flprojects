@@ -19,16 +19,16 @@ static void normalizeAngle(int &angle)
 }
 
 
-QBWidget::QBWidget(QWidget* parent)
+QBWidget::QBWidget(int width, int depth, int height, QWidget* parent)
 :	QGLWidget(parent), m_xRot(0), m_yRot(0), m_zRot(0), m_leds(NULL)
 {
-
+	setSize(width, depth, height);
 }
 
-QBWidget::QBWidget(const QGLFormat &format, QWidget* parent)
+QBWidget::QBWidget(int width, int depth, int height, const QGLFormat &format, QWidget* parent)
 :	QGLWidget(format, parent), m_xRot(0), m_yRot(0), m_zRot(0), m_leds(NULL)
 {
-
+	setSize(width, depth, height);
 }
 
 QBWidget::~QBWidget(void)
@@ -65,6 +65,20 @@ void QBWidget::initializeGL()
 	static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
 	//static GLfloat lightPosition[4] = { 0.0, 0.0, 0.0, 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+
+	//список отображения для сферы
+	m_sphereList = glGenLists(1);
+
+	GLfloat width = m_leds.size();
+	GLfloat depth = m_leds[0].size();
+	GLfloat height = m_leds[0][0].size();
+	GLfloat step = 10.0f / max(max(width, depth), height);
+
+	glNewList(m_sphereList, GL_COMPILE);
+	{
+		drawSphere(step/10, 8, 4);
+	}
+	glEndList();
 }
 
 void QBWidget::resizeGL(int width, int height)
@@ -99,7 +113,7 @@ void QBWidget::paintGL()
 {
 	static QElapsedTimer timer;
 	static int counter = 0;
-	static const int maxCount = 100;
+	static const int maxCount = 10;
 
 	if(++counter == maxCount)
 	{
@@ -118,10 +132,10 @@ void QBWidget::paintGL()
 	glRotatef(m_yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(m_zRot / 16.0, 0.0, 0.0, 1.0);
 
-	//drawGround();
+	drawGround();
 	drawLeds();
 
-	//QTimer::singleShot(1, this, SLOT(updateGL()));
+	QTimer::singleShot(1, this, SLOT(updateGL()));
 }
 
 void QBWidget::mousePressEvent(QMouseEvent *event)
@@ -134,13 +148,15 @@ void QBWidget::mouseMoveEvent(QMouseEvent *event)
 	int dx = event->x() - m_lastPos.x();
 	int dy = event->y() - m_lastPos.y();
 
-	if (event->buttons() & Qt::LeftButton) {
+	if (event->buttons() & Qt::LeftButton)
+	{
 		setXRotation(m_xRot + 8 * dy);
 		setZRotation(m_zRot + 8 * dx);
-	} else if (event->buttons() & Qt::RightButton) {
+	}
+	else if (event->buttons() & Qt::RightButton)
+	{
 		setXRotation(m_xRot + 8 * dy);
 		setYRotation(m_yRot + 8 * dx);
-
 	}
 	m_lastPos = event->pos();
 }
@@ -151,7 +167,7 @@ void QBWidget::setXRotation(int angle)
 	if (angle != m_xRot)
 	{
 		m_xRot = angle;
-		updateGL();
+		//updateGL();
 	}
 }
 
@@ -161,7 +177,7 @@ void QBWidget::setYRotation(int angle)
 	if (angle != m_yRot)
 	{
 		m_yRot = angle;
-		updateGL();
+		//updateGL();
 	}
 }
 
@@ -171,7 +187,7 @@ void QBWidget::setZRotation(int angle)
 	if (angle != m_zRot)
 	{
 		m_zRot = angle;
-		updateGL();
+		//updateGL();
 	}
 }
 
@@ -186,7 +202,7 @@ void QBWidget::setSize(int x, int y, int z)
 			m_leds[cx][cy].resize(z);
 		}
 	}
-	updateGL();
+	//updateGL();
 }
 
 void QBWidget::setState(int x, int y, int z, bool isOn)
@@ -244,7 +260,8 @@ void QBWidget::drawLeds()
 
 				glTranslatef(cx * step, cy * step, cz * step);
 				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, m_leds[cx][cy][cz] ? m_onColor : m_offColor);
-				drawSphere(step/10, 8, 4);
+				//drawSphere(step/10, 4, 2);
+				glCallList(m_sphereList);
 
 				glPopMatrix();
 			}

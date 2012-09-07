@@ -6,11 +6,10 @@
 class QBWidget : public QGLWidget
 {
 public:
-	QBWidget(QWidget* parent = NULL);
-	QBWidget(const QGLFormat &format, QWidget* parent = NULL);
+	QBWidget(int width, int depth, int height, QWidget* parent = NULL);
+	QBWidget(int width, int depth, int height, const QGLFormat &format, QWidget* parent = NULL);
 	~QBWidget(void);
 
-	void setSize(int x, int y, int z);
 	void setState(int x, int y, int z, bool isOn);
 
 	float fps() {return m_fps;}
@@ -29,6 +28,8 @@ private:
 	void setYRotation(int angle);
 	void setZRotation(int angle);
 
+	void setSize(int x, int y, int z);
+
 	void drawSphere(GLfloat fRadius, GLint iSlices, GLint iStacks);
 	void drawGround();
 	int m_xRot;
@@ -43,6 +44,8 @@ private:
 	GLfloat m_groundColor[4];
 
 	QVector< QVector< QVector<bool> > > m_leds;
+
+	GLint m_sphereList;
 };
 
 #endif // QBWidget_h__

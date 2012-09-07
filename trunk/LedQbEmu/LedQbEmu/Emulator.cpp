@@ -75,5 +75,5 @@ void Emulator::lightLeds()
 				m_dsp->setState(x, y, z, isOn);
 			}
 
-	m_dsp->updateGL();
+	//m_dsp->updateGL();
 }
