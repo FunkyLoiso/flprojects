@@ -7,6 +7,7 @@
 #include "Emulator.h"
 
 class QBWidget;
+class Player;
 
 class LedQbEmu : public QMainWindow
 {
@@ -23,6 +24,7 @@ private:
 
 	QBWidget* m_qbWidget;
 	Emulator m_emu;
+	Player* m_player;
 };
 
 #endif // LEDQBEMU_H
