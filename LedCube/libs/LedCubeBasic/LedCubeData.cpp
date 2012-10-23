@@ -1,9 +1,4 @@
 #include "LedCubeData.h"
-
-LedCubeData::LedCubeData()
-{  
-    memset(m_data, 0, 8*8*sizeof(byte));
-}
  
 void LedCubeData::setLed(byte x, byte y, byte z, bool on)
 {
@@ -33,4 +28,9 @@ byte* LedCubeData::level(byte z)
 byte LedCubeData::line(byte x, byte z)
 {
   return m_data[z][x];
+}
+
+void LedCubeData::clear(byte value)
+{
+	memset(m_data, 0, 8*8*sizeof(byte));
 }
