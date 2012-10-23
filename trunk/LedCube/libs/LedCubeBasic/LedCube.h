@@ -1,3 +1,9 @@
+#ifndef LED_CUBE_H
+#define LED_CUBE_H
+
+#include <Arduino.h> 
+#include "LedCubeData.h"
+
 class LedCube
 {
 public:
@@ -10,3 +16,5 @@ public:
 private:
   int m_latchPin, m_clockPin, m_dataPin;
 };
+
+#endif LED_CUBE_H

@@ -1,3 +1,8 @@
+#ifndef LED_CUBE_DATA_H
+#define LED_CUBE_DATA_H
+
+#include <Arduino.h> 
+
 class LedCubeData
 {
 public:
@@ -14,3 +19,5 @@ private:
   friend class LedCube;
   byte m_data[8][8]; // (z; y)
 };
+
+#endif LED_CUBE_DATA_H
