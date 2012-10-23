@@ -18,6 +18,8 @@ public:
   void lightLevel(byte z, byte data[8]);	//зажечь уровень на основе массива линий
   void lightCube(byte data[8][8]);			//зажечь куб на основе массива уровней
   void lightCube(LedCubeData& data);		//зажечь куб на основе LedCubeData
+  
+  void turnOut();							//погасить куб
  
 private:
   byte m_latchPin, m_clockPin, m_dataPin;
