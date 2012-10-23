@@ -1,6 +1,6 @@
 #include "LedCube.h"
 
-LedCube::LedCube(int latchPin, int clockPin, int dataPin)
+LedCube::LedCube(byte latchPin, byte clockPin, byte dataPin)
 	: m_latchPin(latchPin), m_clockPin(clockPin), m_dataPin(dataPin)
 {
 	pinMode(m_latchPin, OUTPUT);	//все пины посылают сигналы
@@ -25,12 +25,12 @@ void LedCube::lightOne(byte x, byte y, byte z)
  
 void LedCube::lightLevel(byte z, byte data[8])
 {
-  digitalWrite(m_latchPin, LOW);	//теперь изменения в регистрах не отразятся на кубе
-   
-  shiftOut(m_dataPin, m_clockPin, MSBFIRST, 1 << z);//задействуем уровень z
-  for(int i = 7; i >= 0; --i) shiftOut(m_dataPin, m_clockPin, MSBFIRST, data[i]);//линии передаются начиная с 7-ой
- 
-  digitalWrite(m_latchPin, HIGH);	//теперь изменения вступят в силу
+	digitalWrite(m_latchPin, LOW);	//теперь изменения в регистрах не отразятся на кубе
+
+	shiftOut(m_dataPin, m_clockPin, MSBFIRST, 1 << z);//задействуем уровень z
+	for(int i = 7; i >= 0; --i) shiftOut(m_dataPin, m_clockPin, MSBFIRST, data[i]);//линии передаются начиная с 7-ой
+
+	digitalWrite(m_latchPin, HIGH);	//теперь изменения вступят в силу
 }
  
 void LedCube::lightCube(byte data[8][8])
@@ -42,4 +42,13 @@ void LedCube::lightCube(byte data[8][8])
 void LedCube::lightCube(LedCubeData& data)
 {
   lightCube(data.m_data);//отобразим массив из LedCubeData
+}
+
+void LedCube::turnOut()
+{
+	digitalWrite(m_latchPin, LOW);	//теперь изменения в регистрах не отразятся на кубе
+   
+	shiftOut(m_dataPin, m_clockPin, MSBFIRST, 0);//выключить все уровни
+
+	digitalWrite(m_latchPin, HIGH);	//теперь изменения вступят в 
 }
