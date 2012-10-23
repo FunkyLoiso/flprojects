@@ -1,3 +1,5 @@
+#include "LedCube.h"
+
 LedCube::LedCube(int latchPin, int clockPin, int dataPin)
 : m_latchPin(latchPin), m_clockPin(clockPin), m_dataPin(dataPin)
 {

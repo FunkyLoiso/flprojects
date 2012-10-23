@@ -1,3 +1,5 @@
+#include "LedCubeData.h"
+
 LedCubeData::LedCubeData()
 {  
     memset(m_data, 0, 8*8*sizeof(byte));
