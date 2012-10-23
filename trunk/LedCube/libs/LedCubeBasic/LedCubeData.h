@@ -10,6 +10,10 @@
 class LedCubeData
 {
 public:
+	LedCubeData();										//конструктор по умолчанию
+	LedCubeData(const LedCubeData& other);				//копирующий конструктор
+	LedCubeData& operator=(const LedCubeData& other);	//оператор присваивания
+
 	//установка значений
 	void setLed(byte x, byte y, byte z, bool on);	//изменить состояние диода
 	void setLevel(byte z, byte data[8]);			//изменить уровень

@@ -1,5 +1,18 @@
 #include "LedCubeData.h"
 
+LedCubeData::LedCubeData()
+{}
+
+LedCubeData& LedCubeData::operator=(const LedCubeData& other)
+{
+	memcpy(m_data, other.m_data, 8*8*sizeof(byte));
+}
+
+LedCubeData::LedCubeData(const LedCubeData& other)
+{
+	*this = other;
+}
+
 //установка значений
 void LedCubeData::setLed(byte x, byte y, byte z, bool on)
 {
