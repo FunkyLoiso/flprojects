@@ -45,14 +45,14 @@ unsigned int FrameController::getFPS() const
 }
 	
 void FrameController::begin()
-{
+{//выключим куб на время рассчёта, что бы никой уровень не светился долше других
 	m_cube->turnOut();
 }
 void FrameController::end()
-{
+{//пока не закончится время кадра - перерисовывам куб с одними и теми же данными снова и смнова
 	while(micros() < m_frameEnd_mcs)
 	{
 		m_cube->lightCube(*m_data);
 	}
-	m_frameEnd_mcs += m_frameInterval_mcs;
+	m_frameEnd_mcs += m_frameInterval_mcs;//рассчитаем время окончания следующего кадра
 }

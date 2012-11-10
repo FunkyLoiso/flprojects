@@ -19,6 +19,8 @@
  *			//вычислить новый кадр, изменить data
  *			controller.end();
  *		}
+ *
+ *	Продолжительнгость кадра и частота кадров связанны обратным соотношением, так что задавать нужно только один из этих параметров
  */
 class FrameController
 {
@@ -26,16 +28,16 @@ public:
 	FrameController();
 	FrameController(LedCube* cube, LedCubeData* data);
 	
-	void setCube(LedCube* cube);
-	void setData(LedCubeData* data);
+	void setCube(LedCube* cube);		// установить куб
+	void setData(LedCubeData* data);	// установить данные
 	
-	void setFrameInterval_mcs(unsigned long time);
-	unsigned long getFrameInterval_mcs() const;
-	void setFPS(unsigned int fps);
-	unsigned int getFPS() const;
+	void setFrameInterval_mcs(unsigned long time);	// задвать продолжительность кадра
+	unsigned long getFrameInterval_mcs() const;		// получить заданную продолжительность кадра
+	void setFPS(unsigned int fps);	// задать частоту кадров
+	unsigned int getFPS() const;	// получить заданную частоту кадров
 	
-	void begin();
-	void end();
+	void begin();	// поместите этот вызов перед расчётом кадра
+	void end();		// поместите этот вызов после расчёта кадра
 	
 private:
 	LedCube* m_cube;
