@@ -20,6 +20,7 @@ public:
 	void setData(byte data[8][8]);					//изменить весь куб
 	
 	void clear(byte value = 0);						//заполнить все линии заданным значением
+	void clearLevel(byte level, byte value = 0);	//заполнить уровень заданным значением
 
 	//мягкий доступ
 	bool isLedSet(byte x, byte y, byte z) const;	//получить значение диода
