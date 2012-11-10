@@ -1,6 +1,8 @@
 #ifndef MICRO_FONT_H
 #define MICRO_FONT_H
 
+#include <arduino.h>
+
 // The font data
 const unsigned char kMicroFont[5 * 43] = 
 {
