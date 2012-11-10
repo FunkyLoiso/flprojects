@@ -34,6 +34,11 @@ void LedCubeData::clear(byte value)
 	memset(m_data, 0, 8*8*sizeof(byte));
 }
 
+void LedCubeData::clearLevel(byte level, byte value)
+{
+	memset(this->level(level), value, 8*sizeof(byte));
+}
+
 //получение значений
 bool LedCubeData::isLedSet(byte x, byte y, byte z) const
 {
