@@ -2,6 +2,7 @@
 #define LEDCUBEDATASOURCE_H
 
 #include <QtGui/QMainWindow>
+#include <QTime>
 #include "ui_ledcubedatasource.h"
 
 #include "serial.h"
@@ -28,6 +29,10 @@ private:
 	Serial m_serial;
 
 	void appendSent(QString str);
+
+    void calculateFrame(byte frame[64]);
+
+    QTime m_beg;
 };
 
 #endif // LEDCUBEDATASOURCE_H

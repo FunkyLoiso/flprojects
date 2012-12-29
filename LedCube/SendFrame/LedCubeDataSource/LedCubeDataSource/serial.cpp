@@ -17,6 +17,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define MINGW
+#ifdef MINGW
+
+#define sprintf_s snprintf
+
+#endif
+
+#undef UNICODE
+
 #include "serial.h"
 //#include "firmata_test.h"
 #include <cstdio>
@@ -173,7 +182,7 @@ int Serial::Open(const QString& _name)
 	DWORD len;
 
 	//QByteArray arr = name.toAscii();
-	sprintf_s(buf, sizeof(buf), "%s", name);
+    sprintf_s(buf, sizeof(buf), "%s", name);
 	p = strstr(buf, "COM");
 	if (p && sscanf(p + 3, "%d", &port_num) == 1) {
 		printf("port_num = %d\n", port_num);

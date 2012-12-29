@@ -17,9 +17,16 @@ OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 HEADERS += ./ledcubedatasource.h \
-    ./serial.h
+    ./serial.h \
+    meshdrawer.h \
+    cube.h \
+    mesh.h \
+    sphere.h
 SOURCES += ./ledcubedatasource.cpp \
     ./main.cpp \
-    ./serial.cpp
+    ./serial.cpp \
+    meshdrawer.cpp \
+    cube.cpp \
+    sphere.cpp
 FORMS += ./ledcubedatasource.ui
 RESOURCES += ./ledcubedatasource.qrc
