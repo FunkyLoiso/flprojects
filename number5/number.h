@@ -11,7 +11,7 @@ class number
 public:
     number();
     number(int num);
-    void setnum(int  number_input);
+    void setnum(int  number_input);        //добавление цифр попорядку в конец
     void setnumber(QString str);           //вввести число Qstring
     void setnumber(int number_input);      //ввсти число int
     int  getfullnumber();                //получить число в типе int
