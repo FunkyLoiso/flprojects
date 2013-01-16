@@ -2,12 +2,17 @@
 
 number::number()
 {
-    //    number::num.resize(size);
 }
 
-void number::setnum(double number_input)
+number::number(int num)
 {
-//    num.prepend();
+    //    number::num.resize(size);
+    number::setnumber(num);
+}
+
+void number::setnum(int number_input)
+{
+    num.append(number_input);
 }
 
 void number::setnumber(QString str)
@@ -29,9 +34,9 @@ void number::setnumber(int number_input)
     number::setnumber(str);
 }
 
-double number::getfullnumber()
+int number::getfullnumber()
 {
-    double tmp = 0;
+    int  tmp = 0;
     for (int i = 0 ,out=num.size()-1;num.size()>i;i++,out--)
     {
         tmp += num[i]*qPow(10,out);
@@ -39,12 +44,12 @@ double number::getfullnumber()
     return tmp;
 }
 
-double number::getsizenum()
+int number::getsizenum()
 {
     return number::num.size();
 }
 
-QString number::getsizenumstr()
+QString number::getnumstr()
 {
     std::stringstream ss (std::stringstream::in | std::stringstream::out);
     ss<<(int)getfullnumber();
@@ -52,9 +57,9 @@ QString number::getsizenumstr()
     return stri;
 }
 
-double number::sumnumber()
+int number::sumnumber()
 {
-    double sum;
+    int  sum=0;
     for (int i = 0;i<num.size();i++)
     {
         sum += num[i];

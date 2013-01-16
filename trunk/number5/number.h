@@ -10,15 +10,16 @@ class number
 {
 public:
     number();
-    void setnum(double number_input);
+    number(int num);
+    void setnum(int  number_input);
     void setnumber(QString str);           //вввести число Qstring
     void setnumber(int number_input);      //ввсти число int
-    double getfullnumber();                //получить число в типе double
-    double getsizenum();                   //количество цифр в числе
-    QString getsizenumstr();
-    double sumnumber();
+    int  getfullnumber();                //получить число в типе int
+    int  getsizenum();                   //количество цифр в числе
+    QString getnumstr();
+    int  sumnumber();
 private:
-    QVector<double> num;
+    QVector<int> num;
 };
 
 #endif // NUMBER_H
