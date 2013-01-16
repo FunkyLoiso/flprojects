@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-TARGET = number5
+TARGET = number10
 TEMPLATE = app
 
 
