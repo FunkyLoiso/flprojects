@@ -32,7 +32,7 @@ void number::setnumber(int number_input)
 double number::getfullnumber()
 {
     double tmp = 0;
-    for (int i = 0 ,out=num.size()-1;num.size()>=i;i++,out--)
+    for (int i = 0 ,out=num.size()-1;num.size()>i;i++,out--)
     {
         tmp += num[i]*qPow(10,out);
     }
