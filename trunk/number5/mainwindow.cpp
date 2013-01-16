@@ -27,9 +27,12 @@ void MainWindow::on_pushButton_clicked()
         {
             for (int i3 = 0; i3 != 9;i3++)
             {
-                one[i1*100+i2*10+i3].setnumber(i1*100+i2*10+i3);
-                two[i1*100+i2*10+i3].setnumber(i1*100+i2*10+i3);
-                ui->textEdit->append(one[i1*100+i2*10+i3].getsizenumstr());
+                if (i1>0)
+                {
+                one[i1*100+i2*10+i3-1].setnumber(i1*100+i2*10+i3);
+                two[i1*100+i2*10+i3-1].setnumber(i1*100+i2*10+i3);
+                ui->textEdit->append(one[i1*100+i2*10+i3-1].getsizenumstr());
+                }
             }
         }
     }
