@@ -13,7 +13,7 @@ void number::setnum(double number_input)
 void number::setnumber(QString str)
 {
     num.resize(str.size());
-    num.clear();
+//    num.clear();
     for (int i = 0 ;i<str.size();i++)
     {
         num[i]=(double)str[i].digitValue();
