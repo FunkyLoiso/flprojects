@@ -28,6 +28,14 @@ void canvasPlace::delInvert(int x, int y)
 
 bool canvasPlace::insertFigure(Figure figure, int x, int y)
 {
+    int shift_coordinate_x = numberShiftCoordinate(figure.getPoint(1)->getX(),x);
+    int shift_coordinate_y = numberShiftCoordinate(figure.getPoint(1)->getY(),y);
+    FigurePosition* Fpos = new FigurePosition(figure);
+    for(int i = 0;i<figure.getSizePointOfFigure();i++)
+    {
+        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i),shift_coordinate_x,shift_coordinate_y));
+    }
+    canvasPlace::figures.append(Fpos);
 }
 
 void canvasPlace::deleteFigure()
@@ -39,12 +47,8 @@ int canvasPlace::numberShiftCoordinate(int coordinate_one, int coordinate_two)
     return abs(coordinate_one)+abs(coordinate_two);
 }
 
-int canvasPlace::shiftCoordinate(Point center_point, int x, int y)
+Point* canvasPlace::shiftCoordinatePoint(/*const*/ Point* point, int shift_x, int shift_y)
 {
-//    int shift_x = numberShiftCoordinate(center_point/*abs(center_point.getX())+abs(x)*/;
-//    int shift_y = /*abs(center_point.getY())+abs(y)*/;
-//    if(center_point.getX()>0)
-//    {
-//        center
-//    }
+    Point* P = new Point(point->getX()+shift_x,point->getY()+shift_y);
+    return P;
 }

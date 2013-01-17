@@ -8,6 +8,7 @@
 class Point
 {
 public:
+    Point();
     Point(int x, int y);
     int getX();
     int getY();
@@ -23,13 +24,16 @@ class Figure
 public:
     Figure();                           //конструктор
     void insertPoint(int x,int y);      //добавить точку
+    void insertPoint(Point* pos);       //добавить точку
     Point *getPoint(int number);        //получить точку   (нумеруются с 1)
     QVector<Point *> getFigureMatrix(); //получить матрицу фигуры
     void turnFigureMatrix(int degree);  //повернуть все точки на угол(градусы)
     void mirrorFigureMatrix();          //отзеркалировать фигуру
+    int getSizePointOfFigure();         //количество точек в фигуре
+    int getDegree();                    //вернуть угол поворота
 private:
     QVector<Point*> figure_matrix;
-    int degree;
+    int degree;                         //при создании равен 0
 //-------
     Point *turnPoint(Point *point, int degree); //повернуть точку на угол(градусы)
 };

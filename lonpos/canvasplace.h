@@ -12,12 +12,12 @@ public:
     bool insertFigure(Figure figure, int x, int y);  //вставить фигуру в холст
     void deleteFigure();                             //удалить фигуру из холста
 private:
-    QVector<QVector<bool> > canvas;
-    QVector<QVector<bool> > invert_canvas;
-    QVector<FigurePosition* >  figures;
+    QVector<QVector<bool> > canvas;                 //двумерный булеан
+    QVector<QVector<bool> > invert_canvas;          //двумерная инверсия булеана
+    QVector<FigurePosition* >  figures;             //массив вставленныйх фигур
 //--------
-    int numberShiftCoordinate(int coordinate_one, int coordinate_two);
-    int shiftCoordinate(Point center_point, int x, int y);
+    int numberShiftCoordinate(int coordinate_one, int coordinate_two);  //возвращает расстояние между двумя координатами
+    Point* shiftCoordinatePoint(Point *center_point, int shift_x, int shift_y);
 };
 
 #endif // CANVASPLACE_H

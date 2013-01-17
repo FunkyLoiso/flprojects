@@ -1,5 +1,9 @@
 #include "figure.h"
 
+Point::Point()
+{
+}
+
 Point::Point(int x,int y)
 {
     Point::setX(x);
@@ -35,6 +39,11 @@ void Figure::insertPoint(int x, int y)
 {
     Point* tmp = new Point(x,y);
     Figure::figure_matrix.append(tmp);
+}
+
+void Figure::insertPoint(Point *pos)
+{
+    Figure::figure_matrix.append(pos);
 }
 
 Point* Figure::getPoint(int number)
@@ -77,6 +86,11 @@ void Figure::mirrorFigureMatrix()
         figure_matrix[i-1]->setX(figure_matrix[i-1]->getX()*(-1));
         figure_matrix[i-1]->setY(figure_matrix[i-1]->getY()*(-1));
     }
+}
+
+int  Figure::getSizePointOfFigure()
+{
+    return figure_matrix.size();
 }
 
 
