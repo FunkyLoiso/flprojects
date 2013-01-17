@@ -6,11 +6,11 @@
 class canvasPlace
 {
 public:
-    canvasPlace(int x,int y);
-    void addInvert(int x, int y);
-    void delInvert(int x, int y);
-    bool insertFigure(Figure figure, int x, int y);
-    void deleteFigure();
+    canvasPlace(int x,int y);           //конструктор, размеры матрицы холста
+    void addInvert(int x, int y);       //добавить точку в инвертированную матрицу
+    void delInvert(int x, int y);       //удалить точку из инвертированной матрицы
+    bool insertFigure(Figure figure, int x, int y);  //вставить фигуру в холст
+    void deleteFigure();                             //удалить фигуру из холста
 private:
     QVector<QVector<bool> > canvas;
     QVector<QVector<bool> > invert_canvas;
