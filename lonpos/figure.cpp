@@ -93,6 +93,11 @@ int  Figure::getSizePointOfFigure()
     return figure_matrix.size();
 }
 
+int Figure::getDegree()
+{
+    return this->degree;
+}
+
 
 
 

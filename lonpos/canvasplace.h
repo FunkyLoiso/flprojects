@@ -17,7 +17,7 @@ private:
     QVector<FigurePosition* >  figures;             //массив вставленныйх фигур
 //--------
     int numberShiftCoordinate(int coordinate_one, int coordinate_two);  //возвращает расстояние между двумя координатами
-    Point* shiftCoordinatePoint(Point *center_point, int shift_x, int shift_y);
+    Point* shiftCoordinatePoint(Point *center_point, int shift_x, int shift_y);   //возвращает точку со смещенными координатами
 };
 
 #endif // CANVASPLACE_H
