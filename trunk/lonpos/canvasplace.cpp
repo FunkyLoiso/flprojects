@@ -31,11 +31,13 @@ bool canvasPlace::insertFigure(Figure figure, int x, int y)
     int shift_coordinate_x = numberShiftCoordinate(figure.getPoint(1)->getX(),x);
     int shift_coordinate_y = numberShiftCoordinate(figure.getPoint(1)->getY(),y);
     FigurePosition* Fpos = new FigurePosition(figure);
-    for(int i = 0;i<figure.getSizePointOfFigure();i++)
+    for(int i = 1;i<=figure.getSizePointOfFigure();i++)
     {
-        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i+1),shift_coordinate_x,shift_coordinate_y));
+        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i),shift_coordinate_x,shift_coordinate_y));
     }
+    if(!compareFreePosition(Fpos) ) {return false;}
     canvasPlace::figures.append(Fpos);
+    return true;
 }
 
 void canvasPlace::deleteFigure()
@@ -51,4 +53,15 @@ Point* canvasPlace::shiftCoordinatePoint(/*const*/ Point* point, int shift_x, in
 {
     Point* P = new Point(point->getX()+shift_x,point->getY()+shift_y);
     return P;
+}
+
+bool canvasPlace::compareFreePosition(FigurePosition* Fpos)
+{
+    for(int i =1;i<=Fpos->getSizePointOfFigure();i++ )
+    {
+        if(canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()]) {return false; }
+        if(invert_canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()]) {return false; }
+        canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()] = true;
+    }
+    return true;
 }

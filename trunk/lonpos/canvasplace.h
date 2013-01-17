@@ -18,6 +18,7 @@ private:
 //--------
     int numberShiftCoordinate(int coordinate_one, int coordinate_two);  //возвращает расстояние между двумя координатами
     Point* shiftCoordinatePoint(Point *center_point, int shift_x, int shift_y);   //возвращает точку со смещенными координатами
+    bool compareFreePosition(FigurePosition *Fpos);
 };
 
 #endif // CANVASPLACE_H
