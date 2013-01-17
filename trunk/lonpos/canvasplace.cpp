@@ -33,7 +33,7 @@ bool canvasPlace::insertFigure(Figure figure, int x, int y)
     FigurePosition* Fpos = new FigurePosition(figure);
     for(int i = 0;i<figure.getSizePointOfFigure();i++)
     {
-        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i),shift_coordinate_x,shift_coordinate_y));
+        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i+1),shift_coordinate_x,shift_coordinate_y));
     }
     canvasPlace::figures.append(Fpos);
 }

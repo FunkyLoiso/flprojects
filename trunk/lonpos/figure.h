@@ -31,7 +31,7 @@ public:
     void mirrorFigureMatrix();          //отзеркалировать фигуру
     int getSizePointOfFigure();         //количество точек в фигуре
     int getDegree();                    //вернуть угол поворота
-private:
+protected:
     QVector<Point*> figure_matrix;
     int degree;                         //при создании равен 0
 //-------
