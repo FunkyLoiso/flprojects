@@ -14,11 +14,15 @@ SOURCES += main.cpp\
         lonposwindow.cpp \
     figure.cpp \
     canvasplace.cpp \
-    FigurePosition.cpp
+    FigurePosition.cpp \
+    lonposcanvaswidget.cpp \
+    figurewidget.cpp
 
 HEADERS  += lonposwindow.h \
     figure.h \
     canvasplace.h \
-    FigurePosition.h
+    FigurePosition.h \
+    lonposcanvaswidget.h \
+    figurewidget.h
 
 FORMS    += lonposwindow.ui

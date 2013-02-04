@@ -86,6 +86,9 @@ void Figure::mirrorFigureMatrix()
         figure_matrix[i-1]->setX(figure_matrix[i-1]->getX()*(-1));
         figure_matrix[i-1]->setY(figure_matrix[i-1]->getY()*(-1));
     }
+    //чтобы градусы не были меньше 0
+    if(this->degree>180) {this->degree-=180;}
+    if(this->degree<180) {this->degree+=180;}
 }
 
 int  Figure::getSizePointOfFigure()

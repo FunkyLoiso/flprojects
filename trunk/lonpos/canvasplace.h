@@ -1,6 +1,6 @@
 #ifndef CANVASPLACE_H
 #define CANVASPLACE_H
-
+//холст для фигур
 #include "figureposition.h"
 
 class canvasPlace

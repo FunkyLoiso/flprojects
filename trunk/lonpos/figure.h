@@ -1,7 +1,6 @@
 #ifndef FIGURE_H
 #define FIGURE_H
-
-//#include <QVector2D>
+//фигура + точки
 #include <qvector.h>
 #include <qmath.h>
 
