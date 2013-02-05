@@ -44,14 +44,14 @@ void canvasPlace::deleteFigure()
 {
 }
 
-QVector<QVector<bool> > canvasPlace::getCanvas()
+int canvasPlace::getSizeCanvasX()
 {
-    return this->canvas;
+    return canvas.size();
 }
 
-QVector<QVector<bool> > canvasPlace::getInvertCanvas()
+int canvasPlace::getSizeCanvasY()
 {
-    return this->invert_canvas;
+    return canvas[0].size();
 }
 
 int canvasPlace::numberShiftCoordinate(int coordinate_one, int coordinate_two)
