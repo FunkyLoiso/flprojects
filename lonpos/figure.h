@@ -3,6 +3,7 @@
 //фигура + точки
 #include <qvector.h>
 #include <qmath.h>
+#include <qcolor.h>
 
 class Point
 {
@@ -30,8 +31,11 @@ public:
     void mirrorFigureMatrix();          //отзеркалировать фигуру
     int getSizePointOfFigure();         //количество точек в фигуре
     int getDegree();                    //вернуть угол поворота
+    QColor getColor();                  //получить цвет фигуры
+    void   setColor(QColor incolorF);     //установить цвет фигуры
 protected:
     QVector<Point*> figure_matrix;
+    QColor colorF;                      //общий цвет фигуры
     int degree;                         //при создании равен 0
 //-------
     Point *turnPoint(Point *point, int degree); //повернуть точку на угол(градусы)

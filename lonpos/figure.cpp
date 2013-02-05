@@ -101,6 +101,16 @@ int Figure::getDegree()
     return this->degree;
 }
 
+QColor Figure::getColor()
+{
+    return this->colorF;
+}
+
+void Figure::setColor(QColor incolorF)
+{
+    this->colorF = incolorF;
+}
+
 
 
 

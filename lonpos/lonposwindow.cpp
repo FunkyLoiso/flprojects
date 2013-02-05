@@ -6,9 +6,9 @@ LonposWindow::LonposWindow(QWidget *parent) :
     ui(new Ui::LonposWindow)
 {
     ui->setupUi(this);
-    this->canvas = new canvasPlace(9,9);
+    this->canvasP = new canvasPlace(9,9);
     //заполнение матрицы блокировки
-    canvas->addInvert(1,7);
+    canvasP->addInvert(1,7);
     //    canvas->addInvert(1,8);
     //    canvas->addInvert(1,9);
     //    canvas->addInvert(2,8);
