@@ -51,17 +51,17 @@ int canvasPlace::getSizeCanvasX()
 
 int canvasPlace::getSizeCanvasY()
 {
-    return canvas[0].size();
+	return canvas[0].size();
 }
 
 int canvasPlace::numberShiftCoordinate(int coordinate_one, int coordinate_two)
 {
-    return abs(coordinate_one)+abs(coordinate_two);
+	return abs(coordinate_one - coordinate_two);
 }
 
 Point* canvasPlace::shiftCoordinatePoint(/*const*/ Point* point, int shift_x, int shift_y)
 {
-    Point* P = new Point(point->getX()+shift_x,point->getY()+shift_y);
+    Point* P = new Point(point->getX()+shift_x, point->getY()+shift_y);
     return P;
 }
 
@@ -69,9 +69,16 @@ bool canvasPlace::compareFreePosition(FigurePosition* Fpos)
 {
     for(int i =1;i<=Fpos->getSizePointOfFigure();i++ )
     {
-        if(canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()]) {return false; }
-        if(invert_canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()]) {return false; }
-        canvas[Fpos->getPointPosition(i)->getX()][Fpos->getPointPosition(i)->getY()] = true;
+		Point *pt = Fpos->getPointPosition(i);
+        if(canvas[pt->getX()][pt->getY()])			{return false; }
+        if(invert_canvas[pt->getX()][pt->getY()])	{return false; }
+        canvas[pt->getX()][pt->getY()] = true;
     }
     return true;
+}
+
+FigurePosition* canvasPlace::getFigureP(int num)
+{
+	if(num<this->figures.size()) {return this->figures[abs(num)];};
+	return 0;
 }

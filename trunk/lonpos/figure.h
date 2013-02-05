@@ -5,6 +5,7 @@
 #include <qmath.h>
 #include <qcolor.h>
 
+//как насчёт QPoint ..?
 class Point
 {
 public:

@@ -3,8 +3,6 @@
 //холст для фигур
 #include "figureposition.h"
 
-typedef QVector<QVector<bool> >  M2B;
-
 class canvasPlace
 {
 public:
@@ -16,14 +14,16 @@ public:
     int getSizeCanvasX();                            //получить размер холста X
     int getSizeCanvasY();                            //получить размер холста Y
     int getSizeFigures();                            //получить размер массива фигур
+	FigurePosition* getFigureP(int num);             //получить фигуру из списка фигур
 private:
+	//mb QBitArray ?
     QVector<QVector<bool> > canvas;                 //двумерный булеан
     QVector<QVector<bool> > invert_canvas;          //двумерная инверсия булеана
-    QVector<FigurePosition* >  figures;             //массив вставленныйх фигур
+    QVector<FigurePosition* >  figures;             //массив вставленных фигур
 //--------
     int numberShiftCoordinate(int coordinate_one, int coordinate_two);  //возвращает расстояние между двумя координатами
     Point* shiftCoordinatePoint(Point *center_point, int shift_x, int shift_y);   //возвращает точку со смещенными координатами
-    bool compareFreePosition(FigurePosition *Fpos);
+    bool compareFreePosition(FigurePosition *Fpos);///< @todo дописать
 };
 
 #endif // CANVASPLACE_H

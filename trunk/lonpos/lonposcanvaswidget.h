@@ -12,7 +12,8 @@ public:
     explicit LonposCanvasWidget( QWidget *parent = 0, int x = 9, int y = 9);
     void setSize(int x, int y);
     void paintFonCircle(Qt::GlobalColor fon, Qt::GlobalColor circle, int x, int y);
-    void paintFonCircle(canvasPlace &canvasP);
+    bool paintFonCircle();
+	void setcanvasPlace(canvasPlace* canvasLCW);
 signals:
     
 public slots:
@@ -22,8 +23,9 @@ protected:
 
 private:
     int x_weight,y_height;
-
-    
+	canvasPlace* canvasLCW;
+	//metod
+	void pointCircle(int x, int y, canvasPlace *canvasP);
 };
 
 #endif // LONPOSCANVASWIDGET_H
