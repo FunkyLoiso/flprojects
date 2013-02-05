@@ -1,6 +1,6 @@
 #ifndef FIGUREPOSITION_H
 #define FIGUREPOSITION_H
-
+//позиция позиция фигуры в холсте + фигура
 #include "figure.h"
 
 class FigurePosition : public Figure

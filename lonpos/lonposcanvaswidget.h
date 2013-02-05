@@ -3,13 +3,16 @@
 //отображения состояния холста
 #include <QWidget>
 #include <QPainter>
+#include "canvasplace.h"
 
 class LonposCanvasWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit LonposCanvasWidget( QWidget *parent = 0, int x = 9, int y = 9);
-    bool setSize(int x, int y);
+    void setSize(int x, int y);
+    void paintFonCircle(int x, int y);
+    void paintFonCircle(M2B canvas,M2B invert_canvas);
 signals:
     
 public slots:

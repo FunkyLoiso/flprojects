@@ -3,6 +3,8 @@
 //холст для фигур
 #include "figureposition.h"
 
+typedef QVector<QVector<bool> >  M2B;
+
 class canvasPlace
 {
 public:
@@ -11,6 +13,8 @@ public:
     void delInvert(int x, int y);       //удалить точку из инвертированной матрицы
     bool insertFigure(Figure figure, int x, int y);  //вставить фигуру в холст
     void deleteFigure();                             //удалить фигуру из холста
+    QVector<QVector<bool> > getCanvas();
+    QVector<QVector<bool> > getInvertCanvas();
 private:
     QVector<QVector<bool> > canvas;                 //двумерный булеан
     QVector<QVector<bool> > invert_canvas;          //двумерная инверсия булеана

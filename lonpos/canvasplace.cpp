@@ -4,11 +4,11 @@ canvasPlace::canvasPlace(int x, int y)
 {
     canvas.resize(x);
     invert_canvas.resize(x);
-    for (int i=canvas.size()-1;i!=0;i--)
+    for (int i=0;i<canvas.size();i++)
     {
         canvas[i].resize(y);
         invert_canvas[i].resize(y);
-        for (int u=canvas[i].size()-1;u!=0;i--)
+        for (int u=0;u<canvas[i].size();u++)
         {
             canvas[i][u]=false;
             invert_canvas[i][u]=false;
@@ -42,6 +42,16 @@ bool canvasPlace::insertFigure(Figure figure, int x, int y)
 
 void canvasPlace::deleteFigure()
 {
+}
+
+QVector<QVector<bool> > canvasPlace::getCanvas()
+{
+    return this->canvas;
+}
+
+QVector<QVector<bool> > canvasPlace::getInvertCanvas()
+{
+    return this->invert_canvas;
 }
 
 int canvasPlace::numberShiftCoordinate(int coordinate_one, int coordinate_two)
