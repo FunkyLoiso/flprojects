@@ -38,48 +38,62 @@ bool LonposCanvasWidget::paintFonCircle()
 	if(!this->canvasLCW) {return false;}
     QPainter paint(this);
     paint.setRenderHints(QPainter::Antialiasing);
-//    //серый фон
+    //серый фон
     paint.save();
     paint.setBrush(Qt::white);
     paint.setPen(Qt::NoPen);
     paint.drawRect(0,0,this->width(),this->height());  // квадрат
     paint.restore();
 
-  //  for(int i = 0; i<canvasP.getSizeFigures();i++)
-  //  {
-  //      //полости фигур
-  //      paint.restore();
-  //      paint.setPen(Qt::NoPen);
-  //      paint.setBrush(canvasP.getFigureP(i+1)->getColor);
-		//int tmp_x = (this->width()/(canvasP.getSizeCanvasX()+1));
-		//int tmp_y = (this->height()/(canvasP.getSizeCanvasY()+1));
-  //      for(int yi = 1;yi <= tmp_y;yi++)
-  //      {
-  //          for(int xi = 1;xi<=tmp_x;xi++)
-  //          {
-  //              paint.drawEllipse(QRectF( tmp_x*xi-tmp_x/2,(tmp_y*yi)-tmp_y/2,tmp_x,tmp_y));
-  //          }
-  //      }
-  //  }
+    //полости фигур
+    paint.restore();
+    paint.setPen(Qt::NoPen);
+    int canvasSizeX = this->canvasLCW->getSizeCanvasX();
+    int canvasSizeY = this->canvasLCW->getSizeCanvasY();
+
+    //отрисовка того что вставленно в холст
+    for(int yi = 0;yi<canvasSizeY;yi++)
+    {
+       for(int xi = 0;xi<canvasSizeX;xi++)
+       {
+           if(canvasLCW->getStateCanvas(xi,yi))
+           {
+               pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::blue);
+           }
+       }
+    }
+    //отрисовка инвертированного холста
+    for(int yi = 0;yi<canvasSizeY;yi++)
+    {
+       for(int xi = 0;xi<canvasSizeX;xi++)
+       {
+           if(canvasLCW->getStateInvertCanvas(xi,yi))
+           {
+               pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::red);
+           }
+       }
+    }
+    return true;
 }
 
 void LonposCanvasWidget::paintEvent(QPaintEvent *)
 {
     //ui.
     //paintFonCircle(Qt::white,Qt::lightGray,x_weight,y_height);
-	//paintFonCircle();
-	pointCircle(5,5,this->canvasLCW);
+    paintFonCircle();
+//    pointCircle(5,5,this->canvasLCW->getSizeCanvasX(),this->canvasLCW->getSizeCanvasY());
 }
 
-void LonposCanvasWidget::pointCircle(int x, int y, canvasPlace* canvasP)
+void LonposCanvasWidget::pointCircle(int x, int y, int numberX, int numberY,QColor color)
 {
-	int width = (this->width()/(canvasP->getSizeCanvasX()+1));
-	int height = (this->height()/(canvasP->getSizeCanvasY()+1));
+    int width = (this->width()/(numberX+1));
+    int height = (this->height()/(numberY+1));
 
 	QPainter paint(this);
+    paint.setRenderHints(QPainter::Antialiasing);
 	paint.setPen(Qt::NoPen);
-	paint.setBrush(Qt::white);
-	paint.drawEllipse(width*x-width/2, height*y-height/2, width, height);
+    paint.setBrush(color);
+    paint.drawEllipse(width*(x+1)-width/2, height*(y+1)-height/2, width, height);
 }
 
 void LonposCanvasWidget::setcanvasPlace(canvasPlace* canvasLCW)

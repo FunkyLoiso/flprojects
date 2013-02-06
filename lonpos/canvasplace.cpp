@@ -18,12 +18,26 @@ canvasPlace::canvasPlace(int x, int y)
 
 void canvasPlace::addInvert(int x, int y)
 {
-    invert_canvas[x][y]=true;
+    if((x<invert_canvas.size())&&(y<invert_canvas[0].size()))
+    {
+        invert_canvas[x][y]=true;
+    }
+
 }
 
 void canvasPlace::delInvert(int x, int y)
 {
     invert_canvas[x][y]=false;
+}
+
+void canvasPlace::addCellCanvas(int x, int y)
+{
+     canvas[x][y]=true;
+}
+
+void canvasPlace::delCellCanvas(int x, int y)
+{
+     canvas[x][y]=false;
 }
 
 bool canvasPlace::insertFigure(Figure figure, int x, int y)
@@ -42,6 +56,16 @@ bool canvasPlace::insertFigure(Figure figure, int x, int y)
 
 void canvasPlace::deleteFigure()
 {
+}
+
+bool canvasPlace::getStateInvertCanvas(int x, int y)
+{
+    return invert_canvas[x][y];
+}
+
+bool canvasPlace::getStateCanvas(int x, int y)
+{
+    return canvas[x][y];
 }
 
 int canvasPlace::getSizeCanvasX()
