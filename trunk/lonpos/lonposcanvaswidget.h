@@ -22,10 +22,11 @@ protected:
     void paintEvent(QPaintEvent *);              //виртуальный метод для перерисовки
 
 private:
+    QColor colorC;
     int x_weight,y_height;
 	canvasPlace* canvasLCW;
 	//metod
-	void pointCircle(int x, int y, canvasPlace *canvasP);
+    void pointCircle(int x, int y, int numberX, int numberY, QColor color=QColor(160,152,152));   //нарисовать кружок в точке //x и y считаются с 0
 };
 
 #endif // LONPOSCANVASWIDGET_H
