@@ -1,11 +1,18 @@
 #include "lonposwindow.h"
 #include "ui_lonposwindow.h"
+#include "QLabel"
+#include "QVBoxLayout"
 
-LonposWindow::LonposWindow(QWidget *parent) :
+LonposWindow::
+LonposWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LonposWindow)
 {
     ui->setupUi(this);
+//    QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
+//    QVBL->addWidget(new QLabel("LOL1"));
+//    QVBL->addWidget(new QLabel("LOL2"));
+    //
     this->canvasP = new canvasPlace(9,9);
 	ui->lonposCanvasWidget->setcanvasPlace(this->canvasP);
     //заполнение матрицы блокировки
@@ -35,7 +42,8 @@ LonposWindow::LonposWindow(QWidget *parent) :
     canvasP->addInvert(8,7);
     canvasP->addInvert(8,8);
     canvasP->addInvert(2,3);
-    canvasP->addCellCanvas(3,4);
+//    canvasP->addCellCanvas(3,4);
+//    canvasP->addCellCanvas(3,3);
     //описание фигур
 //    Figure *tmp1 = new Figure();
 //    tmp1.
