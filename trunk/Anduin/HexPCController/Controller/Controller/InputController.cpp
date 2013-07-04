@@ -9,18 +9,17 @@ static short g_BodyYShift = 0;
 
 void     InputController::Init(void)
 {
-};
-
-void     InputController::ControlInput(void)
-{
 	bool WalkMethod = false;
 	bool DoubleTravelOn = false;
 
 	short rx = 0;
 	short ry = 0;
 	short lx = 0;
-	short ly = 100;
+	short ly = 0;
+};
 
+void     InputController::ControlInput(void)
+{
 	if (WalkMethod)  //(Walk Methode) 
 		g_InControlState.TravelLength.z = ry; //Right Stick Up/Down  
 
@@ -46,3 +45,8 @@ void     InputController::AllowControllerInterrupts(bool fAllow)
 {
 
 };
+
+void InputController::setLY(short val)
+{
+	ly = val;
+}

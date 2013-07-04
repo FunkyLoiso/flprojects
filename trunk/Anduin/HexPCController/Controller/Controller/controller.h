@@ -2,8 +2,9 @@
 #define CONTROLLER_H
 
 #include <QtGui/QMainWindow>
-#include <QElapsedTimer>
 #include "ui_controller.h"
+
+#include "ServoController.h"
 
 class Controller : public QMainWindow
 {
@@ -13,15 +14,14 @@ public:
 	Controller(QWidget *parent = 0, Qt::WFlags flags = 0);
 	~Controller();
 
+public slots:
+	void onStart();
+	void onSliderLY(int);
+
 private:
 	Ui::ControllerClass ui;
-	QElapsedTimer m_timer;
 
-	void setup();
-	void loop();
-
-	virtual void timerEvent(QTimerEvent *);
-
+	ServoController m_srvCtrl;
 };
 
 #endif // CONTROLLER_H
