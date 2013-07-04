@@ -24,7 +24,16 @@ class InputController {
     void     ControlInput(void);
     void     AllowControllerInterrupts(bool fAllow);
 
+	void	setLY(short val);
+
   private:
+	  bool WalkMethod;
+	  bool DoubleTravelOn;
+
+	  short rx;
+	  short ry;
+	  short lx;
+	  short ly;
 } ;   
 
 typedef struct _Coord3D {
