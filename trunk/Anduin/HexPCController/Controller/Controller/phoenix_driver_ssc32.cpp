@@ -224,18 +224,25 @@ void ServoDriver::OutputServoInfoForLeg(uint8_t LegIndex, short sCoxaAngle1, sho
     }
 #endif
 #else
+	static const int speed = 1000;
     SSCSerial.print("#");
     SSCSerial.print(cCoxaPin[LegIndex], DEC);
     SSCSerial.print("P");
-    SSCSerial.print(wCoxaSSCV, DEC);
+	SSCSerial.print(wCoxaSSCV, DEC);
+	//SSCSerial.print("S");
+	//SSCSerial.print(speed, DEC);
     SSCSerial.print("#");
     SSCSerial.print(cFemurPin[LegIndex], DEC);
     SSCSerial.print("P");
     SSCSerial.print(wFemurSSCV, DEC);
+	//SSCSerial.print("S");
+	//SSCSerial.print(speed, DEC);
     SSCSerial.print("#");
     SSCSerial.print(cTibiaPin[LegIndex], DEC);
     SSCSerial.print("P");
     SSCSerial.print(wTibiaSSCV, DEC);
+	//SSCSerial.print("S");
+	//SSCSerial.print(speed, DEC);
 #ifdef c4DOF
     if ((uint8_t)cTarsLength[LegIndex]) {
         SSCSerial.print("#");
