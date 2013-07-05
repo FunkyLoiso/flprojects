@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
-				ForcedIncludeFiles="f:\projs\Arduino\SensorFirmware\Visual Micro\.SensorFirmware.vsarduino.h"
+				ForcedIncludeFiles="f:\projs\Anduin\HexPCController\SensorFirmware\Visual Micro\.SensorFirmware.vsarduino.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

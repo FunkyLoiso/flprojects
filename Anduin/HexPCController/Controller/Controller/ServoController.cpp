@@ -648,7 +648,7 @@ void SingleLegControl(void)
 				LegPosZ[PrevSelectedLeg] = (short)pgm_read_word(&cInitPosZ[PrevSelectedLeg]);
 			}
 		} else if (!g_InControlState.fSLHold) {
-			LegPosY[g_InControlState.SelectedLeg] = LegPosY[g_InControlState.SelectedLeg]+g_InControlState.SLLeg.y;
+			LegPosY[g_InControlState.SelectedLeg] = cInitPosY[g_InControlState.SelectedLeg]+g_InControlState.SLLeg.y;
 			LegPosX[g_InControlState.SelectedLeg] = (short)pgm_read_word(&cInitPosX[g_InControlState.SelectedLeg])+g_InControlState.SLLeg.x;
 			LegPosZ[g_InControlState.SelectedLeg] = (short)pgm_read_word(&cInitPosZ[g_InControlState.SelectedLeg])+g_InControlState.SLLeg.z;     
 		}
