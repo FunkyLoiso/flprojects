@@ -47,6 +47,11 @@ public:
 	{
 		return print(val, base) + println();
 	}
+	
+	int println(const char* str)
+	{
+		return print(str) + println();
+	}
 
 	int read()
 	{

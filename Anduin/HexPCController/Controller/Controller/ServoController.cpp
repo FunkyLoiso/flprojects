@@ -246,6 +246,7 @@ static const byte GetACos[] = {
 
 	long            GaitPosX[6];         //Array containing Relative X position corresponding to the Gait
 	long            GaitPosY[6];         //Array containing Relative Y position corresponding to the Gait
+	long			FloorLevel[6]  = {30, 30, 30, 30, 30, 30};
 	long            GaitPosZ[6];         //Array containing Relative Z position corresponding to the Gait
 	long            GaitRotY[6];         //Array containing Relative Y rotation corresponding to the Gait
 
@@ -381,7 +382,7 @@ void ServoController::loop()
 
 
 	//Single leg control
-	SingleLegControl ();
+	//SingleLegControl ();
 
 	//Gait
 	GaitSeq();
@@ -786,9 +787,11 @@ void Gait (byte GaitCurrentLegNr)
 	}
 	//Leg middle up position
 	//Gait in motion														  									Gait NOT in motion, return to home position
-	if ((TravelRequest && (NrLiftedPos==1 || NrLiftedPos==3 || NrLiftedPos==5) && 
-		GaitStep==GaitLegNr[GaitCurrentLegNr]) || (!TravelRequest && GaitStep==GaitLegNr[GaitCurrentLegNr] && ((abs(GaitPosX[GaitCurrentLegNr])>2) || 
-		(abs(GaitPosZ[GaitCurrentLegNr])>2) || (abs(GaitRotY[GaitCurrentLegNr])>2)))) { //Up
+	if ((TravelRequest && (NrLiftedPos==1 || NrLiftedPos==3 || NrLiftedPos==5) && GaitStep==GaitLegNr[GaitCurrentLegNr]) || 
+		(!TravelRequest && GaitStep==GaitLegNr[GaitCurrentLegNr] && (	(abs(GaitPosX[GaitCurrentLegNr])>2) || 
+																		(abs(GaitPosZ[GaitCurrentLegNr])>2) ||
+																		(abs(GaitRotY[GaitCurrentLegNr])>2)	)	)	)
+	{ //Up
 			GaitPosX[GaitCurrentLegNr] = 0;
 			GaitPosY[GaitCurrentLegNr] = -g_InControlState.LegLiftHeight;
 			GaitPosZ[GaitCurrentLegNr] = 0;
@@ -834,13 +837,13 @@ void Gait (byte GaitCurrentLegNr)
 			GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/2;
 			GaitPosZ[GaitCurrentLegNr] = g_InControlState.TravelLength.z/2;
 			GaitRotY[GaitCurrentLegNr] = g_InControlState.TravelLength.y/2;      	
-			GaitPosY[GaitCurrentLegNr] = 0;	//Only move leg down at once if terrain adaption is turned off
+			GaitPosY[GaitCurrentLegNr] = 30;	//Only move leg down at once if terrain adaption is turned off
 	}
 
 	//Move body forward      
 	else {
 		GaitPosX[GaitCurrentLegNr] = GaitPosX[GaitCurrentLegNr] - (g_InControlState.TravelLength.x/TLDivFactor);
-		GaitPosY[GaitCurrentLegNr] = 0; 
+		GaitPosY[GaitCurrentLegNr] = FloorLevel[GaitCurrentLegNr];
 		GaitPosZ[GaitCurrentLegNr] = GaitPosZ[GaitCurrentLegNr] - (g_InControlState.TravelLength.z/TLDivFactor);
 		GaitRotY[GaitCurrentLegNr] = GaitRotY[GaitCurrentLegNr] - (g_InControlState.TravelLength.y/TLDivFactor);
 	}
