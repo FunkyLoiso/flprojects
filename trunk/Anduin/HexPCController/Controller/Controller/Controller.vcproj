@@ -191,6 +191,10 @@
 				RelativePath=".\ServoController.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\v_pid.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -297,6 +301,10 @@
 			</File>
 			<File
 				RelativePath=".\ServoDriver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\v_pid.h"
 				>
 			</File>
 		</Filter>

@@ -41,6 +41,9 @@ int func0(int x)
 }
 int func2(int x)
 {
+	//if(x < 635) return 0;
+	//if(x < 750)	return -28691/(x-812);
+	//else		return double(x-714)/0.0868929;
 	return x;
 }
 int func3(int x)
