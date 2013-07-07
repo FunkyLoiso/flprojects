@@ -18,13 +18,13 @@ Controller::Controller(QWidget *parent, Qt::WFlags flags)
 
 	m_reader.Start(&m_readerPort);
 
-	//g_InControlState.fHexOn = true;
-	//g_InputController.setLY(100);
+	g_InControlState.fHexOn = true;
+	g_InputController.setLY(100);
 	m_srvCtrl.Start();
 	//g_InControlState.SelectedLeg = 1;
 	//g_InControlState.BalanceMode = true;
 
-	startTimer(1);
+	//startTimer(1);
 }
 
 Controller::~Controller()
@@ -52,6 +52,7 @@ void Controller::onSensorData(int val)
 {
 	ui.sSensorValue->setValue(val);
 	m_pressure = val;
+	g_InControlState.sensorValue[cRM] = val;
 }
 
 //void Controller::timerEvent(QTimerEvent *)
@@ -142,7 +143,7 @@ void Controller::timerEvent(QTimerEvent *)
 
 		int y = cXXFemurLength * qSin(delta*3.1415/180.0);
 
-		FloorLevel[cLM] = y;
+		FloorLevel[cRM] = y;
 	}
 	if(m_pressure < 300 && contact) contact = false;
 }

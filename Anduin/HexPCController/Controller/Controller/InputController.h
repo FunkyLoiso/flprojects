@@ -75,6 +75,9 @@ typedef struct _InControlState {
 //[TIMING]
      uint8_t			InputTimeDelay;	//Delay that depends on the input to get the "sneaking" effect
      unsigned int			SpeedControl;	//Adjustible Delay
+
+//[]Foot sensors
+	uint16_t sensorValue[6];
 } INCONTROLSTATE;
 
 
