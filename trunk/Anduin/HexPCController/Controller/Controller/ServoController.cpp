@@ -2,6 +2,8 @@
 #include "InputController.h"
 #include "Hex_globals.h"
 
+#include <QtCore/qmath.h>
+
 typedef unsigned int word;
 typedef uint8_t byte;
 
@@ -384,6 +386,35 @@ void ServoController::loop()
 	//Single leg control
 	//SingleLegControl ();
 
+	//if we have a downward motion of right middle leg - wait for contact
+	if(GaitStep == 8)
+	{
+		while(g_InControlState.sensorValue[cRM] < 500) delay(1);
+
+		SSCSerial.println("STOP 6");
+		SSCSerial.println("STOP 5");
+		SSCSerial.println("QP 5");
+		SSCSerial.Input_wait(5000);
+
+		quint8 buff = 0;
+		int read = SSCSerial.Read(&buff, 1);
+		//Q_ASSERT(read == 1);
+
+		int p5 = buff*10;
+		//if(p5 != 0)
+		//{
+		//	SSCSerial.print("#5 p");
+		//	SSCSerial.println(p5+=50, DEC);
+		//}
+
+		double angleDeg = double(p5-592)*991/10000;
+		double delta = 90.0 - angleDeg;
+
+		int y = cXXFemurLength * qSin(delta*3.1415/180.0);
+
+		FloorLevel[cRM] = y+3;
+	}
+
 	//Gait
 	GaitSeq();
 
@@ -501,6 +532,7 @@ void ServoController::loop()
 			// if it is less, use the last cycle time...
 			//Wait for previous commands to be completed while walking
 			wDelayTime = (min(max ((PrevServoMoveTime - CycleTime), 1), NomGaitSpeed));
+
 			delay (wDelayTime); 
 		}
 
@@ -694,7 +726,7 @@ void GaitSelect(void)
 			GaitLegNr[cLM] = 1;
 			GaitLegNr[cRR] = 1;
 			GaitLegNr[cLF] = 5;
-			GaitLegNr[cRM] = 5;
+			GaitLegNr[cRM] = 5; //we are interested in this leg
 
 			NrLiftedPos = 3;
 			HalfLiftHeigth = 3;
@@ -791,13 +823,13 @@ void Gait (byte GaitCurrentLegNr)
 		(!TravelRequest && GaitStep==GaitLegNr[GaitCurrentLegNr] && (	(abs(GaitPosX[GaitCurrentLegNr])>2) || 
 																		(abs(GaitPosZ[GaitCurrentLegNr])>2) ||
 																		(abs(GaitRotY[GaitCurrentLegNr])>2)	)	)	)
-	{ //Up
+	{ //Up 1.0 5.1
 			GaitPosX[GaitCurrentLegNr] = 0;
 			GaitPosY[GaitCurrentLegNr] = -g_InControlState.LegLiftHeight;
 			GaitPosZ[GaitCurrentLegNr] = 0;
 			GaitRotY[GaitCurrentLegNr] = 0;
 	}
-	//Optional Half heigth Rear (2, 3, 5 lifted positions)
+	//Optional Half heigth Rear (2, 3, 5 lifted positions) 4.1 8.0
 	else if (((NrLiftedPos==2 && GaitStep==GaitLegNr[GaitCurrentLegNr]) || (NrLiftedPos>=3 && 
 		(GaitStep==GaitLegNr[GaitCurrentLegNr]-1 || GaitStep==GaitLegNr[GaitCurrentLegNr]+(StepsInGait-1))))
 		&& TravelRequest) {
@@ -805,9 +837,12 @@ void Gait (byte GaitCurrentLegNr)
 			GaitPosY[GaitCurrentLegNr] = -3*g_InControlState.LegLiftHeight/(3+HalfLiftHeigth);     //Easier to shift between div factor: /1 (3/3), /2 (3/6) and 3/4
 			GaitPosZ[GaitCurrentLegNr] = -g_InControlState.TravelLength.z/LiftDivFactor;
 			GaitRotY[GaitCurrentLegNr] = -g_InControlState.TravelLength.y/LiftDivFactor;
+
+			//BONUS
+			if(GaitCurrentLegNr == cRM)FloorLevel[cRM] = 30; //HAHA
 	}    
 
-	// Optional Half heigth front (2, 3, 5 lifted positions)
+	// Optional Half heigth front (2, 3, 5 lifted positions) 2.0 6.1
 	else if ((NrLiftedPos>=2) && (GaitStep==GaitLegNr[GaitCurrentLegNr]+1 || GaitStep==GaitLegNr[GaitCurrentLegNr]-(StepsInGait-1)) && TravelRequest) {
 		GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/LiftDivFactor;
 		GaitPosY[GaitCurrentLegNr] = -3*g_InControlState.LegLiftHeight/(3+HalfLiftHeigth); // Easier to shift between div factor: /1 (3/3), /2 (3/6) and 3/4
@@ -816,31 +851,31 @@ void Gait (byte GaitCurrentLegNr)
 	}
 
 	//Optional Half heigth Rear 5 LiftedPos (5 lifted positions)
-	else if (((NrLiftedPos==5 && (GaitStep==GaitLegNr[GaitCurrentLegNr]-2 ))) && TravelRequest) {
+/*	else if (((NrLiftedPos==5 && (GaitStep==GaitLegNr[GaitCurrentLegNr]-2 ))) && TravelRequest) {
 		GaitPosX[GaitCurrentLegNr] = -g_InControlState.TravelLength.x/2;
 		GaitPosY[GaitCurrentLegNr] = -g_InControlState.LegLiftHeight/2;
 		GaitPosZ[GaitCurrentLegNr] = -g_InControlState.TravelLength.z/2;
 		GaitRotY[GaitCurrentLegNr] = -g_InControlState.TravelLength.y/2;
-	}  		
+	} */ 		
 
 	//Optional Half heigth Front 5 LiftedPos (5 lifted positions)
-	else if ((NrLiftedPos==5) && (GaitStep==GaitLegNr[GaitCurrentLegNr]+2 || GaitStep==GaitLegNr[GaitCurrentLegNr]-(StepsInGait-2)) && TravelRequest) {
-		GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/2;
-		GaitPosY[GaitCurrentLegNr] = -g_InControlState.LegLiftHeight/2;
-		GaitPosZ[GaitCurrentLegNr] = g_InControlState.TravelLength.z/2;
-		GaitRotY[GaitCurrentLegNr] = g_InControlState.TravelLength.y/2;
-	}
+	//else if ((NrLiftedPos==5) && (GaitStep==GaitLegNr[GaitCurrentLegNr]+2 || GaitStep==GaitLegNr[GaitCurrentLegNr]-(StepsInGait-2)) && TravelRequest) {
+	//	GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/2;
+	//	GaitPosY[GaitCurrentLegNr] = -g_InControlState.LegLiftHeight/2;
+	//	GaitPosZ[GaitCurrentLegNr] = g_InControlState.TravelLength.z/2;
+	//	GaitRotY[GaitCurrentLegNr] = g_InControlState.TravelLength.y/2;
+	//}
 
 	//Leg front down position
-	else if ((GaitStep==GaitLegNr[GaitCurrentLegNr]+NrLiftedPos || GaitStep==GaitLegNr[GaitCurrentLegNr]-(StepsInGait-NrLiftedPos))
-		&& GaitPosY[GaitCurrentLegNr]<0) {
-			GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/2;
-			GaitPosZ[GaitCurrentLegNr] = g_InControlState.TravelLength.z/2;
-			GaitRotY[GaitCurrentLegNr] = g_InControlState.TravelLength.y/2;      	
-			GaitPosY[GaitCurrentLegNr] = 30;	//Only move leg down at once if terrain adaption is turned off
-	}
+	//else if ((GaitStep==GaitLegNr[GaitCurrentLegNr]+NrLiftedPos || GaitStep==GaitLegNr[GaitCurrentLegNr]-(StepsInGait-NrLiftedPos))
+	//	&& GaitPosY[GaitCurrentLegNr]<0) {
+	//		GaitPosX[GaitCurrentLegNr] = g_InControlState.TravelLength.x/2;
+	//		GaitRotY[GaitCurrentLegNr] = g_InControlState.TravelLength.y/2;
+	//		GaitPosZ[GaitCurrentLegNr] = g_InControlState.TravelLength.z/2;
+	//		GaitPosY[GaitCurrentLegNr] = 30;	//Only move leg down at once if terrain adaption is turned off
+	//}
 
-	//Move body forward      
+	//Move body forward     1.1 2.1 3.0 3.1 4.0 5.0 6.0 7.0 7.1 8.1
 	else {
 		GaitPosX[GaitCurrentLegNr] = GaitPosX[GaitCurrentLegNr] - (g_InControlState.TravelLength.x/TLDivFactor);
 		GaitPosY[GaitCurrentLegNr] = FloorLevel[GaitCurrentLegNr];
