@@ -14,7 +14,7 @@ Controller::Controller(QWidget *parent, Qt::WFlags flags)
 	m_readerPort.Open("COM5");
 	m_readerPort.Set_baud(57600);
 
-	connect(&m_reader, SIGNAL(valueChanged(int)), this, SLOT(onSensorData(int)));
+	connect(&m_reader, SIGNAL(valuesChanged(int, int, int, int, int, int)), this, SLOT(onSensorData(int, int, int, int, int, int)));
 
 	m_reader.Start(&m_readerPort);
 
@@ -48,11 +48,14 @@ void Controller::onSliderLY(int val)
 	//g_InControlState.SLLeg.y = val;
 }
 
-void Controller::onSensorData(int val)
+void Controller::onSensorData(int v0, int v1, int v2, int v3, int v4, int v5)
 {
-	ui.sSensorValue->setValue(val);
-	m_pressure = val;
-	g_InControlState.sensorValue[cRM] = val;
+	ui.sSensorLF->setValue( g_InControlState.sensorValue[cLF] = v5 );
+	ui.sSensorLM->setValue( g_InControlState.sensorValue[cLM] = v3 );
+	ui.sSensorLR->setValue( g_InControlState.sensorValue[cLR] = v0 );
+	ui.sSensorRF->setValue( g_InControlState.sensorValue[cRF] = v4 );
+	ui.sSensorRM->setValue( g_InControlState.sensorValue[cRM] = v2 );
+	ui.sSensorRR->setValue( g_InControlState.sensorValue[cRR] = v1 );
 }
 
 //void Controller::timerEvent(QTimerEvent *)
