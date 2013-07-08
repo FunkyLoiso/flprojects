@@ -3,26 +3,36 @@
 void setup()
 {
 	Serial.begin(57600);
+	
 }
 
-#define MSG_SIZE 2
+#define MSG_SIZE 6
 uint8_t msg[MSG_SIZE];
-static const int avgSize = 10;
-int avg = 0;
+static const int avgSize = 5;
+int avg[6] = {0};
+
+bool started = false;
 
 void loop()
 {
+	if(!started)
+	{
+		while(Serial.read() != 97) delay(1);
+		started = true;
+	}
+
 	int counter = avgSize;
 	while(--counter >= 0)
 	{
-		avg += analogRead(A2);
+		for(int i = 0; i < 6; ++i) avg[i] += analogRead(A0+i);
 	}
-	avg /= avgSize;
+	for(int i = 0; i < 6; ++i)
+	{
+		msg[i] = avg[i]/avgSize/4;//we send value/4!
+		avg[i] = 0;
+	}
 
-	msg[0] = avg;      // first 8 bits to msg[0]
-	msg[1] = avg >> 8; // last 2 bits to msg[1]
-	//msg[2] = time >> 6;
-	//msg[3] = time >> 14;
-	//msg[4] = time >> 22;
 	Serial.write(msg, MSG_SIZE);
+
+	if(Serial.read() == 99) started = false;
 }
