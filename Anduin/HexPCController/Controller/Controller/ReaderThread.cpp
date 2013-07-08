@@ -19,16 +19,25 @@ bool ReaderThread::Start(Serial* port)
 	if(!port->Is_open()) return false;
 	m_port = port;
 	m_port->Set_baud(BAUD);
+	Stop();
+	m_stopFlag = false;
 	m_port->Input_discard();
+	Sleep(100);
+
+	m_buffPtr = m_buff;
+
 	quint8 startMsg = 97;
-	m_port->Write(&startMsg, 1);
 	QThread::start();
+	m_port->Write(&startMsg, 1);
+
 	return true;
 }
 
 void ReaderThread::Stop()
 {
 	m_stopFlag = true;
+	quint8 stopMsg = 99;
+	m_port->Write(&stopMsg, 1);
 	QThread::wait();
 }
 
@@ -57,10 +66,10 @@ int func5(int x)
 	return x;
 }
 
+
 void ReaderThread::run()
 {
-	static quint8 buff[2];
-	static quint8* buffPtr = buff;
+
 	while(!m_stopFlag)
 	{
 		int r;
@@ -68,19 +77,17 @@ void ReaderThread::run()
 		r = m_port->Input_wait(1);
 		if (r > 0)
 		{
-			int readSize = buffPtr - buff;
-			r = m_port->Read(buffPtr, 2 - readSize);
-			if (r + readSize < 2)
+			int readSize = m_buffPtr - m_buff;
+			r = m_port->Read(m_buffPtr, MSG_SIZE - readSize);
+			if (r + readSize < MSG_SIZE)
 			{
-				buffPtr += r;
+				m_buffPtr += r;
 				continue;
 			}
 			else
 			{
-				int v2 = buff[0] | (short(buff[1] & 0x3) << 8);
-
-				emit valueChanged(func2(v2));
-				buffPtr = buff;
+				emit valuesChanged(m_buff[0]*4, m_buff[1]*4, m_buff[2]*4, m_buff[3]*4, m_buff[4]*4, m_buff[5]*4);
+				m_buffPtr = m_buff;
 			}
 		}
 	}
