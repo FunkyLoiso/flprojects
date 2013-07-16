@@ -28,6 +28,9 @@ extern "C" void __cxa_pure_virtual() {;}
 
 //
 //
+int filter(int val, int prevFiltered, double alpha);
+void writeRegister(byte registerAddress, byte value);
+void readRegister(byte registerAddress, int numBytes, byte* values);
 
 #include "E:\arduino-1.0.1\hardware\arduino\variants\standard\pins_arduino.h" 
 #include "E:\arduino-1.0.1\hardware\arduino\cores\arduino\arduino.h"
