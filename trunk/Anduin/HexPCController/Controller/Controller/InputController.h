@@ -78,6 +78,7 @@ typedef struct _InControlState {
 
 //[]Foot sensors
 	uint16_t sensorValue[6];
+	double accelAngles[2];
 } INCONTROLSTATE;
 
 
