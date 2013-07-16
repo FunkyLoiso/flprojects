@@ -22,6 +22,7 @@ public slots:
 	void onStart();
 	void onSliderLY(int);
 	void onSensorData(int, int, int, int, int, int);
+	void onAnglesData(double, double);
 
 private:
 	virtual void timerEvent(QTimerEvent *);

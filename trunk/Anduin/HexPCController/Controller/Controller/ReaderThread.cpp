@@ -24,7 +24,7 @@ bool ReaderThread::Start(Serial* port)
 	m_port->Input_discard();
 	Sleep(100);
 
-	m_buffPtr = m_buff;
+	m_curByte = 7;
 
 	quint8 startMsg = 97;
 	QThread::start();
@@ -70,25 +70,58 @@ int func5(int x)
 void ReaderThread::run()
 {
 
+	//while(!m_stopFlag)
+	//{
+	//	int r;
+
+	//	r = m_port->Input_wait(1);
+	//	if (r > 0)
+	//	{
+	//		int readSize = m_buffPtr - m_buff;
+	//		r = m_port->Read(m_buffPtr, MSG_SIZE - readSize);
+	//		if (r + readSize < MSG_SIZE)
+	//		{
+	//			m_buffPtr += r;
+	//			continue;
+	//		}
+	//		else
+	//		{
+	//			emit valuesChanged(m_buff[0]*4, m_buff[1]*4, m_buff[2]*4, m_buff[3]*4, m_buff[4]*4, m_buff[5]*4);
+	//			m_buffPtr = m_buff;
+	//		}
+	//	}
+	//}
 	while(!m_stopFlag)
 	{
-		int r;
-
-		r = m_port->Input_wait(1);
-		if (r > 0)
+		int r = m_port->Input_wait(1);
+		if(r > 0)
 		{
-			int readSize = m_buffPtr - m_buff;
-			r = m_port->Read(m_buffPtr, MSG_SIZE - readSize);
-			if (r + readSize < MSG_SIZE)
+			r = m_port->Read(m_buff, MSG_SIZE);
+		}
+
+		for(int i = 0; i < r; ++i)
+		{
+			++m_curByte;
+			if(m_curByte == 8) m_curByte = 0;
+			//0-5 - analog inputs
+			//6-7 - accel x and y angels
+			if(m_curByte < 6)
 			{
-				m_buffPtr += r;
-				continue;
+				m_pressure[m_curByte] = m_buff[i]*4;
 			}
 			else
 			{
-				emit valuesChanged(m_buff[0]*4, m_buff[1]*4, m_buff[2]*4, m_buff[3]*4, m_buff[4]*4, m_buff[5]*4);
-				m_buffPtr = m_buff;
+				qint8 val = m_buff[i];
+				//if(val & 0x80)//convert from two's compliment
+				//{
+				//	val ^= 0x7f;
+				//	val += 1;
+				//}
+				m_angle[m_curByte - 6] = double(val)/10;
 			}
 		}
+
+		emit valuesChanged(m_pressure[0], m_pressure[1], m_pressure[2], m_pressure[3], m_pressure[4], m_pressure[5]);
+		emit anglesChanged(m_angle[0], m_angle[1]);
 	}
 }

@@ -15,11 +15,12 @@ Controller::Controller(QWidget *parent, Qt::WFlags flags)
 	m_readerPort.Set_baud(57600);
 
 	connect(&m_reader, SIGNAL(valuesChanged(int, int, int, int, int, int)), this, SLOT(onSensorData(int, int, int, int, int, int)));
+	connect(&m_reader, SIGNAL(anglesChanged(double, double)), this, SLOT(onAnglesData(double, double)));
 
 	m_reader.Start(&m_readerPort);
 
 	g_InControlState.fHexOn = true;
-	g_InputController.setLY(100);
+	//g_InputController.setLY(100);
 	m_srvCtrl.Start();
 	//g_InControlState.SelectedLeg = 1;
 	//g_InControlState.BalanceMode = true;
@@ -149,4 +150,13 @@ void Controller::timerEvent(QTimerEvent *)
 		FloorLevel[cRM] = y;
 	}
 	if(m_pressure < 300 && contact) contact = false;
+}
+
+void Controller::onAnglesData(double x, double y)
+{
+	ui.sAngleX->setValue(x*10);
+	ui.sbAngleX->setValue(x);
+
+	ui.sAngleY->setValue(y*10);
+	ui.sbAngleY->setValue(y);
 }
