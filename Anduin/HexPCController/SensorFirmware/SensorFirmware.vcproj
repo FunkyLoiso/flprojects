@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="E:\arduino-1.0.1\hardware\arduino\cores\arduino;E:\arduino-1.0.1\hardware\arduino\variants\standard;e:\arduino-1.0.1\hardware\tools\avr\avr\include\;e:\arduino-1.0.1\hardware\tools\avr\avr\include\avr\;e:\arduino-1.0.1\hardware\tools\avr\avr\;e:\arduino-1.0.1\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;"
+				AdditionalIncludeDirectories="E:\arduino-1.0.1\hardware\arduino\cores\arduino;E:\arduino-1.0.1\hardware\arduino\variants\standard;E:\arduino-1.0.1\libraries\SPI;E:\arduino-1.0.1\libraries\SPI\utility;e:\arduino-1.0.1\hardware\tools\avr\avr\include\;e:\arduino-1.0.1\hardware\tools\avr\avr\include\avr\;e:\arduino-1.0.1\hardware\tools\avr\avr\;e:\arduino-1.0.1\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;"
 				PreprocessorDefinitions="__AVR_ATmega328P__;ARDUINO=101;__AVR__;F_CPU=16000000L;__cplusplus"
 				IgnoreStandardIncludePath="true"
 				MinimalRebuild="true"
@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
-				ForcedIncludeFiles="f:\projs\Anduin\HexPCController\SensorFirmware\Visual Micro\.SensorFirmware.vsarduino.h"
+				ForcedIncludeFiles="F:\projs\Anduin\HexPCController\SensorFirmware\Visual Micro\.SensorFirmware.vsarduino.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
