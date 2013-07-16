@@ -4,6 +4,9 @@
 
 #include <QtCore/qmath.h>
 
+#define DEG_TO_RAD 0.017453292519943295769236907684886
+#define RAD_TO_DEG 57.295779513082320876798154814105
+
 typedef unsigned int word;
 typedef uint8_t byte;
 
@@ -385,7 +388,7 @@ void ServoController::loop()
 	//Single leg control
 	//SingleLegControl ();
 
-	//first tripod
+	//first tripod down
 	if(GaitStep == 4)
 	{
 		bool contactLM = false, contactRF = false, contactRR = false;
@@ -451,7 +454,7 @@ void ServoController::loop()
 				FloorLevel[i] += lowestDelta;
 			}
 	}
-	else if(GaitStep == 8)//second tripod
+	else if(GaitStep == 8)//second tripod down
 	{
 		bool contactRM = false, contactLF = false, contactLR = false;
 		
@@ -503,6 +506,43 @@ void ServoController::loop()
 			double deltaLR = angleDegLR - 90.0;
 			FloorLevel[cLR] = -6 + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
 		}
+	}
+	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
+	{
+		static const int L = 200;
+		double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+		double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+		
+		double dLM = L*sin(angY);
+		double dR = L*sqrt(3.0)*sin(angX)/2;
+		double dRF = -0.5*dLM - dR;
+		double dRR = -0.5*dLM + dR;
+
+		FloorLevel[cLM] += dLM;
+		FloorLevel[cRF] += dRF;
+		FloorLevel[cRR] += dRR;
+	}
+	else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
+	{
+		static const int L = 200;
+		double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+		double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+
+		double dRM = -L*sin(angY);
+		double dL = L*sqrt(3.0)*sin(angX)/2;
+		double dLF = -0.5*dRM - dL;
+		double dLR = -0.5*dRM + dL;
+
+		FloorLevel[cRM] += dRM;
+		FloorLevel[cLF] += dLF;
+		FloorLevel[cLR] += dLR;
+	}
+
+	//check floor levels
+	for(int i = 0; i < 6; ++i)
+	{
+		long& val = FloorLevel[i];
+		val = qBound(-30L, val, 40L);
 	}
 
 	//Gait
