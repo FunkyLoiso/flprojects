@@ -385,13 +385,78 @@ void ServoController::loop()
 	//Single leg control
 	//SingleLegControl ();
 
-	//if we have a downward motion of right middle leg - wait for contact
-	if(GaitStep == 8)
+	//first tripod
+	if(GaitStep == 4)
+	{
+		bool contactLM = false, contactRF = false, contactRR = false;
+
+
+		while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < 700)
+		{
+			if(!contactLM && g_InControlState.sensorValue[cLM] > 300)
+			{
+				SSCSerial.println("STOP 21");
+				SSCSerial.println("STOP 22");
+				contactLM = true;
+			}
+			if(!contactRF && g_InControlState.sensorValue[cRF] > 100)
+			{
+				SSCSerial.println("STOP 1");
+				SSCSerial.println("STOP 2");
+				contactRF = true;
+			}
+			if(!contactRR && g_InControlState.sensorValue[cRR] > 100)
+			{
+				SSCSerial.println("STOP 9");
+				SSCSerial.println("STOP 10");
+				contactRR = true;
+			}
+		}
+
+		SSCSerial.println("QP 21 QP 1 QP 9");
+		SSCSerial.Input_wait(5000);
+		quint8 buff[3] = {0};
+		int read = SSCSerial.Read(buff, 3);
+
+		//if(contactLM)
+		{
+			double angleDegLM = double(buff[0]*10-592)*991/10000;
+			double deltaLM = angleDegLM - 90.0;
+			FloorLevel[cLM] = -6 + cXXFemurLength * qSin(deltaLM*3.1415/180.0);
+		}
+
+		//if(contactRF)
+		{
+			double angleDegRF = double(buff[1]*10-592)*991/10000;
+			double deltaRF = 90.0 - angleDegRF;
+			FloorLevel[cRF] = -6 + cXXFemurLength * qSin(deltaRF*3.1415/180.0);
+		}
+
+		//if(contactRR)
+		{
+			double angleDegRR = double(buff[2]*10-592)*991/10000;
+			double deltaRR = 90.0 - angleDegRR;
+			FloorLevel[cRR] = -6 + cXXFemurLength * qSin(deltaRR*3.1415/180.0);
+		}
+
+		long lowestDelta = 100;
+		for(int i = 0; i < 6; ++i)
+		{
+			long delta = 30 - FloorLevel[i];
+			if(delta < lowestDelta) lowestDelta = delta;
+		}
+		if(lowestDelta > 0)
+			for(int i = 0; i < 6; ++i)
+			{
+				FloorLevel[i] += lowestDelta;
+			}
+	}
+	else if(GaitStep == 8)//second tripod
 	{
 		bool contactRM = false, contactLF = false, contactLR = false;
 		
 
-		while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < 300)
+		while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < 700)
 		{
 			if(!contactRM && g_InControlState.sensorValue[cRM] > 300)
 			{
@@ -399,13 +464,13 @@ void ServoController::loop()
 				SSCSerial.println("STOP 6");
 				contactRM = true;
 			}
-			if(!contactLF && g_InControlState.sensorValue[cLF] > 50)
+			if(!contactLF && g_InControlState.sensorValue[cLF] > 100)
 			{
 				SSCSerial.println("STOP 17");
 				SSCSerial.println("STOP 18");
 				contactLF = true;
 			}
-			if(!contactLR && g_InControlState.sensorValue[cLR] > 50)
+			if(!contactLR && g_InControlState.sensorValue[cLR] > 100)
 			{
 				SSCSerial.println("STOP 25");
 				SSCSerial.println("STOP 26");
@@ -418,42 +483,26 @@ void ServoController::loop()
 		quint8 buff[3] = {0};
 		int read = SSCSerial.Read(buff, 3);
 
-		double angleDegRM = double(buff[0]*10-592)*991/10000;
-		double deltaRM = 90.0 - angleDegRM;
-		FloorLevel[cRM] = 3 + cXXFemurLength * qSin(deltaRM*3.1415/180.0);
+		//if(contactRM)
+		{
+			double angleDegRM = double(buff[0]*10-592)*991/10000;
+			double deltaRM = 90.0 - angleDegRM;
+			FloorLevel[cRM] = -6 + cXXFemurLength * qSin(deltaRM*3.1415/180.0);
+		}
 
-		double angleDegLF = double(buff[1]*10-592)*991/10000;
-		double deltaLF = angleDegLF - 90.0;
-		FloorLevel[cLF] = -3 + cXXFemurLength * qSin(deltaLF*3.1415/180.0);
+		//if(contactLF)
+		{
+			double angleDegLF = double(buff[1]*10-592)*991/10000;
+			double deltaLF = angleDegLF - 90.0;
+			FloorLevel[cLF] = -6 + cXXFemurLength * qSin(deltaLF*3.1415/180.0);
+		}
 
-		double angleDegLR = double(buff[2]*10-592)*991/10000;
-		double deltaLR = angleDegLR - 90.0;
-		FloorLevel[cLR] = -3 + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
-
-		//while(g_InControlState.sensorValue[cRM] < 500) delay(1);
-
-		//SSCSerial.println("STOP 6");
-		//SSCSerial.println("STOP 5");
-		//SSCSerial.println("QP 5");
-		//SSCSerial.Input_wait(5000);
-
-		//quint8 buff = 0;
-		//int read = SSCSerial.Read(&buff, 1);
-		////Q_ASSERT(read == 1);
-
-		//int p5 = buff*10;
-		////if(p5 != 0)
-		////{
-		////	SSCSerial.print("#5 p");
-		////	SSCSerial.println(p5+=50, DEC);
-		////}
-
-		//double angleDeg = double(p5-592)*991/10000;
-		//double delta = 90.0 - angleDeg;
-
-		//int y = cXXFemurLength * qSin(delta*3.1415/180.0);
-
-		//FloorLevel[cRM] = y+3;
+		//if(contactLR)
+		{
+			double angleDegLR = double(buff[2]*10-592)*991/10000;
+			double deltaLR = angleDegLR - 90.0;
+			FloorLevel[cLR] = -6 + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
+		}
 	}
 
 	//Gait
@@ -773,7 +822,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 4;
 			StepsInGait = 8; 
-			NomGaitSpeed = 70;
+			NomGaitSpeed = 570;
 			break;
 		case 2:
 			//Triple Tripod 12 step
@@ -885,6 +934,12 @@ void Gait (byte GaitCurrentLegNr)
 				FloorLevel[cRM] = 30; //HAHA
 				FloorLevel[cLF] = 30;
 				FloorLevel[cLR] = 30;
+			}
+			else if(GaitCurrentLegNr == cLM)
+			{
+				FloorLevel[cLM] = 30; //HUE
+				FloorLevel[cRF] = 30;
+				FloorLevel[cRR] = 30;
 			}
 	}    
 
