@@ -29,9 +29,12 @@ int dx = 0, dy = 0, dz = 0;
 static const double alpha = 0.3;
 //int filtered[6] = {0};
 
+void MSound(uint8_t _pin, byte cNotes, ...);
+
 void setup()
 {
 	Serial.begin(BAUD_RATE);
+	Serial.flush();
 
 	//Initiate an SPI communication instance.
 	SPI.begin();
@@ -71,9 +74,9 @@ void setup()
 	dx /= 100;
 	dy /= 100;
 	dz /= 100;
+
+	MSound(5, 3, 200, 1000, 100, 400, 100, 400);
 }
-
-
 
 bool started = false;
 
@@ -96,6 +99,10 @@ void loop()
 	x = filter( (((int)values[1]<<8)|(int)values[0]) + dx, x, alpha );
 	y = filter( (((int)values[3]<<8)|(int)values[2]) + dy, y, alpha );
 	z = filter( (((int)values[5]<<8)|(int)values[4]) + dz, z, alpha );
+
+	//x = ((int)values[1]<<8)|(int)values[0] + dx;
+	//y = ((int)values[3]<<8)|(int)values[2] + dy;
+	//z = ((int)values[5]<<8)|(int)values[4] + dz;
 
 	double angleX = atan2(x, z) * RAD_TO_DEG;
 	double angleY = atan2(y, z) * RAD_TO_DEG;
@@ -150,4 +157,57 @@ void readRegister(byte registerAddress, int numBytes, byte* values){
 	}
 	//Set the Chips Select pin high to end the SPI packet.
 	digitalWrite(CS, HIGH);
+}
+
+//==============================================================================
+//    SoundNoTimer - Quick and dirty tone function to try to output a frequency
+//            to a speaker for some simple sounds.
+//==============================================================================
+void SoundNoTimer(uint8_t _pin, unsigned long duration,  unsigned int frequency)
+{
+#ifdef __AVR__
+	volatile uint8_t *pin_port;
+	volatile uint8_t pin_mask;
+#else
+	volatile uint32_t *pin_port;
+	volatile uint16_t pin_mask;
+#endif
+	long toggle_count = 0;
+	long lusDelayPerHalfCycle;
+
+	// Set the pinMode as OUTPUT
+	pinMode(_pin, OUTPUT);
+
+	pin_port = portOutputRegister(digitalPinToPort(_pin));
+	pin_mask = digitalPinToBitMask(_pin);
+
+	toggle_count = 2 * frequency * duration / 1000;
+	lusDelayPerHalfCycle = 1000000L/(frequency * 2);
+
+	// if we are using an 8 bit timer, scan through prescalars to find the best fit
+	while (toggle_count--) {
+		// toggle the pin
+		*pin_port ^= pin_mask;
+
+		// delay a half cycle
+		delayMicroseconds(lusDelayPerHalfCycle);
+	}    
+	*pin_port &= ~(pin_mask);  // keep pin low after stop
+
+}
+
+void MSound(uint8_t _pin, byte cNotes, ...)
+{
+	va_list ap;
+	unsigned int uDur;
+	unsigned int uFreq;
+	va_start(ap, cNotes);
+
+	while (cNotes > 0) {
+		uDur = va_arg(ap, unsigned int);
+		uFreq = va_arg(ap, unsigned int);
+		SoundNoTimer(_pin, uDur, uFreq);
+		cNotes--;
+	}
+	va_end(ap);
 }
