@@ -390,7 +390,7 @@ void ServoController::loop()
 
 	//first tripod down
 
-	static const int contactFallback = -6;
+	static const int contactFallback = 0/*-6*/;
 
 	if(GaitStep == 4)
 	{
