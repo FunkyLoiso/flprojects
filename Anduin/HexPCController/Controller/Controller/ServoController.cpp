@@ -428,21 +428,21 @@ void ServoController::loop()
 		{
 			double angleDegLM = double(buff[0]*10-592)*991/10000;
 			double deltaLM = angleDegLM - 90.0;
-			FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*3.1415/180.0);
+			FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*DEG_TO_RAD);
 		}
 
 		//if(contactRF)
 		{
 			double angleDegRF = double(buff[1]*10-592)*991/10000;
 			double deltaRF = 90.0 - angleDegRF;
-			FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*3.1415/180.0);
+			FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*DEG_TO_RAD);
 		}
 
 		//if(contactRR)
 		{
 			double angleDegRR = double(buff[2]*10-592)*991/10000;
 			double deltaRR = 90.0 - angleDegRR;
-			FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*3.1415/180.0);
+			FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*DEG_TO_RAD);
 		}
 
 		long lowestDelta = 100;
@@ -493,22 +493,34 @@ void ServoController::loop()
 		{
 			double angleDegRM = double(buff[0]*10-592)*991/10000;
 			double deltaRM = 90.0 - angleDegRM;
-			FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*3.1415/180.0);
+			FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*DEG_TO_RAD);
 		}
 
 		//if(contactLF)
 		{
 			double angleDegLF = double(buff[1]*10-592)*991/10000;
 			double deltaLF = angleDegLF - 90.0;
-			FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*3.1415/180.0);
+			FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*DEG_TO_RAD);
 		}
 
 		//if(contactLR)
 		{
 			double angleDegLR = double(buff[2]*10-592)*991/10000;
 			double deltaLR = angleDegLR - 90.0;
-			FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
+			FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*DEG_TO_RAD);
 		}
+
+		long lowestDelta = 100;
+		for(int i = 0; i < 6; ++i)
+		{
+			long delta = 30 - FloorLevel[i];
+			if(delta < lowestDelta) lowestDelta = delta;
+		}
+		if(lowestDelta > 0)
+			for(int i = 0; i < 6; ++i)
+			{
+				FloorLevel[i] += lowestDelta;
+			}
 	}
 	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
 	{
@@ -851,7 +863,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 8;      
 			StepsInGait = 12;    
-			NomGaitSpeed = 170;
+			NomGaitSpeed = 70;
 			break;
 		case 1:
 			//Tripod 8 steps
@@ -866,7 +878,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 4;
 			StepsInGait = 8; 
-			NomGaitSpeed = 70;
+			NomGaitSpeed = 270;
 			break;
 		case 2:
 			//Triple Tripod 12 step
@@ -975,15 +987,15 @@ void Gait (byte GaitCurrentLegNr)
 			//BONUS
 			if(GaitCurrentLegNr == cRM)
 			{
-				FloorLevel[cRM] = 30; //HAHA
-				FloorLevel[cLF] = 30;
-				FloorLevel[cLR] = 30;
+				FloorLevel[cRM] = 40; //HAHA
+				FloorLevel[cLF] = 40;
+				FloorLevel[cLR] = 40;
 			}
 			else if(GaitCurrentLegNr == cLM)
 			{
-				FloorLevel[cLM] = 30; //HUE
-				FloorLevel[cRF] = 30;
-				FloorLevel[cRR] = 30;
+				FloorLevel[cLM] = 40; //HUE
+				FloorLevel[cRF] = 40;
+				FloorLevel[cRR] = 40;
 			}
 	}    
 
