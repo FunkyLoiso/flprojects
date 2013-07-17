@@ -22,9 +22,11 @@ bool ReaderThread::Start(Serial* port)
 	m_port = port;
 	m_port->Set_baud(BAUD);
 	Stop();
+	static byte trash;
+	m_port->Input_wait(1000);
+	while(m_port->Read(&trash, 1)){m_port->Input_wait(1000);};
 	m_stopFlag = false;
 	m_port->Input_discard();
-	Sleep(100);
 
 	m_curByte = 7;
 
