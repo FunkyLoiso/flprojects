@@ -389,12 +389,15 @@ void ServoController::loop()
 	//SingleLegControl ();
 
 	//first tripod down
+
+	static const int contactFallback = -6;
+
 	if(GaitStep == 4)
 	{
 		bool contactLM = false, contactRF = false, contactRR = false;
 
 
-		while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < 700)
+		while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed*2)
 		{
 			if(!contactLM && g_InControlState.sensorValue[cLM] > 300)
 			{
@@ -425,21 +428,21 @@ void ServoController::loop()
 		{
 			double angleDegLM = double(buff[0]*10-592)*991/10000;
 			double deltaLM = angleDegLM - 90.0;
-			FloorLevel[cLM] = -6 + cXXFemurLength * qSin(deltaLM*3.1415/180.0);
+			FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*3.1415/180.0);
 		}
 
 		//if(contactRF)
 		{
 			double angleDegRF = double(buff[1]*10-592)*991/10000;
 			double deltaRF = 90.0 - angleDegRF;
-			FloorLevel[cRF] = -6 + cXXFemurLength * qSin(deltaRF*3.1415/180.0);
+			FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*3.1415/180.0);
 		}
 
 		//if(contactRR)
 		{
 			double angleDegRR = double(buff[2]*10-592)*991/10000;
 			double deltaRR = 90.0 - angleDegRR;
-			FloorLevel[cRR] = -6 + cXXFemurLength * qSin(deltaRR*3.1415/180.0);
+			FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*3.1415/180.0);
 		}
 
 		long lowestDelta = 100;
@@ -459,7 +462,7 @@ void ServoController::loop()
 		bool contactRM = false, contactLF = false, contactLR = false;
 		
 
-		while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < 700)
+		while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed*2)
 		{
 			if(!contactRM && g_InControlState.sensorValue[cRM] > 300)
 			{
@@ -490,21 +493,21 @@ void ServoController::loop()
 		{
 			double angleDegRM = double(buff[0]*10-592)*991/10000;
 			double deltaRM = 90.0 - angleDegRM;
-			FloorLevel[cRM] = -6 + cXXFemurLength * qSin(deltaRM*3.1415/180.0);
+			FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*3.1415/180.0);
 		}
 
 		//if(contactLF)
 		{
 			double angleDegLF = double(buff[1]*10-592)*991/10000;
 			double deltaLF = angleDegLF - 90.0;
-			FloorLevel[cLF] = -6 + cXXFemurLength * qSin(deltaLF*3.1415/180.0);
+			FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*3.1415/180.0);
 		}
 
 		//if(contactLR)
 		{
 			double angleDegLR = double(buff[2]*10-592)*991/10000;
 			double deltaLR = angleDegLR - 90.0;
-			FloorLevel[cLR] = -6 + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
+			FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*3.1415/180.0);
 		}
 	}
 	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
@@ -663,7 +666,8 @@ void ServoController::loop()
 			//Wait for previous commands to be completed while walking
 			wDelayTime = (min(max ((PrevServoMoveTime - CycleTime), 1), NomGaitSpeed));
 
-			delay (wDelayTime); 
+			if(GaitStep != 5 && GaitStep != 1)//no wait after step 4 and 8, where we wait for contact
+				delay (wDelayTime); 
 		}
 
 	} else {
@@ -847,7 +851,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 8;      
 			StepsInGait = 12;    
-			NomGaitSpeed = 70;
+			NomGaitSpeed = 170;
 			break;
 		case 1:
 			//Tripod 8 steps
@@ -862,7 +866,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 4;
 			StepsInGait = 8; 
-			NomGaitSpeed = 570;
+			NomGaitSpeed = 70;
 			break;
 		case 2:
 			//Triple Tripod 12 step

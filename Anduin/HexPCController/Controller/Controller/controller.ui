@@ -20,10 +20,10 @@
       <item>
        <widget class="QSlider" name="sLY">
         <property name="minimum">
-         <number>-100</number>
+         <number>-90</number>
         </property>
         <property name="maximum">
-         <number>100</number>
+         <number>90</number>
         </property>
         <property name="value">
          <number>0</number>
