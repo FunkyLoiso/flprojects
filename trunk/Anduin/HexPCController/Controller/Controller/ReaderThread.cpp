@@ -4,9 +4,11 @@
 
 #define BAUD 57600
 
-ReaderThread::ReaderThread() : m_stopFlag(false)
+ReaderThread::ReaderThread()
+: m_stopFlag(false)
 {
-
+	memset(m_pressure, 0, 6);
+	m_angle[0] = m_angle[1] = 0.0f;
 }
 
 ReaderThread::~ReaderThread()
