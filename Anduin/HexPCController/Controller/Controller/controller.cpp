@@ -26,9 +26,6 @@ Controller::Controller(QWidget *parent, Qt::WFlags flags)
 	//g_InControlState.BalanceMode = true;
 
 	//startTimer(1);
-
-	g_InControlState.accelAngles[0] = 0;
-	g_InControlState.accelAngles[1] = 0;
 }
 
 Controller::~Controller()
