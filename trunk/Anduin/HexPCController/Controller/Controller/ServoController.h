@@ -29,6 +29,7 @@ private:
 	void loop();
 
 	void StopTripodOnContact(uint8_t f1, uint8_t, uint8_t f3);
+	void TripodHorizontalBalance(uint8_t middleLeg);
 
 	//virtual void timerEvent(QTimerEvent *);
 

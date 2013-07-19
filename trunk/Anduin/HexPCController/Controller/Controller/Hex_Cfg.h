@@ -223,7 +223,7 @@
 //#define cXXFemurLength    57
 //#define cXXTibiaLength    141
 //#define cXXTarsLength     85    // 4DOF only...
-#define cXXCoxaLength     38    // CH3-R with 3DOFA legs and pressure sensor (http://www.lynxmotion.com/p-504-3dof-alum-leg-pair-no-servos.aspx)
+#define cXXCoxaLength     29    // CH3-R with 3DOFA legs and pressure sensor (http://www.lynxmotion.com/p-504-3dof-alum-leg-pair-no-servos.aspx)
 #define cXXFemurLength    57
 #define cXXTibiaLength    147
 

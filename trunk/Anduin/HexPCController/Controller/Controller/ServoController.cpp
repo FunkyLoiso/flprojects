@@ -520,33 +520,35 @@ void ServoController::loop()
 	}
 	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
 	{
-		static const int L = 200;
-		double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-		double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
-		
-		double dLM = L*sin(angY);
-		double dR = L*sqrt(3.0)*sin(angX)/2;
-		double dRF = -0.5*dLM - dR;
-		double dRR = -0.5*dLM + dR;
+		TripodHorizontalBalance(cLM);
+		//static const int L = 200;
+		//double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+		//double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+		//
+		//double dLM = L*sin(angY);
+		//double dR = L*sqrt(3.0)*sin(angX)/2;
+		//double dRF = -0.5*dLM - dR;
+		//double dRR = -0.5*dLM + dR;
 
-		FloorLevel[cLM] += dLM;
-		FloorLevel[cRF] += dRF;
-		FloorLevel[cRR] += dRR;
+		//FloorLevel[cLM] += dLM;
+		//FloorLevel[cRF] += dRF;
+		//FloorLevel[cRR] += dRR;
 	}
 	else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
 	{
-		static const int L = 200;
-		double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-		double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+		TripodHorizontalBalance(cRM);
+		//static const int L = 200;
+		//double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+		//double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
 
-		double dRM = -L*sin(angY);
-		double dL = L*sqrt(3.0)*sin(angX)/2;
-		double dLF = -0.5*dRM - dL;
-		double dLR = -0.5*dRM + dL;
+		//double dRM = -L*sin(angY);
+		//double dL = L*sqrt(3.0)*sin(angX)/2;
+		//double dLF = -0.5*dRM - dL;
+		//double dLR = -0.5*dRM + dL;
 
-		FloorLevel[cRM] += dRM;
-		FloorLevel[cLF] += dLF;
-		FloorLevel[cLR] += dLR;
+		//FloorLevel[cRM] += dRM;
+		//FloorLevel[cLF] += dLF;
+		//FloorLevel[cLR] += dLR;
 	}
 
 	//check floor levels
@@ -1684,6 +1686,68 @@ void ServoController::StopTripodOnContact(byte f1, byte f2, byte f3)
 		{
 			FloorLevel[i] += lowestDelta;
 		}
+}
+
+void ServoController::TripodHorizontalBalance(byte middleLeg)
+{
+	static const int L = cLMOffsetX + cXXFemurLength + cXXCoxaLength;//distance from center to middle feet tip
+
+	byte legM = middleLeg;
+	byte legF, legR;
+	if(middleLeg == cRM)
+	{
+		legF = cLF;
+		legR = cLR;
+	}
+	else
+	{
+		legF = cRF;
+		legR = cRR;
+	}
+
+	double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+	double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+
+	double dM = L*sin(angY);//height delta for middle leg because of angY
+	if(middleLeg == cRM) dM *= -1;
+	double d = L*sqrt(3.0)*sin(angX)/2;//height delta for front and back legs because of angX
+	double dF = -0.5*dM - d;	//height delta for front leg because of both angX and angY
+	double dR = -0.5*dM + d;	//height delta for back leg because of both angX and angY
+
+	FloorLevel[legM] += dM;
+	FloorLevel[legF] += dF;
+	FloorLevel[legR] += dR;
+	
+	//else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
+	//{
+	//	static const int L = 200;
+	//	double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+	//	double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+
+	//	double dLM = L*sin(angY);
+	//	double dR = L*sqrt(3.0)*sin(angX)/2;
+	//	double dRF = -0.5*dLM - dR;
+	//	double dRR = -0.5*dLM + dR;
+
+	//	FloorLevel[cLM] += dLM;
+	//	FloorLevel[cRF] += dRF;
+	//	FloorLevel[cRR] += dRR;
+	//}
+	//else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
+	//{
+	//	static const int L = 200;
+	//	double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
+	//	double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
+
+	//	double dRM = -L*sin(angY);
+	//	double dL = L*sqrt(3.0)*sin(angX)/2;
+	//	double dLF = -0.5*dRM - dL;
+	//	double dLR = -0.5*dRM + dL;
+
+	//	FloorLevel[cRM] += dRM;
+	//	FloorLevel[cLF] += dLF;
+	//	FloorLevel[cLR] += dLR;
+	//}
 }
 
 
