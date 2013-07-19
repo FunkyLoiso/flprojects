@@ -61,6 +61,7 @@ typedef struct _InControlState {
      uint8_t			GaitType;			//Gait type
 
      short			LegLiftHeight;		//Current Travel height
+	 char			OptimalFloorLevel;	//All the floorLevels will receive a delta so that the lowest leg will be at OptimalFloorLevel
      COORD3D        TravelLength;            // X-Z or Length, Y is rotation.
 
 //[Single Leg Control]

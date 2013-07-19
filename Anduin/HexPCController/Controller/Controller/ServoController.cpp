@@ -4,12 +4,6 @@
 
 #include <QtCore/qmath.h>
 
-#define DEG_TO_RAD 0.017453292519943295769236907684886
-#define RAD_TO_DEG 57.295779513082320876798154814105
-
-typedef unsigned int word;
-typedef uint8_t byte;
-
 void delay(int val)
 {
 	Sleep(val);
@@ -18,7 +12,8 @@ void delay(int val)
 #define pgm_read_byte(addr) (*addr)
 #define pgm_read_word(addr) (*addr)
 
-#define BalanceDivFactor 6    //;Other values than 6 can be used, testing...CAUTION!! At your own risk ;)
+#define BalanceDivFactor 6			//;Other values than 6 can be used, testing...CAUTION!! At your own risk ;)
+#define contactFallback  0/*-6*/	//correction after contact detection (0 seems the best)
 
 //--------------------------------------------------------------------
 //[TABLES]
@@ -117,6 +112,9 @@ static const byte GetACos[] = {
 	const short cInitPosX[] = {cRRInitPosX, cRMInitPosX, cRFInitPosX, cLRInitPosX, cLMInitPosX, cLFInitPosX};
 	const short cInitPosY[] = {cRRInitPosY, cRMInitPosY, cRFInitPosY, cLRInitPosY, cLMInitPosY, cLFInitPosY};
 	const short cInitPosZ[] = {cRRInitPosZ, cRMInitPosZ, cRFInitPosZ, cLRInitPosZ, cLMInitPosZ, cLFInitPosZ};
+
+	//Contact trigger values for legs
+	const word cContactTrigger[] = {cRRContactTrigger, cRMContactTrigger, cRFContactTrigger, cLRContactTrigger, cLMContactTrigger, cLFContactTrigger};
 
 
 	// Define some globals for debug information
@@ -251,9 +249,9 @@ static const byte GetACos[] = {
 
 	long            GaitPosX[6];         //Array containing Relative X position corresponding to the Gait
 	long            GaitPosY[6];         //Array containing Relative Y position corresponding to the Gait
-	long			FloorLevel[6]  = {30, 30, 30, 30, 30, 30};
 	long            GaitPosZ[6];         //Array containing Relative Z position corresponding to the Gait
 	long            GaitRotY[6];         //Array containing Relative Y rotation corresponding to the Gait
+	long			FloorLevel[6]  = {30, 30, 30, 30, 30, 30};// GaitPosY at which floor contact was deteced
 
 
 	boolean         fWalking;            //  True if the robot are walking
@@ -301,8 +299,6 @@ void ServoController::Start()
 	m_timer.start();
 
 	setup();
-	//g_InControlState.fHexOn = true;
-	//startTimer(100);
 	QThread::start();
 }
 
@@ -362,6 +358,7 @@ void ServoController::setup()
 	g_InControlState.GaitType = 1;  // 0; Devon wanted 
 	g_InControlState.BalanceMode = 0;
 	g_InControlState.LegLiftHeight = 50;
+	g_InControlState.OptimalFloorLevel = 30;
 	GaitStep = 1;
 	GaitSelect();
 
@@ -389,138 +386,137 @@ void ServoController::loop()
 	//SingleLegControl ();
 
 	//first tripod down
-
-	static const int contactFallback = 0/*-6*/;
-
 	if(GaitStep == 4)
 	{
-		bool contactLM = false, contactRF = false, contactRR = false;
+		StopTripodOnContact(cLM, cRF, cRR);
+		//bool contactLM = false, contactRF = false, contactRR = false;
 
 
-		while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed*2)
-		{
-			if(!contactLM && g_InControlState.sensorValue[cLM] > 300)
-			{
-				SSCSerial.println("STOP 21");
-				SSCSerial.println("STOP 22");
-				contactLM = true;
-			}
-			if(!contactRF && g_InControlState.sensorValue[cRF] > 100)
-			{
-				SSCSerial.println("STOP 1");
-				SSCSerial.println("STOP 2");
-				contactRF = true;
-			}
-			if(!contactRR && g_InControlState.sensorValue[cRR] > 100)
-			{
-				SSCSerial.println("STOP 9");
-				SSCSerial.println("STOP 10");
-				contactRR = true;
-			}
-		}
+		//while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed)
+		//{
+		//	if(!contactLM && g_InControlState.sensorValue[cLM] > 300)
+		//	{
+		//		SSCSerial.println("STOP 21");
+		//		SSCSerial.println("STOP 22");
+		//		contactLM = true;
+		//	}
+		//	if(!contactRF && g_InControlState.sensorValue[cRF] > 100)
+		//	{
+		//		SSCSerial.println("STOP 1");
+		//		SSCSerial.println("STOP 2");
+		//		contactRF = true;
+		//	}
+		//	if(!contactRR && g_InControlState.sensorValue[cRR] > 100)
+		//	{
+		//		SSCSerial.println("STOP 9");
+		//		SSCSerial.println("STOP 10");
+		//		contactRR = true;
+		//	}
+		//}
 
-		SSCSerial.println("QP 21 QP 1 QP 9");
-		SSCSerial.Input_wait(5000);
-		quint8 buff[3] = {0};
-		int read = SSCSerial.Read(buff, 3);
+		//SSCSerial.println("QP 21 QP 1 QP 9");
+		//SSCSerial.Input_wait(5000);
+		//quint8 buff[3] = {0};
+		//int read = SSCSerial.Read(buff, 3);
 
-		//if(contactLM)
-		{
-			double angleDegLM = double(buff[0]*10-592)*991/10000;
-			double deltaLM = angleDegLM - 90.0;
-			FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*DEG_TO_RAD);
-		}
+		////if(contactLM)
+		//{
+		//	double angleDegLM = double(buff[0]*10-592)*991/10000;
+		//	double deltaLM = angleDegLM - 90.0;
+		//	FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*DEG_TO_RAD);
+		//}
 
-		//if(contactRF)
-		{
-			double angleDegRF = double(buff[1]*10-592)*991/10000;
-			double deltaRF = 90.0 - angleDegRF;
-			FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*DEG_TO_RAD);
-		}
+		////if(contactRF)
+		//{
+		//	double angleDegRF = double(buff[1]*10-592)*991/10000;
+		//	double deltaRF = 90.0 - angleDegRF;
+		//	FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*DEG_TO_RAD);
+		//}
 
-		//if(contactRR)
-		{
-			double angleDegRR = double(buff[2]*10-592)*991/10000;
-			double deltaRR = 90.0 - angleDegRR;
-			FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*DEG_TO_RAD);
-		}
+		////if(contactRR)
+		//{
+		//	double angleDegRR = double(buff[2]*10-592)*991/10000;
+		//	double deltaRR = 90.0 - angleDegRR;
+		//	FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*DEG_TO_RAD);
+		//}
 
-		long lowestDelta = 100;
-		for(int i = 0; i < 6; ++i)
-		{
-			long delta = 30 - FloorLevel[i];
-			if(delta < lowestDelta) lowestDelta = delta;
-		}
-		if(lowestDelta > 0)
-			for(int i = 0; i < 6; ++i)
-			{
-				FloorLevel[i] += lowestDelta;
-			}
+		//long lowestDelta = 100;
+		//for(int i = 0; i < 6; ++i)
+		//{
+		//	long delta = 30 - FloorLevel[i];
+		//	if(delta < lowestDelta) lowestDelta = delta;
+		//}
+		//if(lowestDelta > 0)
+		//	for(int i = 0; i < 6; ++i)
+		//	{
+		//		FloorLevel[i] += lowestDelta;
+		//	}
 	}
 	else if(GaitStep == 8)//second tripod down
 	{
-		bool contactRM = false, contactLF = false, contactLR = false;
-		
+		StopTripodOnContact(cRM, cLF, cLR);
+		//bool contactRM = false, contactLF = false, contactLR = false;
+		//
 
-		while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed*2)
-		{
-			if(!contactRM && g_InControlState.sensorValue[cRM] > 300)
-			{
-				SSCSerial.println("STOP 5");
-				SSCSerial.println("STOP 6");
-				contactRM = true;
-			}
-			if(!contactLF && g_InControlState.sensorValue[cLF] > 100)
-			{
-				SSCSerial.println("STOP 17");
-				SSCSerial.println("STOP 18");
-				contactLF = true;
-			}
-			if(!contactLR && g_InControlState.sensorValue[cLR] > 100)
-			{
-				SSCSerial.println("STOP 25");
-				SSCSerial.println("STOP 26");
-				contactLR = true;
-			}
-		}
+		//while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed)
+		//{
+		//	if(!contactRM && g_InControlState.sensorValue[cRM] > 300)
+		//	{
+		//		SSCSerial.println("STOP 5");
+		//		SSCSerial.println("STOP 6");
+		//		contactRM = true;
+		//	}
+		//	if(!contactLF && g_InControlState.sensorValue[cLF] > 100)
+		//	{
+		//		SSCSerial.println("STOP 17");
+		//		SSCSerial.println("STOP 18");
+		//		contactLF = true;
+		//	}
+		//	if(!contactLR && g_InControlState.sensorValue[cLR] > 100)
+		//	{
+		//		SSCSerial.println("STOP 25");
+		//		SSCSerial.println("STOP 26");
+		//		contactLR = true;
+		//	}
+		//}
 
-		SSCSerial.println("QP 5 QP 17 QP 25");
-		SSCSerial.Input_wait(5000);
-		quint8 buff[3] = {0};
-		int read = SSCSerial.Read(buff, 3);
+		//SSCSerial.println("QP 5 QP 17 QP 25");
+		//SSCSerial.Input_wait(5000);
+		//quint8 buff[3] = {0};
+		//int read = SSCSerial.Read(buff, 3);
 
-		//if(contactRM)
-		{
-			double angleDegRM = double(buff[0]*10-592)*991/10000;
-			double deltaRM = 90.0 - angleDegRM;
-			FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*DEG_TO_RAD);
-		}
+		////if(contactRM)
+		//{
+		//	double angleDegRM = double(buff[0]*10-592)*991/10000;
+		//	double deltaRM = 90.0 - angleDegRM;
+		//	FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*DEG_TO_RAD);
+		//}
 
-		//if(contactLF)
-		{
-			double angleDegLF = double(buff[1]*10-592)*991/10000;
-			double deltaLF = angleDegLF - 90.0;
-			FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*DEG_TO_RAD);
-		}
+		////if(contactLF)
+		//{
+		//	double angleDegLF = double(buff[1]*10-592)*991/10000;
+		//	double deltaLF = angleDegLF - 90.0;
+		//	FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*DEG_TO_RAD);
+		//}
 
-		//if(contactLR)
-		{
-			double angleDegLR = double(buff[2]*10-592)*991/10000;
-			double deltaLR = angleDegLR - 90.0;
-			FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*DEG_TO_RAD);
-		}
+		////if(contactLR)
+		//{
+		//	double angleDegLR = double(buff[2]*10-592)*991/10000;
+		//	double deltaLR = angleDegLR - 90.0;
+		//	FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*DEG_TO_RAD);
+		//}
 
-		long lowestDelta = 100;
-		for(int i = 0; i < 6; ++i)
-		{
-			long delta = 30 - FloorLevel[i];
-			if(delta < lowestDelta) lowestDelta = delta;
-		}
-		if(lowestDelta > 0)
-			for(int i = 0; i < 6; ++i)
-			{
-				FloorLevel[i] += lowestDelta;
-			}
+		//long lowestDelta = 100;
+		//for(int i = 0; i < 6; ++i)
+		//{
+		//	long delta = 30 - FloorLevel[i];
+		//	if(delta < lowestDelta) lowestDelta = delta;
+		//}
+		//if(lowestDelta > 0)
+		//	for(int i = 0; i < 6; ++i)
+		//	{
+		//		FloorLevel[i] += lowestDelta;
+		//	}
 	}
 	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
 	{
@@ -1632,5 +1628,62 @@ short SmoothControl (short CtrlMoveInp, short CtrlMoveOut, byte CtrlDivider)
 	return CtrlMoveInp;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Terran adaptation functions
+//////////////////////////////////////////////////////////////////////////
+
+//Stop tripod of feet f1, f2 and f3 on contact
+void ServoController::StopTripodOnContact(byte f1, byte f2, byte f3)
+{
+	byte foot[3] = {f1, f2, f3};
+	bool contact[3] = {false, false, false};
+
+	//1. Detect contact
+	while(	!(contact[0] && contact[1] && contact[2]) &&			//while we get contact on all three feet
+			(m_timer.elapsed() - lTimerStart) < NomGaitSpeed	)	//or the time for the feet to go full down runs out
+	{
+		for(byte i = 0; i < 3; ++i)
+		{
+			byte curFoot = foot[i];
+			if(!contact[i] && g_InControlState.sensorValue[foot[i]] > cContactTrigger[curFoot])
+			{// stop femyr and coxa servos
+				g_ServoDriver.StopLeg(curFoot);
+				contact[i] = true;
+			}
+		}
+	}
+
+	//2. Queue pulse width for femur servos
+	byte buff[3] = {0};
+	g_ServoDriver.QueueTripodFemurPW(f1, f2, f3, buff);
+
+	//3. Calculate and set the floor angles
+	for(int i = 0; i < 3; ++i)
+	{
+		//if(!contact[i]) continue;//we need to calculate only if contact was detected
+		byte curFoot = foot[i];
+
+		double angleDeg = double(buff[i]*10-592)*991/10000;
+		double delta = 90.0 - angleDeg;//this has correct sign for right feet
+		if(curFoot > 2)
+		{// if it is a left foot
+			delta *= -1; // change sign
+		}
+		FloorLevel[curFoot] = contactFallback + cXXFemurLength * qSin(delta*DEG_TO_RAD);
+	}
+
+	//4. Update floor levels so that the lowest floor level is the optimal level
+	long lowestDelta = 100;
+	for(int i = 0; i < 6; ++i)
+	{
+		long delta = g_InControlState.OptimalFloorLevel - FloorLevel[i];
+		if(delta < lowestDelta) lowestDelta = delta;
+	}
+	if(lowestDelta > 0)
+		for(int i = 0; i < 6; ++i)
+		{
+			FloorLevel[i] += lowestDelta;
+		}
+}
 
 

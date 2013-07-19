@@ -45,6 +45,9 @@ class ServoDriver {
     void SSCForwarder(void);
 #endif
 
+	void StopLeg(byte leg);
+	bool QueueTripodFemurPW(byte f1, byte f2, byte f3, byte out_data[3]);
+
   private:
   
 #ifdef OPT_GPPLAYER    

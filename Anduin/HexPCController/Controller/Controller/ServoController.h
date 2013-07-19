@@ -28,6 +28,8 @@ private:
 	void setup();
 	void loop();
 
+	void StopTripodOnContact(uint8_t f1, uint8_t, uint8_t f3);
+
 	//virtual void timerEvent(QTimerEvent *);
 
 
