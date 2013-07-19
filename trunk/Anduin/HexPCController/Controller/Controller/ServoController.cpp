@@ -389,173 +389,25 @@ void ServoController::loop()
 	if(GaitStep == 4)
 	{
 		StopTripodOnContact(cLM, cRF, cRR);
-		//bool contactLM = false, contactRF = false, contactRR = false;
-
-
-		//while(!(contactLM && contactRF && contactRR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed)
-		//{
-		//	if(!contactLM && g_InControlState.sensorValue[cLM] > 300)
-		//	{
-		//		SSCSerial.println("STOP 21");
-		//		SSCSerial.println("STOP 22");
-		//		contactLM = true;
-		//	}
-		//	if(!contactRF && g_InControlState.sensorValue[cRF] > 100)
-		//	{
-		//		SSCSerial.println("STOP 1");
-		//		SSCSerial.println("STOP 2");
-		//		contactRF = true;
-		//	}
-		//	if(!contactRR && g_InControlState.sensorValue[cRR] > 100)
-		//	{
-		//		SSCSerial.println("STOP 9");
-		//		SSCSerial.println("STOP 10");
-		//		contactRR = true;
-		//	}
-		//}
-
-		//SSCSerial.println("QP 21 QP 1 QP 9");
-		//SSCSerial.Input_wait(5000);
-		//quint8 buff[3] = {0};
-		//int read = SSCSerial.Read(buff, 3);
-
-		////if(contactLM)
-		//{
-		//	double angleDegLM = double(buff[0]*10-592)*991/10000;
-		//	double deltaLM = angleDegLM - 90.0;
-		//	FloorLevel[cLM] = contactFallback + cXXFemurLength * qSin(deltaLM*DEG_TO_RAD);
-		//}
-
-		////if(contactRF)
-		//{
-		//	double angleDegRF = double(buff[1]*10-592)*991/10000;
-		//	double deltaRF = 90.0 - angleDegRF;
-		//	FloorLevel[cRF] = contactFallback + cXXFemurLength * qSin(deltaRF*DEG_TO_RAD);
-		//}
-
-		////if(contactRR)
-		//{
-		//	double angleDegRR = double(buff[2]*10-592)*991/10000;
-		//	double deltaRR = 90.0 - angleDegRR;
-		//	FloorLevel[cRR] = contactFallback + cXXFemurLength * qSin(deltaRR*DEG_TO_RAD);
-		//}
-
-		//long lowestDelta = 100;
-		//for(int i = 0; i < 6; ++i)
-		//{
-		//	long delta = 30 - FloorLevel[i];
-		//	if(delta < lowestDelta) lowestDelta = delta;
-		//}
-		//if(lowestDelta > 0)
-		//	for(int i = 0; i < 6; ++i)
-		//	{
-		//		FloorLevel[i] += lowestDelta;
-		//	}
 	}
 	else if(GaitStep == 8)//second tripod down
 	{
 		StopTripodOnContact(cRM, cLF, cLR);
-		//bool contactRM = false, contactLF = false, contactLR = false;
-		//
-
-		//while(!(contactRM && contactLF && contactLR) && (m_timer.elapsed() - lTimerStart) < NomGaitSpeed)
-		//{
-		//	if(!contactRM && g_InControlState.sensorValue[cRM] > 300)
-		//	{
-		//		SSCSerial.println("STOP 5");
-		//		SSCSerial.println("STOP 6");
-		//		contactRM = true;
-		//	}
-		//	if(!contactLF && g_InControlState.sensorValue[cLF] > 100)
-		//	{
-		//		SSCSerial.println("STOP 17");
-		//		SSCSerial.println("STOP 18");
-		//		contactLF = true;
-		//	}
-		//	if(!contactLR && g_InControlState.sensorValue[cLR] > 100)
-		//	{
-		//		SSCSerial.println("STOP 25");
-		//		SSCSerial.println("STOP 26");
-		//		contactLR = true;
-		//	}
-		//}
-
-		//SSCSerial.println("QP 5 QP 17 QP 25");
-		//SSCSerial.Input_wait(5000);
-		//quint8 buff[3] = {0};
-		//int read = SSCSerial.Read(buff, 3);
-
-		////if(contactRM)
-		//{
-		//	double angleDegRM = double(buff[0]*10-592)*991/10000;
-		//	double deltaRM = 90.0 - angleDegRM;
-		//	FloorLevel[cRM] = contactFallback + cXXFemurLength * qSin(deltaRM*DEG_TO_RAD);
-		//}
-
-		////if(contactLF)
-		//{
-		//	double angleDegLF = double(buff[1]*10-592)*991/10000;
-		//	double deltaLF = angleDegLF - 90.0;
-		//	FloorLevel[cLF] = contactFallback + cXXFemurLength * qSin(deltaLF*DEG_TO_RAD);
-		//}
-
-		////if(contactLR)
-		//{
-		//	double angleDegLR = double(buff[2]*10-592)*991/10000;
-		//	double deltaLR = angleDegLR - 90.0;
-		//	FloorLevel[cLR] = contactFallback + cXXFemurLength * qSin(deltaLR*DEG_TO_RAD);
-		//}
-
-		//long lowestDelta = 100;
-		//for(int i = 0; i < 6; ++i)
-		//{
-		//	long delta = 30 - FloorLevel[i];
-		//	if(delta < lowestDelta) lowestDelta = delta;
-		//}
-		//if(lowestDelta > 0)
-		//	for(int i = 0; i < 6; ++i)
-		//	{
-		//		FloorLevel[i] += lowestDelta;
-		//	}
 	}
 	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
 	{
 		TripodHorizontalBalance(cLM);
-		//static const int L = 200;
-		//double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-		//double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
-		//
-		//double dLM = L*sin(angY);
-		//double dR = L*sqrt(3.0)*sin(angX)/2;
-		//double dRF = -0.5*dLM - dR;
-		//double dRR = -0.5*dLM + dR;
-
-		//FloorLevel[cLM] += dLM;
-		//FloorLevel[cRF] += dRF;
-		//FloorLevel[cRR] += dRR;
 	}
 	else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
 	{
 		TripodHorizontalBalance(cRM);
-		//static const int L = 200;
-		//double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-		//double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
-
-		//double dRM = -L*sin(angY);
-		//double dL = L*sqrt(3.0)*sin(angX)/2;
-		//double dLF = -0.5*dRM - dL;
-		//double dLR = -0.5*dRM + dL;
-
-		//FloorLevel[cRM] += dRM;
-		//FloorLevel[cLF] += dLF;
-		//FloorLevel[cLR] += dLR;
 	}
 
 	//check floor levels
 	for(int i = 0; i < 6; ++i)
 	{
 		long& val = FloorLevel[i];
-		val = qBound(-30L, val, 40L);
+		val = qBound(-50L, val, 50L);
 	}
 
 	//Gait
