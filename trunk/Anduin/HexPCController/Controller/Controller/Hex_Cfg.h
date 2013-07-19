@@ -320,3 +320,18 @@
 #define cTarsFactorB	60	//4DOF ONLY
 #define cTarsFactorC	50	//4DOF ONLY
 
+//--------------------------------------------------------------------
+//Pressure sensor contact trigger values
+#define cTriggerA0	300
+#define cTriggerA1	100
+#define cTriggerA2	300
+#define cTriggerA3	100
+#define cTriggerA4	300
+#define cTriggerA5	100
+
+#define cRRContactTrigger cTriggerA1
+#define cRMContactTrigger cTriggerA2
+#define cRFContactTrigger cTriggerA4
+#define cLRContactTrigger cTriggerA0
+#define cLMContactTrigger cTriggerA3
+#define cLFContactTrigger cTriggerA5

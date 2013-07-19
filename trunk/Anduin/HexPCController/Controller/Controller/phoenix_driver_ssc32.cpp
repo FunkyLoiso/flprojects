@@ -49,7 +49,7 @@ SerialWrapper SSCSerial;
 // definition of some helper functions
 extern int SSCRead (uint8_t* pb, int cb, unsigned int wTimeout, unsigned int wEOL);
 
-extern unsigned int ServoMoveTime;
+extern word ServoMoveTime;
 
 
 //--------------------------------------------------------------------
@@ -283,6 +283,31 @@ void ServoDriver::CommitServoDriver(unsigned int wMoveTime)
 
     g_InputController.AllowControllerInterrupts(true);    
 
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Stop femur and tibia srervos of leg
+void ServoDriver::StopLeg(byte leg)
+{
+	SSCSerial.print("STOP ");
+	SSCSerial.println(cFemurPin[leg], DEC);
+	SSCSerial.print(" STOP ");
+	SSCSerial.println(cTibiaPin[leg], DEC);
+}
+//////////////////////////////////////////////////////////////////////////
+//Get pulse width values of femur servos of a tripod
+bool ServoDriver::QueueTripodFemurPW(byte f1, byte f2, byte f3, byte out_data[3])
+{
+	byte foot[3] = {f1, f2, f3};
+	for(byte i = 0; i < 3; ++i)
+	{
+		SSCSerial.print(" QP ");
+		SSCSerial.print(cFemurPin[foot[i]], DEC);
+	}
+	SSCSerial.println();
+	SSCSerial.Input_wait(5000);
+	byte read = SSCSerial.Read(out_data, 3);
+	return read == 3;
 }
 
 //--------------------------------------------------------------------
