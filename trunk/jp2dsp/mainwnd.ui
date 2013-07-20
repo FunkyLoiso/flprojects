@@ -1,0 +1,108 @@
+<ui version="4.0" >
+ <class>MainWndClass</class>
+ <widget class="QMainWindow" name="MainWndClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>21</y>
+     <width>800</width>
+     <height>548</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu" >
+    <property name="title" >
+     <string>Файл</string>
+    </property>
+    <addaction name="actionFileOpen" />
+    <addaction name="actionSPOIFolderOpen" />
+    <addaction name="actionAviFolderOpen" />
+    <addaction name="actionSPOIDeviceOpen" />
+    <addaction name="actionConvert" />
+   </widget>
+   <addaction name="menu" />
+  </widget>
+  <widget class="QToolBar" name="toolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>569</y>
+     <width>800</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>BottomToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>581</y>
+     <width>800</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
+  <action name="actionStart" >
+   <property name="text" >
+    <string>Старт</string>
+   </property>
+  </action>
+  <action name="actionFileOpen" >
+   <property name="text" >
+    <string>Открыть файл</string>
+   </property>
+  </action>
+  <action name="actionSPOIFolderOpen" >
+   <property name="text" >
+    <string>Открыть папку SPOI</string>
+   </property>
+  </action>
+  <action name="actionSPOIDeviceOpen" >
+   <property name="text" >
+    <string>Открыть устройство SPOI</string>
+   </property>
+  </action>
+  <action name="actionConvert" >
+   <property name="text" >
+    <string>Преобразование...</string>
+   </property>
+  </action>
+  <action name="actionAviFolderOpen" >
+   <property name="text" >
+    <string>Открыть папку с .avi</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
