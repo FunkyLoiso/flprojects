@@ -14,10 +14,40 @@
    <string>Controller</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>LY</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>LX</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
        <widget class="QSlider" name="sLY">
         <property name="minimum">
          <number>-90</number>
@@ -32,34 +62,26 @@
          <enum>Qt::Vertical</enum>
         </property>
         <property name="tickPosition">
-         <enum>QSlider::TicksAbove</enum>
+         <enum>QSlider::TicksBelow</enum>
         </property>
         <property name="tickInterval">
          <number>10</number>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>LY</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QSlider" name="sSpeed">
+      <item row="2" column="2" colspan="3">
+       <widget class="QSlider" name="sLX">
         <property name="minimum">
-         <number>-100</number>
+         <number>-90</number>
         </property>
         <property name="maximum">
-         <number>100</number>
+         <number>90</number>
+        </property>
+        <property name="value">
+         <number>0</number>
         </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="tickPosition">
          <enum>QSlider::TicksAbove</enum>
@@ -69,36 +91,16 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_3">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="bStart">
         <property name="text">
-         <string>speed</string>
+         <string>Start</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
     <item row="0" column="2">
-     <widget class="QPushButton" name="bStart">
-      <property name="text">
-       <string>Start</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>223</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="4">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0" rowspan="3">
        <widget class="QSlider" name="sAngleX">
@@ -230,8 +232,35 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="5">
+    <item row="0" column="4">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="0" rowspan="3">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QSlider" name="sSensorLM">
+          <property name="maximum">
+           <number>1300</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::TicksAbove</enum>
+          </property>
+          <property name="tickInterval">
+           <number>100</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>LM</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <spacer name="verticalSpacer_3">
         <property name="orientation">
@@ -311,33 +340,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="1" column="0" rowspan="3">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QSlider" name="sSensorLM">
-          <property name="maximum">
-           <number>1300</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksAbove</enum>
-          </property>
-          <property name="tickInterval">
-           <number>100</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>LM</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item row="1" column="3" rowspan="3">
        <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -473,6 +475,20 @@
        </spacer>
       </item>
      </layout>
+    </item>
+    <item row="0" column="1">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

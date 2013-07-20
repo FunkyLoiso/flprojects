@@ -50,3 +50,8 @@ void InputController::setLY(short val)
 {
 	ly = val;
 }
+
+void InputController::setLX(short val)
+{
+	lx = val;
+}

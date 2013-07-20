@@ -21,6 +21,7 @@ public:
 public slots:
 	void onStart();
 	void onSliderLY(int);
+	void onSliderLX(int);
 	void onSensorData(int, int, int, int, int, int);
 	void onAnglesData(double, double);
 

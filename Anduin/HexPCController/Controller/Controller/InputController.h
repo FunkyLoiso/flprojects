@@ -25,6 +25,7 @@ class InputController {
     void     AllowControllerInterrupts(bool fAllow);
 
 	void	setLY(short val);
+	void	setLX(short val);
 
   private:
 	  bool WalkMethod;

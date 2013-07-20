@@ -10,6 +10,7 @@ Controller::Controller(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 	connect(ui.bStart, SIGNAL(clicked()), this, SLOT(onStart()));
 	connect(ui.sLY, SIGNAL(valueChanged(int)), this, SLOT(onSliderLY(int)));
+	connect(ui.sLX, SIGNAL(valueChanged(int)), this, SLOT(onSliderLX(int)));
 
 	m_readerPort.Open("COM5");
 	m_readerPort.Set_baud(57600);
@@ -47,6 +48,12 @@ void Controller::onSliderLY(int val)
 	g_InputController.setLY(val);
 	//g_InControlState.SLLeg.y = val;
 }
+
+void Controller::onSliderLX(int val)
+{
+	g_InputController.setLX(val);
+}
+
 
 void Controller::onSensorData(int v0, int v1, int v2, int v3, int v4, int v5)
 {
