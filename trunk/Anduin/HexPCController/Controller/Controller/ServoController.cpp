@@ -834,16 +834,16 @@ void Gait (byte GaitCurrentLegNr)
 			GaitPosZ[GaitCurrentLegNr] = -g_InControlState.TravelLength.z/LiftDivFactor;
 			GaitRotY[GaitCurrentLegNr] = -g_InControlState.TravelLength.y/LiftDivFactor;
 
-			//BONUS
+			//Send legs all the way down
 			if(GaitCurrentLegNr == cRM)
 			{
-				FloorLevel[cRM] = 40; //HAHA
+				FloorLevel[cRM] = 40;
 				FloorLevel[cLF] = 40;
 				FloorLevel[cLR] = 40;
 			}
 			else if(GaitCurrentLegNr == cLM)
 			{
-				FloorLevel[cLM] = 40; //HUE
+				FloorLevel[cLM] = 40;
 				FloorLevel[cRF] = 40;
 				FloorLevel[cRR] = 40;
 			}
@@ -1569,37 +1569,6 @@ void ServoController::TripodHorizontalBalance(byte middleLeg)
 	FloorLevel[legM] += dM;
 	FloorLevel[legF] += dF;
 	FloorLevel[legR] += dR;
-	
-	//else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
-	//{
-	//	static const int L = 200;
-	//	double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-	//	double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
-
-	//	double dLM = L*sin(angY);
-	//	double dR = L*sqrt(3.0)*sin(angX)/2;
-	//	double dRF = -0.5*dLM - dR;
-	//	double dRR = -0.5*dLM + dR;
-
-	//	FloorLevel[cLM] += dLM;
-	//	FloorLevel[cRF] += dRF;
-	//	FloorLevel[cRR] += dRR;
-	//}
-	//else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
-	//{
-	//	static const int L = 200;
-	//	double angX = g_InControlState.accelAngles[0]*DEG_TO_RAD;
-	//	double angY = g_InControlState.accelAngles[1]*DEG_TO_RAD;
-
-	//	double dRM = -L*sin(angY);
-	//	double dL = L*sqrt(3.0)*sin(angX)/2;
-	//	double dLF = -0.5*dRM - dL;
-	//	double dLR = -0.5*dRM + dL;
-
-	//	FloorLevel[cRM] += dRM;
-	//	FloorLevel[cLF] += dLF;
-	//	FloorLevel[cLR] += dLR;
-	//}
 }
 
 
