@@ -385,8 +385,8 @@ void ServoController::loop()
 	//Single leg control
 	//SingleLegControl ();
 
-	//first tripod down
-	if(GaitStep == 4)
+	
+	if(GaitStep == 4)//first tripod down
 	{
 		StopTripodOnContact(cLM, cRF, cRR);
 	}
@@ -835,17 +835,18 @@ void Gait (byte GaitCurrentLegNr)
 			GaitRotY[GaitCurrentLegNr] = -g_InControlState.TravelLength.y/LiftDivFactor;
 
 			//Send legs all the way down
+			static const byte minFloor = 40;
 			if(GaitCurrentLegNr == cRM)
 			{
-				FloorLevel[cRM] = 40;
-				FloorLevel[cLF] = 40;
-				FloorLevel[cLR] = 40;
+				FloorLevel[cRM] = minFloor;
+				FloorLevel[cLF] = minFloor;
+				FloorLevel[cLR] = minFloor;
 			}
 			else if(GaitCurrentLegNr == cLM)
 			{
-				FloorLevel[cLM] = 40;
-				FloorLevel[cRF] = 40;
-				FloorLevel[cRR] = 40;
+				FloorLevel[cLM] = minFloor;
+				FloorLevel[cRF] = minFloor;
+				FloorLevel[cRR] = minFloor;
 			}
 	}    
 
@@ -1528,15 +1529,15 @@ void ServoController::StopTripodOnContact(byte f1, byte f2, byte f3)
 
 	//4. Update floor levels so that the lowest floor level is the optimal level
 	long lowestDelta = 100;
-	for(int i = 0; i < 6; ++i)
+	for(int i = 0; i < 3; ++i)
 	{
-		long delta = g_InControlState.OptimalFloorLevel - FloorLevel[i];
+		long delta = g_InControlState.OptimalFloorLevel - FloorLevel[foot[i]];
 		if(delta < lowestDelta) lowestDelta = delta;
 	}
 	if(lowestDelta > 0)
-		for(int i = 0; i < 6; ++i)
+		for(int i = 0; i < 3; ++i)
 		{
-			FloorLevel[i] += lowestDelta;
+			FloorLevel[foot[i]] += lowestDelta;
 		}
 }
 
