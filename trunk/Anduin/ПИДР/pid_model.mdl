@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.5"
+    ComputedModelVersion    "1.6"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -45,9 +45,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "nein"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Mar 08 23:30:24 2013"
+  LastModifiedDate	  "Sat Mar 16 18:53:03 2013"
   RTWModifiedTimeStamp	  0
-  ModelVersionFormat	  "1.%<AutoIncrement:5>"
+  ModelVersionFormat	  "1.%<AutoIncrement:6>"
   ConfigurationManager	  "None"
   SimulationMode	  "normal"
   LinearizationMsg	  "none"
@@ -804,7 +804,7 @@ Model {
       Ports		      [2]
       Position		      [1020, 66, 1050, 99]
       Floating		      off
-      Location		      [-1584, 674, -15, 1175]
+      Location		      [-1605, 81, -36, 582]
       Open		      on
       NumInputPorts	      "2"
       List {
@@ -813,8 +813,8 @@ Model {
 	axes2			"%<SignalLabel>"
       }
       TimeRange		      "15"
-      YMin		      "0~-150"
-      YMax		      "300~100"
+      YMin		      "-50~-150"
+      YMax		      "350~150"
       SaveName		      "ScopeData1"
       DataFormat	      "StructureWithTime"
       LimitDataPoints	      off
@@ -895,7 +895,7 @@ Model {
 	set0ParseKeys		"13,10"
 	set0Sigs		"MassObject:o1Limiter:o1"
       }
-      Location		      [-1588, 57, -20, 616]
+      Location		      [6, 57, 1574, 616]
       Open		      on
       NumInputPorts	      "1"
       List {
@@ -906,7 +906,7 @@ Model {
       ShowLegends	      off
       TimeRange		      "15"
       YMin		      "-200"
-      YMax		      "1000"
+      YMax		      "1200"
       DataFormat	      "Array"
       LimitDataPoints	      off
       MaxDataPoints	      "7500"
