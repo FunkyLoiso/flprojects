@@ -251,12 +251,14 @@ static const byte GetACos[] = {
 	long            GaitPosY[6];         //Array containing Relative Y position corresponding to the Gait
 	long            GaitPosZ[6];         //Array containing Relative Z position corresponding to the Gait
 	long            GaitRotY[6];         //Array containing Relative Y rotation corresponding to the Gait
-	long			FloorLevel[6]  = {30, 30, 30, 30, 30, 30};// GaitPosY at which floor contact was deteced
+	long			FloorLevel[6] = {0};
+	//long			FloorLevel[6]  = {30, 30, 30, 30, 30, 30};// GaitPosY at which floor contact was deteced
 
 
 	boolean         fWalking;            //  True if the robot are walking
 	boolean         fContinueWalking;    // should we continue to walk?
 
+	extern short	g_BodyYShift;//body shift from controller. Makes the robot stand higher or lower
 
 
 	//=============================================================================
@@ -357,8 +359,8 @@ void ServoController::setup()
 	//Gait
 	g_InControlState.GaitType = 1;  // 0; Devon wanted 
 	g_InControlState.BalanceMode = 0;
-	g_InControlState.LegLiftHeight = 50;
-	g_InControlState.OptimalFloorLevel = 30;
+	g_InControlState.LegLiftHeight = 50+g_BodyYShift;
+	g_InControlState.OptimalFloorLevel = 0;
 	GaitStep = 1;
 	GaitSelect();
 
@@ -386,21 +388,24 @@ void ServoController::loop()
 	//SingleLegControl ();
 
 	
-	if(GaitStep == 4)//first tripod down
+	if(fContinueWalking)
 	{
-		StopTripodOnContact(cLM, cRF, cRR);
-	}
-	else if(GaitStep == 8)//second tripod down
-	{
-		StopTripodOnContact(cRM, cLF, cLR);
-	}
-	else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
-	{
-		TripodHorizontalBalance(cLM);
-	}
-	else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
-	{
-		TripodHorizontalBalance(cRM);
+		if(GaitStep == 4)//first tripod down
+		{
+			StopTripodOnContact(cLM, cRF, cRR);
+		}
+		else if(GaitStep == 8)//second tripod down
+		{
+			StopTripodOnContact(cRM, cLF, cLR);
+		}
+		else if(GaitStep == 5)//first tripod balance (feet RR, RF, LM)!
+		{
+			TripodHorizontalBalance(cLM);
+		}
+		else if(GaitStep == 1)//second tripod balance (feet RM, LR, LF)
+		{
+			TripodHorizontalBalance(cRM);
+		}
 	}
 
 	//check floor levels
@@ -728,7 +733,7 @@ void GaitSelect(void)
 			HalfLiftHeigth = 3;
 			TLDivFactor = 4;
 			StepsInGait = 8; 
-			NomGaitSpeed = 270;
+			NomGaitSpeed = 170;
 			break;
 		case 2:
 			//Triple Tripod 12 step
@@ -835,7 +840,7 @@ void Gait (byte GaitCurrentLegNr)
 			GaitRotY[GaitCurrentLegNr] = -g_InControlState.TravelLength.y/LiftDivFactor;
 
 			//Send legs all the way down
-			static const byte minFloor = 40;
+			static const byte minFloor = 10;
 			if(GaitCurrentLegNr == cRM)
 			{
 				FloorLevel[cRM] = minFloor;
@@ -1524,7 +1529,7 @@ void ServoController::StopTripodOnContact(byte f1, byte f2, byte f3)
 		{// if it is a left foot
 			delta *= -1; // change sign
 		}
-		FloorLevel[curFoot] = contactFallback + cXXFemurLength * qSin(delta*DEG_TO_RAD);
+		FloorLevel[curFoot] = contactFallback + cXXFemurLength * qSin(delta*DEG_TO_RAD) - g_BodyYShift;
 	}
 
 	//4. Update floor levels so that the lowest floor level is the optimal level

@@ -4,8 +4,8 @@
 
 InputController  g_InputController;
 
-static short g_BodyYOffset = 65;  // 0 - Devon wanted...
-static short g_BodyYShift = 0;
+short g_BodyYOffset = 65;  // 0 - Devon wanted...
+short g_BodyYShift = 30;
 
 void     InputController::Init(void)
 {
