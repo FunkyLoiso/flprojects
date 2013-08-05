@@ -22,7 +22,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="GlassWidget" name="glass" native="true"/>
+        <widget class="GlassWidget" name="glassWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -181,7 +181,7 @@
   <connection>
    <sender>bRedraw</sender>
    <signal>clicked()</signal>
-   <receiver>glass</receiver>
+   <receiver>glassWidget</receiver>
    <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
