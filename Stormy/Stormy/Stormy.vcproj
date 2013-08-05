@@ -162,11 +162,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Glass.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\glasswidget.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Particle.cpp"
 				>
 			</File>
 			<File
@@ -179,6 +187,10 @@
 			Filter="h"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Glass.h"
+				>
+			</File>
 			<File
 				RelativePath=".\glasswidget.h"
 				>
@@ -204,6 +216,14 @@
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Particle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PhysicsEngine.h"
+				>
 			</File>
 			<File
 				RelativePath=".\stormy.h"
