@@ -29,18 +29,8 @@
     </item>
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Vertical gravity</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="sbGravityY">
-        <property name="suffix">
-         <string> g</string>
-        </property>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="sbFriction">
         <property name="minimum">
          <double>-10.000000000000000</double>
         </property>
@@ -59,19 +49,13 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="sbGravityX">
-        <property name="suffix">
-         <string> g</string>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This factor determines how much kinetic energy is lost during collision&lt;/p&gt;&lt;p&gt;U1 - U2 = -&lt;span style=&quot; font-style:italic;&quot;&gt;k&lt;/span&gt;(V1 - V2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <property name="minimum">
-         <double>-10.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.010000000000000</double>
+        <property name="text">
+         <string>Restitution factor</string>
         </property>
        </widget>
       </item>
@@ -82,29 +66,6 @@
         </property>
         <property name="text">
          <string>Friction factor</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="sbFriction">
-        <property name="minimum">
-         <double>-10.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.010000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This factor determines how much kinetic energy is lost during collision&lt;/p&gt;&lt;p&gt;U1 - U2 = -&lt;span style=&quot; font-style:italic;&quot;&gt;k&lt;/span&gt;(V1 - V2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Restitution factor</string>
         </property>
        </widget>
       </item>
@@ -133,6 +94,52 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="sbGravityY">
+        <property name="suffix">
+         <string> g</string>
+        </property>
+        <property name="minimum">
+         <double>-10.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="sbGravityX">
+        <property name="suffix">
+         <string> g</string>
+        </property>
+        <property name="minimum">
+         <double>-10.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Vertical gravity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="bRedraw">
+        <property name="text">
+         <string>Redraw</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -170,5 +177,22 @@
  <resources>
   <include location="stormy.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>bRedraw</sender>
+   <signal>clicked()</signal>
+   <receiver>glass</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>612</x>
+     <y>399</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>446</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

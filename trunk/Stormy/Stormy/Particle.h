@@ -1,7 +1,8 @@
 #ifndef Particle_h__
 #define Particle_h__
 
-#include <QVector2D>
+#include <QPointF>
+
 
 class Particle
 {
@@ -9,9 +10,9 @@ public:
 	Particle(void);
 	~Particle(void);
 
-	qreal mass;
-	qreal radius;
-	QVector2D pos;
-	QVector2D speed;
+	qreal mass;	//in kg
+	qreal radius;//in m
+	QPointF pos;//in m
+	QPointF speed;// in m/s
 };
 #endif // Particle_h__

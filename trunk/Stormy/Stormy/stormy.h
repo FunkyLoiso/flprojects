@@ -4,6 +4,8 @@
 #include <QtGui/QMainWindow>
 #include "ui_stormy.h"
 
+#include "Glass.h"
+
 class Stormy : public QMainWindow
 {
 	Q_OBJECT
@@ -14,6 +16,8 @@ public:
 
 private:
 	Ui::StormyClass ui;
+
+	Glass m_glass;
 };
 
 #endif // STORMY_H
