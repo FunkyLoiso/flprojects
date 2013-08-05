@@ -11,7 +11,8 @@ public:
 	Glass(void);
 	~Glass(void);
 
-	QPolygonF border;
-	QMultiMap<qreal, Particle> particles;//map xoordX to particle
+	typedef QMultiMap<qreal, Particle> TParticlesMap;
+	QPolygonF border;	//in m
+	TParticlesMap particles;//map coordX to particle
 };
 #endif // Glass_h__
