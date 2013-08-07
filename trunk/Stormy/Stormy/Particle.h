@@ -14,5 +14,7 @@ public:
 	qreal radius;//in m
 	QPointF pos;//in m
 	QPointF speed;// in m/s
+
+	bool mark;
 };
 #endif // Particle_h__

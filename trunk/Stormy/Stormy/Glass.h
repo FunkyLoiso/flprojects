@@ -14,5 +14,6 @@ public:
 	typedef QMultiMap<qreal, Particle> TParticlesMap;
 	QPolygonF border;	//in m
 	TParticlesMap particles;//map coordX to particle
+	double totalEnegry;
 };
 #endif // Glass_h__
