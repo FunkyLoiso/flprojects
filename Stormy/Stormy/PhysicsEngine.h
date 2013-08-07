@@ -6,6 +6,15 @@
 
 class Glass;
 
+static const double c_gravityOfEarth = 9.81f;
+static const double c_pi = 3.1415;
+
+template<typename T>
+static int sign(T val)
+{
+	return val < 0 ? -1 : 1;
+}
+
 class PhysicsEngine : public QObject
 {
 	Q_OBJECT

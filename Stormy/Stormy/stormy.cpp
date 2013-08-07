@@ -28,10 +28,10 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	//}
 
 	Particle p;
-	p.mass = 1;
 	p.pos.setX(35);
 	p.pos.setY(30);
-	p.radius = 10;
+	p.radius = 1;
+	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
 	p.speed.setX(0);
 	p.speed.setY(300);
 	m_glass.particles.insert(p.pos.x(), p);
@@ -39,7 +39,9 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	ui.glassWidget->setGlass(&m_glass);
 
 	connect(ui.sbRestitution, SIGNAL(valueChanged(double)), &m_engine, SLOT(setRestitution(double)));
-	m_engine.setRestitution(0.4*ui.sbRestitution->value());
+	m_engine.setRestitution(ui.sbRestitution->value());
+	connect(ui.sbFriction, SIGNAL(valueChanged(double)), &m_engine, SLOT(setFriction(double)));
+	m_engine.setFriction(ui.sbFriction->value());
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
@@ -73,6 +75,6 @@ void Stormy::glassWasUpdated()
 void Stormy::onButton1()
 {
 	Particle& p = *m_glass.particles.begin();
-	p.speed.setX(qrand()%100-50);
-	p.speed.setY(qrand()%100-50);
+	p.speed.setX(qrand()%1000-500);
+	p.speed.setY(qrand()%1000-500);
 }

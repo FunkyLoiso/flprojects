@@ -40,6 +40,9 @@
         <property name="singleStep">
          <double>0.010000000000000</double>
         </property>
+        <property name="value">
+         <double>0.100000000000000</double>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
@@ -62,7 +65,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Friction force equals this factor multiplied by particle speed&lt;/p&gt;&lt;p&gt;F = &lt;span style=&quot; font-style:italic;&quot;&gt;f&lt;/span&gt; * V&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;F = &lt;span style=&quot; font-style:italic;&quot;&gt;μ&lt;/span&gt;*m*g/S&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Friction factor</string>
@@ -81,7 +84,7 @@
          <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>0.560000000000000</double>
         </property>
        </widget>
       </item>
