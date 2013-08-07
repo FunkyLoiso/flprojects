@@ -86,6 +86,14 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 	//3. Update locations
 	for(Glass::TParticlesMap::Iterator pi = glass->particles.begin(); pi != glass->particles.end(); ++pi)
 	{
+		//qreal frictionAcclerationX = pi->speed.x()*m_friction/pi->mass;
+		//qreal frictionAcclerationY = pi->speed.y()*m_friction/pi->mass;
+
+		qreal frictionAcceleration = m_friction * c_gravityOfEarth / (c_pi * pi->radius*pi->radius);
+
+		pi->speed.rx() -= sign(pi->speed.rx())*frictionAcceleration*timePassed_s;
+		pi->speed.ry() -= sign(pi->speed.ry())*frictionAcceleration*timePassed_s;
+
 		pi->pos.setX(pi->pos.x() + pi->speed.rx()*timePassed_s);
 		pi->pos.setY(pi->pos.y() + pi->speed.ry()*timePassed_s);
 	}
