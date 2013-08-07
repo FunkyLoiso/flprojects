@@ -33,6 +33,7 @@ private:
 
 private slots:
 	void glassWasUpdated();
+	void onButton1();
 };
 
 #endif // STORMY_H

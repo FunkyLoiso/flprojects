@@ -63,7 +63,7 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				QVector2D speed(pi->speed);
 				QVector2D norm(normal);
 				qreal normalCos = QVector2D::dotProduct(norm, speed)/(speed.length()*norm.length());
-				if(normalCos < 0.0f) continue;
+				if(normalCos <= 0.0f) continue;
 
 				QTransform tr;
 				qreal ang;
@@ -72,12 +72,12 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				tr.rotateRadians(-ang);
 
 				QPointF newSpeed = tr.map(pi->speed);
-				newSpeed.ry() *= -1;
+				newSpeed.ry() *= -1*m_restitution;
 
 				newSpeed = tr.inverted().map(newSpeed);
 
 				pi->speed = newSpeed;
-				break;
+				continue;
 			}
 		}
 		//2. Collision with other paticles

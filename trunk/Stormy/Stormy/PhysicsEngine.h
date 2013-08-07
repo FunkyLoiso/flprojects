@@ -2,26 +2,29 @@
 #define PhysicsEngine_h__
 
 #include <QtGlobal>
+#include <QObject>
 
 class Glass;
 
-class PhysicsEngine
+class PhysicsEngine : public QObject
 {
+	Q_OBJECT
 public:
-	PhysicsEngine() : m_gravityX(0.0f), m_gravityY(0.0f), m_friction(0.0f), m_restition(0.0f) {}
+	PhysicsEngine() : m_gravityX(0.0f), m_gravityY(0.0f), m_friction(0.0f), m_restitution(0.0f) {}
 	virtual ~PhysicsEngine() {}
 
 	virtual void update(Glass* glass, qreal timePassed_s) = 0;
 
-	void setGravityX(qreal gravityX) {m_gravityX = gravityX;}
-	void setGravityY(qreal gravityY) {m_gravityY = gravityY;}
-	void setFriction(qreal friction) {m_friction = friction;}
-	void setRestition(qreal restition) {m_restition = restition;}
+public slots:
+	void setGravityX(double gravityX) {m_gravityX = gravityX;}
+	void setGravityY(double gravityY) {m_gravityY = gravityY;}
+	void setFriction(double friction) {m_friction = friction;}
+	void setRestitution(double restitution) {m_restitution = restitution;}
 
 protected:
 	qreal m_gravityX, m_gravityY;
 	qreal m_friction;
-	qreal m_restition;
+	qreal m_restitution;
 };
 
 #endif // PhysicsEngine_h__
