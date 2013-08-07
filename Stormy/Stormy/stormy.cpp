@@ -10,6 +10,8 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	m_fpsLabel = new QLabel;
 	statusBar()->addPermanentWidget(m_fpsLabel);
 
+	connect(ui.bButton1, SIGNAL(clicked()), this, SLOT(onButton1()));
+
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(100.0f, 0.0f) << QPointF(100.0f, 150.0f)<< QPointF(50.0f, 65.0f) << QPointF(0.0f, 100.0f);
 	//for(int i = 0; i < 500; ++i)
 	//{
@@ -27,14 +29,17 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	Particle p;
 	p.mass = 1;
-	p.pos.setX(45);
+	p.pos.setX(35);
 	p.pos.setY(30);
 	p.radius = 10;
 	p.speed.setX(0);
-	p.speed.setY(30);
+	p.speed.setY(300);
 	m_glass.particles.insert(p.pos.x(), p);
 
 	ui.glassWidget->setGlass(&m_glass);
+
+	connect(ui.sbRestitution, SIGNAL(valueChanged(double)), &m_engine, SLOT(setRestitution(double)));
+	m_engine.setRestitution(0.4*ui.sbRestitution->value());
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
@@ -63,4 +68,11 @@ void Stormy::glassWasUpdated()
 		m_lastTime = curTime;
 		count = 0;
 	}
+}
+
+void Stormy::onButton1()
+{
+	Particle& p = *m_glass.particles.begin();
+	p.speed.setX(qrand()%100-50);
+	p.speed.setY(qrand()%100-50);
 }
