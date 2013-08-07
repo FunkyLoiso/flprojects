@@ -68,7 +68,7 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				QTransform tr;
 				qreal ang;
 				if(contactPoint == NULL)	ang = qAtan2(point2.y() - point1.y(), point2.x() - point1.x());
-				else						ang = -qAtan2(contactPoint->x() - pi->pos.x() ,contactPoint->y() - pi->pos.y());
+				else						ang = -qAtan2(contactPoint->x() - pi->pos.x(), contactPoint->y() - pi->pos.y());
 				tr.rotateRadians(-ang);
 
 				QPointF newSpeed = tr.map(pi->speed);
@@ -80,10 +80,42 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				continue;
 			}
 		}
-		//2. Collision with other paticles
+		//2. Collision with other particles
+		for(Glass::TParticlesMap::Iterator pi2 = glass->particles.begin(); pi2 != glass->particles.end(); ++pi2)
+		{
+			if(pi == pi2) continue;
+			if(pi2->mark) continue;
+			if(QLineF(pi->pos, pi2->pos).length() < pi->radius+pi2->radius)
+			{
+				//QPointF normal = QPointF(pi2->pos.x()-pi->pos.x(), pi2->pos.y()-pi->pos.y());
+				//QTransform tr;
+				//qreal ang = -qAtan2(pi2->pos.x() - pi->pos.x(), pi2->pos.y() - pi->pos.y());
+				//tr.rotateRadians(-ang);
+
+				//
+				QVector2D v1(pi->speed), v2(pi2->speed);
+				QVector2D p1(pi->pos), p2(pi2->pos);
+
+				QVector2D dV = v1 - v2;
+				QVector2D dP = p1 - p2;
+
+				if(QVector2D::dotProduct(dV, dP) > 0) continue;
+
+				qreal m1 = pi->mass, m2 = pi2->mass;
+				QVector2D u1 = (m1*v1 - m2*m_restitution*(v1 - v2) + m2*v2)/(m1 + m2);
+				QVector2D u2 = u1 + m_restitution*(v1- v2);
+
+				pi->speed = u1.toPointF();
+				pi2->speed = u2.toPointF();
+
+				pi->mark = true;
+				pi2->mark = true;
+			}
+		}
 	}
 
 	//3. Update locations
+	double totalEnergy = 0.0f;
 	for(Glass::TParticlesMap::Iterator pi = glass->particles.begin(); pi != glass->particles.end(); ++pi)
 	{
 		//qreal frictionAcclerationX = pi->speed.x()*m_friction/pi->mass;
@@ -96,5 +128,9 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 		pi->pos.setX(pi->pos.x() + pi->speed.rx()*timePassed_s);
 		pi->pos.setY(pi->pos.y() + pi->speed.ry()*timePassed_s);
+
+		pi->mark = false;
 	}
+
+	glass->totalEnegry = totalEnergy;
 }
