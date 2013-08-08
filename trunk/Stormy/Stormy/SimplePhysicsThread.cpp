@@ -28,7 +28,7 @@ void SimplePhysicsThread::run()
 		m_lastTime = curTime;
 		emit updated();
 
-		Sleep(1);
+		//Sleep(1);
 	}
 }
 

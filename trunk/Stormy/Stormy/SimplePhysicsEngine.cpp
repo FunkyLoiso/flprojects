@@ -87,10 +87,10 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 			if(pi2->mark) continue;
 			if(QLineF(pi->pos, pi2->pos).length() < pi->radius+pi2->radius)
 			{
-				//QPointF normal = QPointF(pi2->pos.x()-pi->pos.x(), pi2->pos.y()-pi->pos.y());
-				//QTransform tr;
-				//qreal ang = -qAtan2(pi2->pos.x() - pi->pos.x(), pi2->pos.y() - pi->pos.y());
-				//tr.rotateRadians(-ang);
+				QPointF normal = QPointF(pi2->pos.x()-pi->pos.x(), pi2->pos.y()-pi->pos.y());
+				QTransform tr;
+				qreal ang = -qAtan2(pi2->pos.x() - pi->pos.x(), pi2->pos.y() - pi->pos.y());
+				tr.rotateRadians(-ang);
 
 				//
 				QVector2D v1(pi->speed), v2(pi2->speed);
@@ -101,12 +101,24 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 				if(QVector2D::dotProduct(dV, dP) > 0) continue;
 
-				qreal m1 = pi->mass, m2 = pi2->mass;
-				QVector2D u1 = (m1*v1 - m2*m_restitution*(v1 - v2) + m2*v2)/(m1 + m2);
-				QVector2D u2 = u1 + m_restitution*(v1- v2);
+				v1 = QVector2D(tr.map(pi->speed));
+				v2 = QVector2D(tr.map(pi2->speed));
 
-				pi->speed = u1.toPointF();
-				pi2->speed = u2.toPointF();
+				qreal m1 = pi->mass, m2 = pi2->mass;
+				//QVector2D u1 = (m1*v1 - m2*m_restitution*(v1 - v2) + m2*v2)/(m1 + m2);
+				//QVector2D u2 = u1 + m_restitution*(v1- v2);
+
+				qreal y1 = (m1*v1.y() - m2*m_restitution*(v1.y() - v2.y()) + m2*v2.y())/(m1 + m2);
+				qreal y2 = y1 + m_restitution*(v1.y() - v2.y());
+
+				v1.setY(y1);
+				v2.setY(y2);
+
+				pi->speed = tr.inverted().map(v1.toPointF());
+				pi2->speed = tr.inverted().map(v2.toPointF());
+
+				//pi->speed = u1.toPointF();
+				//pi2->speed = u2.toPointF();
 
 				pi->mark = true;
 				pi2->mark = true;
