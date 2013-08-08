@@ -31,17 +31,17 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	//Particle p;
 	//p.pos.setX(35);
 	//p.pos.setY(30);
-	//p.radius = 10;
+	//p.radius = 8;
 	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	//p.speed.setX(10);
+	//p.speed.setX(20);
 	//p.speed.setY(0);
 	//m_glass.particles.insert(p.pos.x(), p);
 
-	//p.pos.setX(80);
-	//p.pos.setY(30);
-	//p.radius = 5;
+	//p.pos.setX(180);
+	//p.pos.setY(35);
+	//p.radius = 10;
 	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	//p.speed.setX(10);
+	//p.speed.setX(-20);
 	//p.speed.setY(0);
 	//m_glass.particles.insert(p.pos.x(), p);
 
