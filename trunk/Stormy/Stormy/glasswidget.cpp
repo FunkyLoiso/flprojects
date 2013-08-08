@@ -41,7 +41,7 @@ void GlassWidget::paintEvent(QPaintEvent *)
 
 	for(Glass::TParticlesMap::ConstIterator i = m_glass->particles.constBegin(); i != m_glass->particles.constEnd(); ++i)
 	{
-		p.drawEllipse(i->pos, i->radius, i->radius);
+		p.drawEllipse(i->pos.toPointF(), i->radius, i->radius);
 	}
 }
 

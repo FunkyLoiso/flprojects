@@ -17,13 +17,14 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	{
 		Particle p;
 		p.mass = qrand();
-		p.pos.setX(qrand()%100);
-		p.pos.setY(qrand()%100);
-		p.radius = qrand()%4+0.1;
+		p.pos.setX(qrand()%400);
+		p.pos.setY(qrand()%240);
+		p.radius = qrand()%4+1;
 		p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
 
-		p.speed.setX(qrand()%100);
-		p.speed.setY(qrand()%100);
+		static const int maxSpeed = 100;
+		p.speed.setX(qrand()%maxSpeed - maxSpeed/2);
+		p.speed.setY(qrand()%maxSpeed - maxSpeed/2);
 
 		m_glass.particles.insert(p.pos.x(), p);
 	}
