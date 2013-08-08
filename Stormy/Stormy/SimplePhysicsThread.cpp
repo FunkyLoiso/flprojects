@@ -28,7 +28,9 @@ void SimplePhysicsThread::run()
 		m_lastTime = curTime;
 		emit updated();
 
-		//Sleep(1);
+#ifndef NDEBUG //only in debug mode
+		Sleep(1);
+#endif
 	}
 }
 
