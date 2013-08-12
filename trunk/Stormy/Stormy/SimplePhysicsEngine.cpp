@@ -9,7 +9,7 @@
 
 void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 {
-	//timePassed_s = 0.01;
+	//timePassed_s = 0.1;
 	for(Glass::TParticlesMap::Iterator pi = glass->particles.begin(); pi != glass->particles.end(); ++pi)
 	{
 		//1. Collision with the border
@@ -20,11 +20,8 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 			QVector2D* contactPoint = NULL; //Will hold pointer to point1 or point if we have a possible contact with a point, not an edge
 			if(bi != glass->border.end()-1)	point2 = QVector2D(*(bi+1));
 			else							point2 = QVector2D(*(glass->border.begin()));
-			//qreal dstPoint1 = QLineF(pi->pos, point1).length();
 			qreal dstPoint1 = (pi->pos - point1).length();
-			//qreal dstPoint2 = QLineF(pi->pos, point2).length();
 			qreal dstPoint2 = (pi->pos - point2).length();
-			//qreal dstP1P2 = QLineF(point1, point2).length();
 			qreal dstP1P2 = (point1 - point2).length();
 			qreal dst;
 			
@@ -53,7 +50,6 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 				if(contactPoint == NULL)
 				{//contact with an edge
-					//normal = QPointF(point2.x()-point1.x(), point2.y()-point1.y());
 					normal = point2 - point1;
 					QTransform rotateCoordinates90Clockwise;
 					rotateCoordinates90Clockwise.rotate(-90.0);
@@ -61,7 +57,6 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				}
 				else
 				{//contact with a point
-					//normal = QPointF(contactPoint->x()-pi->pos.x(), contactPoint->y()-pi->pos.y());
 					normal = *contactPoint - pi->pos;
 				}
 				//is the particle moving outward or inward?
@@ -74,7 +69,7 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				tr.rotateRadians(-ang);
 
 				QPointF newSpeed = tr.map(pi->speed.toPointF());
-				newSpeed.ry() *= -1*m_restitution;
+				newSpeed.ry() *= -m_restitution;
 				newSpeed = tr.inverted().map(newSpeed);
 
 				pi->speed = QVector2D(newSpeed);
@@ -97,8 +92,8 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				QVector2D v1(pi->speed), v2(pi2->speed);
 				QVector2D p1(pi->pos), p2(pi2->pos);
 
-				QVector2D dV = v1 - v2;
-				QVector2D dP = p1 - p2;
+				const QVector2D dV = v1 - v2;
+				const QVector2D dP = p1 - p2;
 
 				if(QVector2D::dotProduct(dV, dP) > 0) continue;
 
@@ -106,9 +101,6 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 				v2 = QVector2D(tr.map(pi2->speed.toPointF()));
 
 				qreal m1 = pi->mass, m2 = pi2->mass;
-				//QVector2D u1 = (m1*v1 - m2*m_restitution*(v1 - v2) + m2*v2)/(m1 + m2);
-				//QVector2D u2 = u1 + m_restitution*(v1- v2);
-
 				qreal y1 = (m1*v1.y() - m2*m_restitution*(v1.y() - v2.y()) + m2*v2.y())/(m1 + m2);
 				qreal y2 = y1 + m_restitution*(v1.y() - v2.y());
 
@@ -117,9 +109,6 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 				pi->speed = QVector2D( tr.inverted().map(v1.toPointF()) );
 				pi2->speed = QVector2D( tr.inverted().map(v2.toPointF()) );
-
-				//pi->speed = u1.toPointF();
-				//pi2->speed = u2.toPointF();
 
 				pi->mark = true;
 				pi2->mark = true;
@@ -134,15 +123,27 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 		//qreal frictionAcclerationX = pi->speed.x()*m_friction/pi->mass;
 		//qreal frictionAcclerationY = pi->speed.y()*m_friction/pi->mass;
 
-		qreal frictionAcceleration = m_friction * c_gravityOfEarth / (c_pi * pi->radius*pi->radius);
+		//qreal frictionAcceleration = m_friction * c_gravityOfEarth / (c_pi * pi->radius*pi->radius);
 
-		pi->speed.setX( pi->speed.x() - sign(pi->speed.x())*frictionAcceleration*timePassed_s );
-		pi->speed.setY( pi->speed.y() - sign(pi->speed.y())*frictionAcceleration*timePassed_s );
+		//pi->speed.setX( pi->speed.x() + (-sign(pi->speed.x())*frictionAcceleration + m_gravityX)*timePassed_s );
+		//pi->speed.setY( pi->speed.y() + (-sign(pi->speed.y())*frictionAcceleration + m_gravityY)*timePassed_s );
 
-		pi->pos.setX(pi->pos.x() + pi->speed.x()*timePassed_s);
-		pi->pos.setY(pi->pos.y() + pi->speed.y()*timePassed_s);
+		QVector2D a(m_gravityX, m_gravityY);
+		QVector2D dv = a*timePassed_s;
+		QVector2D dp = (pi->speed + dv/2)*timePassed_s;
+
+		pi->speed += dv;
+		pi->pos += dp;
+
+		//pi->speed.setX( pi->speed.x() + m_gravityX*timePassed_s );
+		//pi->speed.setY( pi->speed.y() + m_gravityY*timePassed_s );
+
+		//pi->pos.setX(pi->pos.x() + pi->speed.x()*timePassed_s);
+		//pi->pos.setY(pi->pos.y() + pi->speed.y()*timePassed_s);
 
 		pi->mark = false;
+
+		totalEnergy += pi->speed.lengthSquared() * pi->mass;
 	}
 
 	glass->totalEnegry = totalEnergy;
