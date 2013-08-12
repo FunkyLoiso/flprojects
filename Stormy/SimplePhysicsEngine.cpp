@@ -92,7 +92,7 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 						int sgn = -1;
 						if(angTmpPosToPos > angPosToEdge) sgn = 1;
 	
-						dl = (pi->radius + sgn*dst) / qSin(angSpeedTooEdge);
+						dl = (pi->radius + sgn*dst) / qSin(angSpeedToEdge);
 					}
 
 					//calculate contactPoint
