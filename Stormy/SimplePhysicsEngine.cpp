@@ -116,19 +116,51 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 					normal = *contactVert - pi->pos;
 				}
 				//is the particle moving outward or inward?
-				if(QVector2D::dotProduct(normal, pi->speed) <= 0.0f) continue;
+				if(QVector2D::dotProduct(normal, pi->tmpSpeed) <= 0.0f) continue;
+
+				//3. Determine speed at contactPoint and time left to move
+				QVector2D posToContactPoint = contactPoint - pi->pos;
+				int speedSign = sign(QVector2D::dotProduct(pi->speed, posToContactPoint));
+				qreal speedVal = speedSign * pi->speed.length();
+				int accelSign = sign(QVector2D::dotProduct(a, posToContactPoint));
+				qreal accelVal = a.length();
+
+				qreal timeBeforeContact;
+
+				if(qFuzzyIsNull(accelVal))
+				{
+					timeBeforeContact = posToContactPoint.length() / speedVal;
+				}
+				else
+				{
+					qreal tmp = qSqrt(speedVal * speedVal + 2 * accelVal * posToContactPoint.length());
+					qreal t1 = (tmp - speedVal)/accelVal;
+					qreal t2 = (-tmp - speedVal)/accelVal;
+					
+					if(t1 < 0.0f)		timeBeforeContact = t2;
+					else if(t2 < 0.0f)	timeBeforeContact = t1;
+					else				timeBeforeContact = qMin(t1, t2);	
+				}
+		
+
+				QVector2D speedAtContact = pi->speed + a*timeBeforeContact;
+				qreal timeLeft = timePassed_s - timeBeforeContact;
 
 				QTransform tr;
 				qreal ang;
 				if(contactVert == NULL)	ang = qAtan2(vert2.y() - vert1.y(), vert2.x() - vert1.x());
-				else						ang = -qAtan2(contactVert->x() - pi->pos.x(), contactVert->y() - pi->pos.y());
+				else					ang = -qAtan2(contactVert->x() - pi->pos.x(), contactVert->y() - pi->pos.y());
 				tr.rotateRadians(-ang);
 
-				QPointF newSpeed = tr.map(pi->speed.toPointF());
-				newSpeed.ry() *= -m_restitution;
-				newSpeed = tr.inverted().map(newSpeed);
+				QPointF newSpeedAtContact = tr.map(speedAtContact.toPointF());
+				newSpeedAtContact.ry() *= -m_restitution;
+				newSpeedAtContact = tr.inverted().map(newSpeedAtContact);
 
-				pi->speed = QVector2D(newSpeed);
+				QVector2D dvLeft = a * timeLeft;
+				QVector2D dpLeft = (QVector2D(newSpeedAtContact) + dvLeft/2) * timeLeft;
+
+				pi->speed = QVector2D(newSpeedAtContact) + dvLeft;
+				pi->pos = contactPoint + dpLeft;
 				continue;
 			}
 		}
