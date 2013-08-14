@@ -13,29 +13,29 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	connect(ui.bButton1, SIGNAL(clicked()), this, SLOT(onButton1()));
 
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f)<< QPointF(0.15f, 0.3f) << QPointF(0.0f, 0.3f);
-	//for(int i = 0; i < 400; ++i)
-	//{
-	//	Particle p;
-	//	p.pos.setX(double(qrand()%400)/10000);
-	//	p.pos.setY(double(qrand()%240)/10000);
-	//	p.radius = double(qrand()%4+2)/1000;
-	//	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	for(int i = 0; i < 400; ++i)
+	{
+		Particle p;
+		p.pos.setX(double(qrand()%400)/10000);
+		p.pos.setY(double(qrand()%240)/10000);
+		p.radius = double(qrand()%4+2)/1000;
+		p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
 
-	//	static const int maxSpeed = 100;
-	//	p.speed.setX(double(qrand()%1000)/10000);
-	//	p.speed.setY(double(qrand()%1000)/10000);
+		static const int maxSpeed = 100;
+		p.speed.setX(double(qrand()%1000)/10000);
+		p.speed.setY(double(qrand()%1000)/10000);
 
-	//	m_glass.particles.insert(p.pos.x(), p);
-	//}
+		m_glass.particles.insert(p.pos.x(), p);
+	}
 
-	Particle p;
-	p.pos.setX(0.105);
-	p.pos.setY(0.015);
-	p.radius = 0.01;
-	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	p.speed.setX(0.0);
-	p.speed.setY(-1.0);
-	m_glass.particles.insert(p.pos.x(), p);
+	//Particle p;
+	//p.pos.setX(0.105);
+	//p.pos.setY(0.015);
+	//p.radius = 0.01;
+	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	//p.speed.setX(0.3);
+	//p.speed.setY(0.0);
+	//m_glass.particles.insert(p.pos.x(), p);
 
 	//p.pos.setX(0.180);
 	//p.pos.setY(0.035);
