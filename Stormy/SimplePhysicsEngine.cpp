@@ -4,6 +4,9 @@
 #include <QVector2D>
 #include <QTransform>
 #include <qmath.h>
+
+#include "quartic/quartic.hpp"
+
 #include "Glass.h"
 
 
@@ -311,26 +314,10 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(dst < p.radius)
 		{//contact
 			//2. Determine real contact point
-			qreal contactTime;
+			qreal contactTime = m_time_s*1.1;
 			QVector2D directionVector;
 			if(contactVert == NULL)
 			{//contact with an edge
-				//QVector2D edge(vert2 - vert1);
-				//qreal angSpeedToEdge = qAcos( qAbs(	QVector2D::dotProduct(p.projectedSpeed, edge) /
-				//									(p.projectedSpeed.length() * edge.length())		) );
-
-				////determine whether pos and tmpPos are on the same side of the edge
-				//QVector2D posToVrt2(vert2 - p.pos);
-				//QVector2D tmpPosToVrt2(vert2 - p.projectedPos);
-				//qreal angPosToEdge = qAcos( QVector2D::dotProduct(posToVrt2, edge) / (posToVrt2.length() * edge.length()) );
-				//qreal angTmpPosToPos = qAcos( QVector2D::dotProduct(tmpPosToVrt2, posToVrt2) / (tmpPosToVrt2.length() * posToVrt2.length()) );
-				//int sgn = -1;
-				//if(angTmpPosToPos > angPosToEdge) sgn = 1;
-
-				//dl = (p.radius + sgn*dst) / qSin(angSpeedToEdge);
-
-				//determine the intersection of the parabolic trajectory and the line, that outstands from edge on radius
-
 				qreal x1, y1, x2, y2;//points on the line
 				{
 					directionVector = vert2 - vert1;
@@ -384,27 +371,43 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 			}
 			else
 			{//contact with a vertex
-				//QVector2D tmpPosToContactVertex(*contactVert - p.projectedPos);
-				////qreal angleOppositeToR = qAcos(	QVector2D::dotProduct(-p.projectedSpeed, tmpPosToContactVertex) / //@todo should use not the speed vector, but projPos- pos
-				////								(p.projectedSpeed.length() * tmpPosToContactVertex.length())		);
+				qreal A, B, C, D, E;//Quartic equation coefficients
+				{
+					qreal posx_vx = p.pos.x() - contactVert->x();
+					qreal posy_vy = p.pos.y() - contactVert->y();
 
-				//qreal angleOppositeToR = qAcos(cosBetweenVectors(-p.projectedSpeed, tmpPosToContactVertex));//@todo should use not the speed vector, but projPos- pos
-				//
-				//dl = getFallbackDistance(dst, p.radius, angleOppositeToR);
-				contactTime = m_time_s+1000;
+					A = m_gravity.x()*m_gravity.x()/4 + m_gravity.y()*m_gravity.y()/4;
+					B = m_gravity.x()*p.speed.x() + m_gravity.y()*p.speed.y();
+					C = p.speed.x()*p.speed.x() + p.speed.y()*p.speed.y() + m_gravity.x()*posx_vx + m_gravity.y()*posy_vy;
+					D = 2*p.speed.x()*posx_vx + 2*p.speed.y()*posy_vy;
+					E = posx_vx*posx_vx + posy_vy*posy_vy - p.radius*p.radius;
+
+					qreal roots[4];	//the roots will bee here
+					size_t nRoots;	//number of roots
+					if(qFuzzyIsNull(A))
+					{//quadratic equation (acceleration is zero)
+						bool solved = magnet::math::quadraticSolve(D/C, E/C, roots[0], roots[1]);
+						nRoots = solved ? 2 : 0;
+					}
+					else
+					{//quartic equation
+						nRoots = magnet::math::quarticSolve(B/A, C/A, D/A, E/A, roots[0], roots[1], roots[2], roots[3]);
+					}
+
+					for(int i = 0; i < nRoots; ++i)
+					{
+						qreal root = roots[i];
+						if(root > 0.0 && root < contactTime) contactTime = root;
+					}
+				}
 			}
-
-			//move projectedPos on dl in the direction from projectedPos to pos
-			//QVector2D projPosToPos = p.projectedPos - p.pos;
-			//QVector2D contactPoint = p.projectedPos - projPosToPos.normalized() * dl;
-			//qreal distanceToContactPoint = (p.pos - contactPoint).length();
 
 			if(contactTime < minTime)
 			{
 				out_collision.type = contactVert ? Collision::WithVertex : Collision::WithEdge;
 				out_collision.particle = &p;
 				out_collision.contactTime_s = contactTime;
-				out_collision.directionVector = directionVector;
+				out_collision.contactVal = contactVert ? *contactVert : directionVector;
 
 				minTime = contactTime;
 			}
@@ -470,7 +473,18 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 		p.posTime += c.contactTime_s;
 
 		QTransform tr;
-		qreal ang = -qAtan2(c.directionVector.y(), c.directionVector.x());
+		QVector2D directionVector;
+		if(c.type == Collision::WithEdge)
+		{
+			directionVector = c.contactVal;
+		}
+		else
+		{
+			QVector2D posToVertex(c.contactVal - p.pos);
+			directionVector.setX(-posToVertex.y());
+			directionVector.setY(posToVertex.x());
+		}
+		qreal ang = -qAtan2(directionVector.y(), directionVector.x());
 		tr.rotateRadians(ang);
 
 		p.speed = QVector2D(tr.map(p.speed.toPointF()));
