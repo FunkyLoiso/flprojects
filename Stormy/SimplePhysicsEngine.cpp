@@ -358,12 +358,14 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 				}
 				else
 				{//quadratic
-					qreal sqrtD = qSqrt(B*B - 4*A*C);
-					qreal t1 = (-B - sqrtD) / (2*A);
-					qreal t2 = (-B + sqrtD) / (2*A);
-					if(t1 < 0)		contactTime = t2;
-					else if(t2 < 0)	contactTime = t1;
-					else			contactTime = qMin(t1, t2);
+					qreal t1, t2;
+					bool solved = magnet::math::quadraticSolve(B/A, C/A, t1, t2);
+					if(solved)
+					{
+						if(t1 < 0)		contactTime = t2;
+						else if(t2 < 0)	contactTime = t1;
+						else			contactTime = qMin(t1, t2);
+					}
 				}
 
 				//QVector2D contactPoint = p.pos + (p.speed + m_gravity*time/2)*time;
@@ -475,11 +477,11 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 		QTransform tr;
 		QVector2D directionVector;
 		if(c.type == Collision::WithEdge)
-		{
+		{//direction vector is present
 			directionVector = c.contactVal;
 		}
 		else
-		{
+		{//direction vector is vector from pos to contact vertex, rotated 90 degrees
 			QVector2D posToVertex(c.contactVal - p.pos);
 			directionVector.setX(-posToVertex.y());
 			directionVector.setY(posToVertex.x());
