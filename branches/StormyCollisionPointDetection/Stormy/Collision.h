@@ -15,9 +15,10 @@ public:
 	}type;
 
 	Particle* particle;
-	Particle* otherParticle;//NULL if type is not WithParticle
 	qreal contactTime_s;	//time after last stable position when collision took place
-	QVector2D directionVector;//direction vector for contact line
+
+	Particle* otherParticle;//NULL if type is not WithParticle
+	QVector2D contactVal;//direction vector for edge or contact vertex
 
 };
 
