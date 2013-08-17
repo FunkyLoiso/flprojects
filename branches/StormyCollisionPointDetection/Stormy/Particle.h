@@ -12,11 +12,16 @@ public:
 
 	qreal mass;	//in kg
 	qreal radius;//in m
+	
 	QVector2D pos;//in m
-	QVector2D tmpPos;//general field
 	QVector2D speed;// in m/s
-	QVector2D tmpSpeed;
+	qreal posTime;// time since the beginning of the frame witch pos is corresponding to
 
-	bool mark;
+	QVector2D projectedSpeed;
+	QVector2D projectedPos;
+
+	bool passive; //all collisions initiated by this particle already calculated
+
+	bool operator==(const Particle& other) const;
 };
 #endif // Particle_h__

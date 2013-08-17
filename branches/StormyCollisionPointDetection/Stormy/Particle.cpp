@@ -1,10 +1,15 @@
 #include "Particle.h"
 
 Particle::Particle(void)
-: mark(false)
+: passive(false)
 {
 }
 
 Particle::~Particle(void)
 {
+}
+
+bool Particle::operator==(const Particle& other) const
+{
+	return pos == other.pos;
 }
