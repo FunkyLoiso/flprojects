@@ -277,7 +277,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 {
 	qreal minTime = m_time_s*1.1;//slightly more so that minTime > m_time_s is garanted
 	
-	//1. Check for collisions with the border
+	//1. Check for collisions with the border (both edges and vertices)
 	for(QPolygonF::ConstIterator bi = m_glass->border.begin(); bi != m_glass->border.end(); ++bi)
 	{
 		//now we determine whether the final position corresponds to a contact with border
@@ -313,7 +313,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 
 		if(dst < p.radius)
 		{//contact
-			//2. Determine real contact point
+			//2. Determine contact time
 			qreal contactTime = m_time_s*1.1;
 			QVector2D directionVector;
 			if(contactVert == NULL)
@@ -384,7 +384,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 					D = 2*p.speed.x()*posx_vx + 2*p.speed.y()*posy_vy;
 					E = posx_vx*posx_vx + posy_vy*posy_vy - p.radius*p.radius;
 
-					qreal roots[4];	//the roots will bee here
+					qreal roots[4];	//the roots will be here
 					size_t nRoots;	//number of roots
 					if(qFuzzyIsNull(A))
 					{//quadratic equation (acceleration is zero)
@@ -416,65 +416,105 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		}
 	}
 	// 2. Now check for collisions with other particles
-	//for(Glass::TParticlesMap::Iterator pi2 = m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
-	//{
-	//	Particle& p2 = *pi2;
-	//	if(p == p2) continue;
+	for(Glass::TParticlesMap::Iterator pi2 = m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
+	{
+		Particle& p2 = *pi2;
+		if(p == p2) continue;
 
-	//	if((p.pos - p2.pos).length() < p.radius+p2.radius)
-	//	{//contact
-	//		// Determine contact point. For that we pretend p2 is fixed and p1's speed is v2-v1,
-	//		// then we calculate fallback distance and calculate movemnent time.
-	//		// Finally knowing time and speeds we can calculate individual fallbacks for both particles
+		
+		qreal minDistance = p.radius+p2.radius;
+		if((p.projectedPos - p2.projectedPos).length() < minDistance)
+		{//contact
+			qreal A, B, C;//Quadratic equation coefficients
+			{
+				QVector2D dPos(p2.pos - p.pos);
+				QVector2D dSpeed(p2.speed - p.speed);
 
-	//		QVector2D p1MotionVector(p.projectedPos - p.pos);
-	//		QVector2D p2MotionVector(p2.projectedPos - p2.pos);
-	//		QVector2D sumFallbackVector(p2MotionVector - p1MotionVector);
-	//		QVector2D p1projectedPosToP2ProjectedPos(p2.projectedPos - p.projectedPos);
-	//		
-	//		// 1. Calculate fallback for p1 if p2 is fixed
-	//		qreal angleOppositeToSumOfRadiuses = qAcos(cosBetweenVectors(-sumFallbackVector, p1projectedPosToP2ProjectedPos));
-	//		qreal sumFallback = getFallbackDistance(p1projectedPosToP2ProjectedPos.length(), p.radius+p2.radius, angleOppositeToSumOfRadiuses);
+				A = dSpeed.x()*dSpeed.x() + dSpeed.y()*dSpeed.y();
+				B = 2*(dSpeed.x()*dPos.x() + dSpeed.y()*dPos.y());
+				C = dPos.x()*dPos.x() + dPos.y()*dPos.y() - minDistance*minDistance;
+			}
 
-	//		//2. Now just project sumFallback on p1MotionVector and p2MotionVector
-	//		sumFallbackVector = sumFallbackVector.normalized() * sumFallback;
+			qreal t1, t2;
+			bool solved = magnet::math::quadraticSolve(B/A, C/A, t1, t2);
+			if(solved)
+			{
+				qreal contactTime;
+				if(t1 < 0)		contactTime = t2;
+				else if(t2 < 0)	contactTime = t1;
+				else			contactTime = qMin(t1, t2);
 
-	//		//3. Now we can finally find the collision point
-	//		QVector2D contactPoint = p.projectedPos - (p.projectedSpeed + m_gravity*fallbackTime/2)*fallbackTime;
-	//		qreal distanceToContactPoint = (p.pos - contactPoint).length();
 
-	//		if(minDst < 0.0 || distanceToContactPoint < minDst)
-	//		{
-	//			out_collision.type = Collision::WithParticle;
-	//			out_collision.particle = &p;
-	//			out_collision.otherParticle = &p2;
-	//			out_collision.contactPoint = contactPoint;
-	//			out_collision.contactPoint2 = p2.projectedPos - (p2.projectedSpeed + m_gravity*fallbackTime/2)*fallbackTime;
+				if(contactTime < minTime)
+				{
+					out_collision.type = Collision::WithParticle;
+					out_collision.particle = &p;
+					out_collision.otherParticle = &p2;
+					out_collision.contactTime_s = contactTime;
 
-	//			minDst = distanceToContactPoint;
-	//		}
-	//	}
-	//}
+					minTime = contactTime;
+				}
+			}
+		}
+	}
 	return minTime < m_time_s;
 }
 
 void SimplePhysicsEngine::processCollision(Collision& c)
 {
 	Particle& p = *c.particle;
+	
+	QVector2D dv = m_gravity * c.contactTime_s;
+	QVector2D dp = (p.speed + dv/2)*c.contactTime_s;
+
+	p.pos += dp;
+	p.speed += dv;
+	p.posTime += c.contactTime_s;
+
 	if(c.type == Collision::WithParticle)
 	{//with particle
+		Particle& p2 = *c.otherParticle;
+		QVector2D dp2 = (p2.speed + dv/2)*c.contactTime_s;
+		
+		p2.pos += dp2;
+		p2.speed += dv;
+		p2.posTime += c.contactTime_s;
 
+		QVector2D pToP2(p2.pos - p.pos);
+		QVector2D directionVector(-pToP2.y(), pToP2.x());
+
+		qreal ang = -qAtan2(directionVector.y(), directionVector.x());
+
+		QTransform tr;
+		tr.rotateRadians(ang);
+
+		QVector2D v1 = QVector2D(tr.map(p.speed.toPointF()));
+		QVector2D v2 = QVector2D(tr.map(p2.speed.toPointF()));
+
+		qreal m1 = p.mass, m2 = p2.mass;
+		qreal y1 = (m1*v1.y() - m2*m_restitution*(v1.y() - v2.y()) + m2*v2.y())/(m1 + m2);
+		qreal y2 = y1 + m_restitution*(v1.y() - v2.y());
+
+		v1.setY(y1);
+		v2.setY(y2);
+
+		p.speed = QVector2D( tr.inverted().map(v1.toPointF()) );
+		p2.speed = QVector2D( tr.inverted().map(v2.toPointF()) );
+
+		//now calculate the projected speed and pos for remaining time
+		qreal timeLeft = m_time_s - p.posTime;
+		dv = m_gravity * timeLeft;
+
+		dp = (p.speed + dv/2)*timeLeft;
+		p.projectedPos = p.pos + dp;
+		p.projectedSpeed = p.speed + dv;
+
+		dp2 = (p2.speed + dv/2)*timeLeft;
+		p2.projectedPos = p2.pos + dp2;
+		p2.projectedSpeed = p2.speed + dv;
 	}
 	else
 	{//with edge or vertex
-		QVector2D dv = m_gravity * c.contactTime_s;
-		QVector2D dp = (p.speed + dv/2)*c.contactTime_s;
-
-		p.pos += dp;
-		p.speed += dv;
-		p.posTime += c.contactTime_s;
-
-		QTransform tr;
 		QVector2D directionVector;
 		if(c.type == Collision::WithEdge)
 		{//direction vector is present
@@ -487,6 +527,8 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 			directionVector.setY(posToVertex.x());
 		}
 		qreal ang = -qAtan2(directionVector.y(), directionVector.x());
+		
+		QTransform tr;
 		tr.rotateRadians(ang);
 
 		p.speed = QVector2D(tr.map(p.speed.toPointF()));
