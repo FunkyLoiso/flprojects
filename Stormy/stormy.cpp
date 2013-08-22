@@ -29,14 +29,14 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	//	m_glass.particles.insert(p.pos.x(), p);
 	//}
 
-	//Particle p;
-	//p.pos.setX(0.12);
-	//p.pos.setY(0.15);
-	//p.radius = 0.01;
-	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	//p.speed.setX(0);
-	//p.speed.setY(-0.4);
-	//m_glass.particles.insert(p.pos.x(), p);
+	Particle p;
+	p.pos.setX(0.12);
+	p.pos.setY(0.11);
+	p.radius = 0.01;
+	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	p.speed.setX(0.0);
+	p.speed.setY(0.0);
+	m_glass.particles.insert(p.pos.x(), p);
 
 	//p.pos.setX(0.25);
 	//p.pos.setY(0.02);
@@ -54,7 +54,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	//connect(ui.sbFriction, SIGNAL(valueChanged(double)), &m_engine, SLOT(setFriction(double)));
 	//m_engine.setFriction(ui.sbFriction->value());
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
-	m_engine.setGravityX(ui.sbGravityX->value());
+	m_engine.setGravityX(1.0/*ui.sbGravityX->value()*/);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
 	m_engine.setGravityY(0.00/*ui.sbGravityY->value()*/);
 
