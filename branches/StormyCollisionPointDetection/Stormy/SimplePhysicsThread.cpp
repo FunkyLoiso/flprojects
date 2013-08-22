@@ -24,12 +24,14 @@ void SimplePhysicsThread::run()
 	while(!m_stopFlag)
 	{
 		quint64 curTime = m_timer.nsecsElapsed();
-		m_engine->update(m_glass, (curTime-m_lastTime)/1000000000.0f);
+		qreal elapsed = (curTime-m_lastTime)/1000000000.0f;
+
+		m_engine->update(m_glass, elapsed);
 		m_lastTime = curTime;
 		emit updated();
 
 #ifndef NDEBUG //only in debug mode
-		Sleep(1);
+		if(elapsed < 0.001) Sleep(1);
 #endif
 	}
 }
