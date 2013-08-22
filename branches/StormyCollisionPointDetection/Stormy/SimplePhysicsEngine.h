@@ -17,8 +17,6 @@ private:
 	bool findFirstCollision(Particle& p, Collision& out_collision) const;//returns true if collision was detected
 	void processCollision(Collision& c);//update projected speed and position due to collision c
 
-	static qreal cosBetweenVectors(QVector2D v1, QVector2D v2);
-
 	Glass* m_glass;
 	qreal m_time_s;
 };

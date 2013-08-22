@@ -12,7 +12,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	connect(ui.bButton1, SIGNAL(clicked()), this, SLOT(onButton1()));
 
-	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.0f, 0.2f);/* << QPointF(0.15f, 0.2f) << QPointF(0.0f, 0.3f);*/
+	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.2f, 0.1f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
 	//for(int i = 0; i < 1400; ++i)
 	//{
@@ -31,7 +31,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	Particle p;
 	p.pos.setX(0.12);
-	p.pos.setY(0.11);
+	p.pos.setY(0.05);
 	p.radius = 0.01;
 	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
 	p.speed.setX(0.0);

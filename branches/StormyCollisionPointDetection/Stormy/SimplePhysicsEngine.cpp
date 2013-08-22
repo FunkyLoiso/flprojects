@@ -103,17 +103,15 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		QVector2D directionVector;
 		//if(contactVert == NULL)
 		//contact with an edge
-		qreal x1, y1, x2, y2;//points on the line
 		{
+			qreal x1, y1, x2, y2;//points on the line
 			directionVector = vert2 - vert1;
 			directionVector.normalize();
 			x1 = vert1.x() - p.radius * directionVector.y();
 			y1 = vert1.y() + p.radius * directionVector.x();
 			x2 = vert2.x() - p.radius * directionVector.y();
 			y2 = vert2.y() + p.radius * directionVector.x();
-		}
 
-		{
 			qreal dx = x1 - x2;
 			qreal dy = y1 - y2;
 			if(qFuzzyIsNull(dx))
@@ -134,45 +132,32 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 				B = p.speed.y()*dx/dy - p.speed.x();
 				C = (p.pos.y() - (x1*y2 - x2*y1)/dx)*dx/dy - p.pos.x();
 			}
-		}
-		//now solve the At^2 + Bt + C = 0 for intersection times
-		//if(qFuzzyIsNull(A))
-		//{//linear equation, acceleration is zero
-		//	contactTime = -C/B;
-		//}
-		//else
-		{//quadratic
+
+			//now solve the At^2 + Bt + C = 0 for intersection times
 			qreal t1, t2;
 			bool solved = magnet::math::quadSolve(C, B, A, t1, t2);
 			if(solved)
 			{
-				//if(t1 < 0)		contactTime = t2;
-				//else if(t2 < 0)	contactTime = t1;
-				//else			contactTime = qMin(t1, t2);
-				//if(t1 > 0)
-				//{
-				//	if(t1 < contactTime) contactTime = t1;
-				//}
-				//if(t2 > 0)
-				//{
-				//	if(t2 < contactTime) contactTime = t2;
-				//}
-				//if(t1 < 0 && t2 < 0)
-				//{//two negative roots => initial pos is already contacting!
-				//	contactTime = qMax(t1, t2);
-				//}
-				if(t1 > 0 && t1 < contactTime) contactTime = t1;
-				if(t2 > 0 && t2 < contactTime) contactTime = t2;
+				QVector2D contactPoint;
+				qreal v1v2Length;
+				v1v2Length = (vert1-vert2).length();
 
+				//(x-x1)/(x2-x1)=(y-y1)/(y2-y1) ///@todo using line equation is probably faster
+				if(t1 > 0 && t1 < contactTime)
+				{
+					contactPoint = p.pos + (p.speed + acceleration*t1/2) * t1;
+					if((contactPoint-vert1).length() < v1v2Length && (contactPoint-vert2).length() < v1v2Length) contactTime = t1;
+				}
+				if(t2 > 0 && t2 < contactTime)
+				{
+					contactPoint = p.pos + (p.speed + acceleration*t2/2) * t2;
+					if((contactPoint-vert1).length() < v1v2Length && (contactPoint-vert2).length() < v1v2Length) contactTime = t2;
+				}
 			}
 		}
 
-		
-
 		//check the first vertex
 		{
-			//if(qFuzzyIsNull(p.speed.y())) p.speed.setY(0.0);
-
 			qreal posx_vx = p.pos.x() - vert1.x();
 			qreal posy_vy = p.pos.y() - vert1.y();
 
@@ -350,8 +335,3 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 	}
 }
 
-qreal SimplePhysicsEngine::cosBetweenVectors(QVector2D v1, QVector2D v2)
-{
-	return	QVector2D::dotProduct(v1, v2) / (v1.length() * v2.length());
-
-}
