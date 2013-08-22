@@ -17,9 +17,6 @@ public:
 	QVector2D speed;// in m/s
 	qreal posTime;// time since the beginning of the frame witch pos is corresponding to
 
-	QVector2D projectedSpeed;
-	QVector2D projectedPos;
-
 	bool passive; //all collisions initiated by this particle already calculated
 
 	bool operator==(const Particle& other) const;
