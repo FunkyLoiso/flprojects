@@ -4,6 +4,8 @@
 #include "physicsengine.h"
 #include "Collision.h"
 
+#include <QMultiMap>
+
 class Glass;
 
 class SimplePhysicsEngine : public PhysicsEngine
@@ -19,5 +21,8 @@ private:
 
 	Glass* m_glass;
 	qreal m_time_s;
+
+//debug
+	QMultiMap<qreal, Collision> colls;
 };
 #endif // SimplePhysicsEngine_h__

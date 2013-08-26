@@ -16,6 +16,7 @@ SimplePhysicsThread::~SimplePhysicsThread(void)
 
 void SimplePhysicsThread::run()
 {
+	static const qreal frameTime_s = 1.0/60.0;
 	Q_CHECK_PTR(m_engine);
 	Q_CHECK_PTR(m_glass);
 
@@ -30,9 +31,7 @@ void SimplePhysicsThread::run()
 		m_lastTime = curTime;
 		emit updated();
 
-#ifndef NDEBUG //only in debug mode
-		if(elapsed < 0.001) Sleep(1);
-#endif
+		//if(elapsed < frameTime_s) ::Sleep((frameTime_s-elapsed)*1000.0+1);//fps limiter
 	}
 }
 
