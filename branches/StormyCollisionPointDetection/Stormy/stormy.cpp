@@ -2,6 +2,18 @@
 
 #include <QLabel>
 
+template<typename TFrom, typename TTo>
+inline TTo map(TFrom val, TFrom from1, TFrom from2, TTo to1, TTo to2)
+{
+	TTo result  = TTo(val - from1) * (to2 - to1) / (from2 - from1) + to1;
+	return result;
+};
+
+qreal randBetween(qreal lower, qreal upper)
+{
+	return map(qrand(), 0, RAND_MAX, lower, upper);
+}
+
 Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
@@ -12,38 +24,64 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	connect(ui.bButton1, SIGNAL(clicked()), this, SLOT(onButton1()));
 
-	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.2f, 0.1f) << QPointF(0.0f, 0.3f);
+	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
-	//for(int i = 0; i < 1400; ++i)
-	//{
-	//	Particle p;
-	//	p.pos.setX(double(qrand()%4000)/10000);
-	//	p.pos.setY(double(qrand()%2000)/10000);
-	//	p.radius = double(qrand()%4+2)/10000;
-	//	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	for(int i = 0; i < 50; ++i)
+	{
+		Particle p;
+		p.sn = i;
+		p.radius = randBetween(0.001, 0.005);
+		//p.radius = 0.01;
+		p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
 
-	//	static const int maxSpeed = 100;
-	//	p.speed.setX(double(qrand()%50)/10000-0.0025);
-	//	p.speed.setY(double(qrand()%50)/10000-0.0025);
+		p.pos.setX(randBetween(p.radius+0.001, 0.4 - p.radius - 0.001));
+		p.pos.setY(randBetween(p.radius+0.001, 0.1 - p.radius - 0.001));
 
-	//	m_glass.particles.insert(p.pos.x(), p);
-	//}
+		//bool cont = false;
+		//for(Glass::TParticlesMap::Iterator ip = m_glass.particles.begin(); ip != m_glass.particles.end(); ++ip)
+		//{
+		//	if((ip->pos - p.pos).length() < ip->radius+p.radius+0.001)
+		//	{
+		//		cont = true;
+		//		continue;
+		//	}
+		//}
+		//if(cont)
+		//{
+		//	--i;
+		//	continue;
+		//}
 
-	Particle p;
-	p.pos.setX(0.2);
-	p.pos.setY(0.05);
-	p.radius = 0.01;
-	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	p.speed.setX(0.001);
-	p.speed.setY(0.0);
-	m_glass.particles.insert(p.pos.x(), p);
+		static const double maxSpeed = 0.1;
+		p.speed.setX(randBetween(-maxSpeed, maxSpeed));
+		p.speed.setY(randBetween(-maxSpeed, maxSpeed));
 
-	//p.pos.setX(0.25);
-	//p.pos.setY(0.02);
+		m_glass.particles.insert(p.pos.x(), p);
+	}
+
+	//Particle p;
+	//p.pos.setX(0.1);
+	//p.pos.setY(0.05);
 	//p.radius = 0.01;
 	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	//p.speed.setX(0);
-	//p.speed.setY(0);
+	//p.speed.setX(1000);
+	//p.speed.setY(900.980);
+	//m_glass.particles.insert(p.pos.x(), p);
+
+	//p.pos.setX(0.12201);
+	//p.pos.setY(0.05);
+	//p.radius = 0.01;
+	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	//p.speed.setX(0.001);
+	//p.speed.setY(0.0);
+	//m_glass.particles.insert(p.pos.x(), p);
+
+	//p.pos.setX(0.15);
+	//p.pos.setY(0.05);
+	//p.radius = 0.01;
+	//p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	//p.speed.setX(-0.001);
+	//p.speed.setY(0.0);
 	//m_glass.particles.insert(p.pos.x(), p);
 
 	ui.glassWidget->setGlass(&m_glass);
@@ -56,7 +94,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
 	m_engine.setGravityX(0.0/*ui.sbGravityX->value()*/);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
-	m_engine.setGravityY(0.01/*ui.sbGravityY->value()*/);
+	m_engine.setGravityY(0.0/*ui.sbGravityY->value()*/);
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
@@ -92,7 +130,12 @@ void Stormy::glassWasUpdated()
 
 void Stormy::onButton1()
 {
-	Particle& p = *m_glass.particles.begin();
-	p.speed.setX((qrand()%10-5)/5);
-	p.speed.setY((qrand()%10-5)/5);
+	Particle p;
+	p.pos.setX(0.2);
+	p.pos.setY(0.05);
+	p.radius = 0.01;
+	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+	p.speed.setX(0.001);
+	p.speed.setY(0.0);
+	m_glass.particles.insert(p.pos.x(), p);
 }
