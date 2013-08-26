@@ -37,21 +37,6 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 		p.pos.setX(randBetween(p.radius+0.001, 0.4 - p.radius - 0.001));
 		p.pos.setY(randBetween(p.radius+0.001, 0.1 - p.radius - 0.001));
 
-		//bool cont = false;
-		//for(Glass::TParticlesMap::Iterator ip = m_glass.particles.begin(); ip != m_glass.particles.end(); ++ip)
-		//{
-		//	if((ip->pos - p.pos).length() < ip->radius+p.radius+0.001)
-		//	{
-		//		cont = true;
-		//		continue;
-		//	}
-		//}
-		//if(cont)
-		//{
-		//	--i;
-		//	continue;
-		//}
-
 		static const double maxSpeed = 0.1;
 		p.speed.setX(randBetween(-maxSpeed, maxSpeed));
 		p.speed.setY(randBetween(-maxSpeed, maxSpeed));
@@ -94,7 +79,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
 	m_engine.setGravityX(0.0/*ui.sbGravityX->value()*/);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
-	m_engine.setGravityY(0.0/*ui.sbGravityY->value()*/);
+	m_engine.setGravityY(0.4/*ui.sbGravityY->value()*/);
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
