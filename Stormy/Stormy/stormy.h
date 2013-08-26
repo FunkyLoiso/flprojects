@@ -31,6 +31,8 @@ private:
 
 	QLabel* m_fpsLabel;
 
+	//QVector<Particle&> m_addQueue;
+
 private slots:
 	void glassWasUpdated();
 	void onButton1();
