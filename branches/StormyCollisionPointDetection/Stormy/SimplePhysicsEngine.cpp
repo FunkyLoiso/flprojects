@@ -324,20 +324,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 
 void SimplePhysicsEngine::processCollision(Collision& c)
 {
-	static int counter = 0;
-	++counter;
-	if(counter == 1873)
-	{
-		QVector<Collision> cWithP;
-		for(QMultiMap<qreal, Collision>::Iterator i = colls.begin(); i != colls.end(); ++i)
-		{
-			if(i->particle == c.particle)
-			{
-				cWithP.push_back(*i);
-			}
-		}
-		char cock[] = "clock";
-	}
 	Particle& p = *c.particle;
 	
 	p.move(m_gravity, c.contactTime_s);
