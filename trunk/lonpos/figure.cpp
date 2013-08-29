@@ -63,8 +63,8 @@ QVector<Point *> Figure::getFigureMatrix()
 Point* Figure::turnPoint(Point *point,int degree)
 {
     int tmp_x,tmp_y;
-    tmp_x=point->getX()*qCos(degree)-point->getY()*qSin(degree);
-    tmp_y=point->getX()*qSin(degree)+point->getY()*qCos(degree);
+    tmp_x=point->getX()*qCos(degree*M_PI/180)-point->getY()*qSin(degree*M_PI/180);
+    tmp_y=point->getX()*qSin(degree*M_PI/180)+point->getY()*qCos(degree*M_PI/180);
     point->setX(tmp_x);
     point->setY(tmp_y);
     return point;
@@ -72,9 +72,9 @@ Point* Figure::turnPoint(Point *point,int degree)
 
 void Figure::turnFigureMatrix(int degree)
 {
-    for(int i=figure_matrix.size();i>0;i--)
+    for(int i=0;i<figure_matrix.size();i++)
     {
-        figure_matrix[i-1]=turnPoint(figure_matrix[i-1],degree);
+        figure_matrix[i]=turnPoint(figure_matrix[i],degree);
     }
     this->degree=degree;
 }

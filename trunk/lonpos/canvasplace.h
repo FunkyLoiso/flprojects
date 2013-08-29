@@ -13,7 +13,7 @@ public:
     void addCellCanvas(int x, int y);   //добавить точку в холст
     void delCellCanvas(int x, int y);   //удалить точку из холста
     //
-    bool insertFigure(Figure figure, int x, int y);  //вставить фигуру в холст
+    bool insertFigure(Figure *figure, int x, int y);  //вставить фигуру в холст
     void deleteFigure();                             //удалить фигуру из холста
     //
     bool getStateInvertCanvas(int x, int y);//c 0    //получить состояние ячейки инвертированного холста
