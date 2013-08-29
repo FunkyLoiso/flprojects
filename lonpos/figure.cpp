@@ -111,6 +111,11 @@ void Figure::setColor(QColor incolorF)
     this->colorF = incolorF;
 }
 
+void Figure::clearPoints()
+{
+    figure_matrix.clear();
+}
+
 
 
 

@@ -9,15 +9,21 @@ class FigureWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FigureWidget(QWidget *parent = 0);
-
+    //при создании передается фигура
+    explicit FigureWidget(Figure* FigureL, QWidget *parent = 0);
+    //запись указателя фигуры
+    void  setFigure(Figure* FigureL);
+    //что нужно нарисовать
+    void paintForFigure();
 signals:
 protected:
+    //эта хрень рисует
     void paintEvent(QPaintEvent *);
     
 public slots:
 private:
-    int x_wight,y_height;
+    Figure* paintFigure;
+    void pointCircle(int x, int y, int numberX, int numberY, QColor color=QColor(160,152,152));   //нарисовать кружок в точке //x и y считаются с 0
     
 };
 
