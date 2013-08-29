@@ -39,16 +39,16 @@ void canvasPlace::delCellCanvas(int x, int y)
      canvas[x][y]=false;
 }
 
-bool canvasPlace::insertFigure(Figure figure, int x, int y)
+bool canvasPlace::insertFigure(Figure* figure, int x, int y)
 {
-    int shift_coordinate_x = numberShiftCoordinate(figure.getPoint(1)->getX(),x);
-    int shift_coordinate_y = numberShiftCoordinate(figure.getPoint(1)->getY(),y);
+    int shift_coordinate_x = numberShiftCoordinate(figure->getPoint(1)->getX(),x);
+    int shift_coordinate_y = numberShiftCoordinate(figure->getPoint(1)->getY(),y);
     FigurePosition* Fpos = new FigurePosition(figure);
-    for(int i = 1;i<=figure.getSizePointOfFigure();i++)
+    for(int i = 1;i<=figure->getSizePointOfFigure();i++)
     {
-        Fpos->insertPointPosition(shiftCoordinatePoint(figure.getPoint(i),shift_coordinate_x,shift_coordinate_y));
+        Fpos->insertPointPosition(shiftCoordinatePoint(figure->getPoint(i),shift_coordinate_x,shift_coordinate_y));
     }
-    if(!compareFreePosition(Fpos) ) {return false;}
+    if(compareFreePosition(Fpos) ) {return false;}
     canvasPlace::figures.append(Fpos);
     return true;
 }
@@ -95,6 +95,10 @@ bool canvasPlace::compareFreePosition(FigurePosition* Fpos)
         Point* pt = Fpos->getPointPosition(i);
         if(canvas[pt->getX()][pt->getY()])			{return true; }
         if(invert_canvas[pt->getX()][pt->getY()])	{return true; }
+    }
+    for(int i =1;i<=Fpos->getSizePointOfFigure();i++ )
+    {
+        Point* pt = Fpos->getPointPosition(i);
         canvas[pt->getX()][pt->getY()] = true;
     }
     return true;

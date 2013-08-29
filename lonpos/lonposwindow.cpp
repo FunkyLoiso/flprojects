@@ -45,26 +45,33 @@ LonposWindow(QWidget *parent) :
 //    canvasP->addCellCanvas(3,4);
 //    canvasP->addCellCanvas(3,3);
     //описание фигур
-    Figure* tmp = new Figure();
     //  +
     // +++
     //  +
+    Figvect.append(new Figure());
+    Figure* tmp = Figvect.last();
+    tmp->clearPoints();
     tmp->insertPoint(0,0);
     tmp->insertPoint(0,1);
-    tmp->insertPoint(0,2);
-    tmp->insertPoint(-1,1);
-    tmp->insertPoint(1,1);
-    Figvect.append(tmp);
+    tmp->insertPoint(0,-1);
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(-1,0);
+    tmp->turnFigureMatrix(90);
     // +
     // +
     // +
     // +
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
     tmp->clearPoints();
     tmp->insertPoint(0,0);
     tmp->insertPoint(0,1);
     tmp->insertPoint(0,2);
     tmp->insertPoint(0,3);
-    Figvect.append(tmp);
+    tmp->turnFigureMatrix(90);
+    //
+
+    canvasP->insertFigure(Figvect[1],3,4);
 }
 
 LonposWindow::~LonposWindow()
