@@ -18,7 +18,7 @@ public:
     ~LonposWindow();    
 private:
     Ui::LonposWindow *ui;
-    canvasPlace *canvasP;            //указатель на объект холста
+    canvasPlace *canvasP;           //указатель на объект холста
     QVector<Figure*>  Figvect;      //содержатся вообще существующие фигуры (задается программистом)
 };
 

@@ -22,7 +22,6 @@ void canvasPlace::addInvert(int x, int y)
     {
         invert_canvas[x][y]=true;
     }
-
 }
 
 void canvasPlace::delInvert(int x, int y)
@@ -75,7 +74,7 @@ int canvasPlace::getSizeCanvasX()
 
 int canvasPlace::getSizeCanvasY()
 {
-	return canvas[0].size();
+    return canvas[0].size();
 }
 
 int canvasPlace::numberShiftCoordinate(int coordinate_one, int coordinate_two)
@@ -93,16 +92,32 @@ bool canvasPlace::compareFreePosition(FigurePosition* Fpos)
 {
     for(int i =1;i<=Fpos->getSizePointOfFigure();i++ )
     {
-		Point *pt = Fpos->getPointPosition(i);
-        if(canvas[pt->getX()][pt->getY()])			{return false; }
-        if(invert_canvas[pt->getX()][pt->getY()])	{return false; }
+        Point* pt = Fpos->getPointPosition(i);
+        if(canvas[pt->getX()][pt->getY()])			{return true; }
+        if(invert_canvas[pt->getX()][pt->getY()])	{return true; }
         canvas[pt->getX()][pt->getY()] = true;
     }
     return true;
 }
 
+int canvasPlace::getSizeFigures()
+{
+    return figures.size();
+}
+
 FigurePosition* canvasPlace::getFigureP(int num)
 {
 	if(num<this->figures.size()) {return this->figures[abs(num)];};
-	return 0;
+    return 0;
 }
+
+//int canvasPlace::getSizeExistFigures()
+//{
+//    return exist_figures.size();
+//}
+
+//Figure *canvasPlace::getExistFigures(int num)
+//{
+//    if(num<this->exist_figures.size()) { return this->exist_figures[abs(num)]; };
+//    return 0;
+//}

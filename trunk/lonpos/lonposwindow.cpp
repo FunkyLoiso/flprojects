@@ -51,9 +51,19 @@ LonposWindow(QWidget *parent) :
     //  +
     tmp->insertPoint(0,0);
     tmp->insertPoint(0,1);
-    tmp->insertPoint(0,-1);
-    tmp->insertPoint(-1,0);
-    tmp->insertPoint(1,0);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(-1,1);
+    tmp->insertPoint(1,1);
+    Figvect.append(tmp);
+    // +
+    // +
+    // +
+    // +
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(0,3);
     Figvect.append(tmp);
 }
 

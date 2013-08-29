@@ -33,7 +33,8 @@ public:
     int getSizePointOfFigure();         //количество точек в фигуре
     int getDegree();                    //вернуть угол поворота
     QColor getColor();                  //получить цвет фигуры
-    void   setColor(QColor incolorF);     //установить цвет фигуры
+    void   setColor(QColor incolorF);   //установить цвет фигуры
+    void clearPoints();                 //удалить все точки
 protected:
     QVector<Point*> figure_matrix;
     QColor colorF;                      //общий цвет фигуры
