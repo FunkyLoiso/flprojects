@@ -12,6 +12,7 @@ SimplePhysicsThread::~SimplePhysicsThread(void)
 {
 	m_stopFlag = true;
 	this->wait();
+	
 }
 
 void SimplePhysicsThread::run()

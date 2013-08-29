@@ -2,6 +2,7 @@
 
 #include <QLineF>
 #include <QVector2D>
+#include <QRectF>
 #include <QTransform>
 #include <qmath.h>
 
@@ -114,6 +115,9 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 	qreal timeLeft = m_time_s - p.posTime;//time until end of frame for this particle
 	qreal minTime = timeLeft;//*1.1 to make sure minTime initially greather than timeLeft
 	QVector2D acceleration = m_gravity;
+
+	//determine bounding rect of p
+	QRectF boundingRect = getBoundingRect(p, acceleration, timeLeft);
 	
 	//1. Check for collisions with the border (both edges and vertices)
 	for(QPolygonF::ConstIterator bi = m_glass->border.begin(); bi != m_glass->border.end(); ++bi)
@@ -126,6 +130,24 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		bool contactVertex = false;
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
+
+		if(!boundingRect.contains(vert1.toPointF()) && !boundingRect.contains(vert2.toPointF()))
+		{
+			QLineF edge(vert1.toPointF(), vert2.toPointF());
+			if(	edge.intersect(QLineF(boundingRect.topLeft(), boundingRect.topRight()), NULL) != QLineF::BoundedIntersection &&
+				edge.intersect(QLineF(boundingRect.topRight(), boundingRect.bottomRight()), NULL) != QLineF::BoundedIntersection &&
+				edge.intersect(QLineF(boundingRect.bottomRight(), boundingRect.bottomLeft()), NULL) != QLineF::BoundedIntersection &&
+				edge.intersect(QLineF(boundingRect.bottomLeft(), boundingRect.topLeft()), NULL) != QLineF::BoundedIntersection)
+			{
+				continue;
+			}
+		}
+
+		//this is faster for edges that are parallel to axises
+		//QRectF edgeRect(vert1.toPointF(), vert2.toPointF());
+		//if(qFuzzyIsNull(edgeRect.width())) edgeRect.setWidth(0.0001);
+		//if(qFuzzyIsNull(edgeRect.height())) edgeRect.setHeight(0.0001);
+		//if(!boundingRect.intersects(edgeRect)) continue;
 
 		//2. Determine contact time
 		qreal contactTime = minTime/**1.1*/;
@@ -267,6 +289,9 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(dt < 0.0) continue;//p2 is from the future, we will consider this collision when searching for p2 collisions
 
 		Particle p2 = pi2->moved(acceleration, dt);//warp p2 forward in time to the moment p.posTime
+
+		//QRectF p2BoundingRect = getBoundingRect(p2, acceleration, timeLeft);
+		//if(!boundingRect.intersects(p2BoundingRect)) continue;
 		
 		qreal minDistance = p.radius+p2.radius;
 
@@ -407,5 +432,111 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 		//p.projectedPos = p.pos + dp;
 		//p.projectedSpeed = p.speed + dv;
 	}
+}
+
+QRectF SimplePhysicsEngine::getBoundingRect(Particle p, QVector2D acceleration, qreal timeLeft) const
+{
+	QRectF boundingRect;
+
+	//expand radius a little bit so that bounding rect is a bit bigger and no border errors are present
+	p.radius *= 1.01;//1%
+
+	//x
+	if(qFuzzyIsNull(acceleration.x()))
+	{
+		qreal dx = p.speed.x()*timeLeft;
+		if(dx > 0.0)
+		{
+			boundingRect.setLeft(p.pos.x()-p.radius);
+			boundingRect.setRight(p.pos.x()+dx+p.radius);
+		}
+		else
+		{
+			boundingRect.setLeft(p.pos.x()+dx-p.radius);
+			boundingRect.setRight(p.pos.x()+p.radius);
+		}
+	}
+	else
+	{
+		qreal critTimeX = -2.0*p.speed.x()/acceleration.x();//point where speed changes sign
+		if(critTimeX < 0.0 || critTimeX > timeLeft)
+		{
+			qreal dx = (p.speed.x() + acceleration.x()*timeLeft/2)*timeLeft;
+			if(dx > 0.0)
+			{
+				boundingRect.setLeft(p.pos.x()-p.radius);
+				boundingRect.setRight(p.pos.x()+dx+p.radius);
+			}
+			else
+			{
+				boundingRect.setLeft(p.pos.x()+dx-p.radius);
+				boundingRect.setRight(p.pos.x()+p.radius);
+			}
+		}
+		else
+		{
+			qreal dxCrit = (p.speed.x() + acceleration.x()*critTimeX/2)*critTimeX;
+			if(dxCrit > 0.0)
+			{
+				boundingRect.setLeft(p.pos.x()-p.radius);
+				boundingRect.setRight(p.pos.x()+dxCrit+p.radius);
+			}
+			else
+			{
+				boundingRect.setLeft(p.pos.x()+dxCrit-p.radius);
+				boundingRect.setRight(p.pos.x()+p.radius);
+			}
+		}
+	}
+
+	//y
+	if(qFuzzyIsNull(acceleration.y()))
+	{
+		qreal dy = p.speed.y()*timeLeft;
+		if(dy > 0.0)
+		{
+			boundingRect.setTop(p.pos.y()-p.radius);
+			boundingRect.setBottom(p.pos.y()+dy+p.radius);
+		}
+		else
+		{
+			boundingRect.setTop(p.pos.y()+dy-p.radius);
+			boundingRect.setBottom(p.pos.y()+p.radius);
+		}
+	}
+	else
+	{
+		qreal critTimeY = -2.0*p.speed.y()/acceleration.y();//point where speed changes sign
+		if(critTimeY < 0.0 || critTimeY > timeLeft)
+		{
+			qreal dy = (p.speed.y() + acceleration.y()*timeLeft/2)*timeLeft;
+			if(dy > 0.0)
+			{
+				boundingRect.setTop(p.pos.y()-p.radius);
+				boundingRect.setBottom(p.pos.y()+dy+p.radius);
+			}
+			else
+			{
+				boundingRect.setTop(p.pos.y()+dy-p.radius);
+				boundingRect.setBottom(p.pos.y()+p.radius);
+			}
+		}
+		else
+		{
+			qreal dyCrit = (p.speed.y() + acceleration.y()*critTimeY/2)*critTimeY;
+			if(dyCrit > 0.0)
+			{
+				boundingRect.setTop(p.pos.y()-p.radius);
+				boundingRect.setBottom(p.pos.y()+dyCrit+p.radius);
+			}
+			else
+			{
+				boundingRect.setTop(p.pos.y()+dyCrit-p.radius);
+				boundingRect.setBottom(p.pos.y()+p.radius);
+			}
+		}
+	}
+
+	return boundingRect;
 }
 
