@@ -14,7 +14,7 @@ void FigureWidget::setFigure(Figure* FigureL)
 
 void FigureWidget::paintForFigure()
 {
-    for(int i=0; i<this->paintFigure->getSizePointOfFigure();i++)
+    for(int i=1; i<this->paintFigure->getSizePointOfFigure();i++)
     {
         this->pointCircle(this->paintFigure->getPoint(i)->getX(),this->paintFigure->getPoint(i)->getY(),this->x,this->y);
     }
@@ -22,7 +22,7 @@ void FigureWidget::paintForFigure()
 
 void FigureWidget::setSizeCanvasFigure()
 {
-    for(int i=0;i<this->paintFigure->getSizePointOfFigure();i++)
+    for(int i=1;i<this->paintFigure->getSizePointOfFigure();i++)
     {
         Point* cur = this->paintFigure->getPoint(i);
         if (this->x<cur->getX()) {this->x=cur->getX();}

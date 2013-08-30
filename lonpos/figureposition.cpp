@@ -4,10 +4,10 @@ FigurePosition::FigurePosition()
 {
 }
 
-FigurePosition::FigurePosition(Figure figure)
+FigurePosition::FigurePosition(Figure* figure)
 {
-    this->figure_matrix = figure.getFigureMatrix();
-    this->degree = figure.getDegree();
+    this->figure_matrix = figure->getFigureMatrix();
+    this->degree = figure->getDegree();
 }
 
 void FigurePosition::insertPointPosition(int x, int y)
