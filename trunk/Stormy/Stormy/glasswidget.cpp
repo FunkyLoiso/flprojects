@@ -45,14 +45,14 @@ void GlassWidget::paintEvent(QPaintEvent *)
 	{
 		p.setPen(Qt::blue);
 		p.setBrush(QColor(i->dbg_level%256, 0, 255, 128));
-		p.drawEllipse(i->pos.toPointF(), i->radius, i->radius);
+		p.drawEllipse(i->pos().toPointF(), i->radius(), i->radius());
 
 #ifndef NDEBUG
 		p.setPen(Qt::black);
 		static double k = 0.2;
-		p.drawLine(i->pos.toPointF(), (i->pos+k*i->speed).toPointF());
+		p.drawLine(i->pos().toPointF(), (i->pos()+k*i->speed()).toPointF());
 		p.setMatrixEnabled(false);
-		p.drawText(p.transform().map(i->pos.toPointF()), QString::number(i->sn));
+		p.drawText(p.transform().map(i->pos().toPointF()), QString::number(i->sn));
 		p.setMatrixEnabled(true);
 #endif
 	}
