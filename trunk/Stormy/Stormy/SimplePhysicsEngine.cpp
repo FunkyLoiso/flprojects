@@ -131,23 +131,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
 
-		if(!boundingRect.contains(vert1.toPointF()) && !boundingRect.contains(vert2.toPointF()))
-		{
-			QLineF edge(vert1.toPointF(), vert2.toPointF());
-			if(	edge.intersect(QLineF(boundingRect.topLeft(), boundingRect.topRight()), NULL) != QLineF::BoundedIntersection &&
-				edge.intersect(QLineF(boundingRect.topRight(), boundingRect.bottomRight()), NULL) != QLineF::BoundedIntersection &&
-				edge.intersect(QLineF(boundingRect.bottomRight(), boundingRect.bottomLeft()), NULL) != QLineF::BoundedIntersection &&
-				edge.intersect(QLineF(boundingRect.bottomLeft(), boundingRect.topLeft()), NULL) != QLineF::BoundedIntersection)
-			{
-				continue;
-			}
-		}
-
-		//this is faster for edges that are parallel to axises
-		//QRectF edgeRect(vert1.toPointF(), vert2.toPointF());
-		//if(qFuzzyIsNull(edgeRect.width())) edgeRect.setWidth(0.0001);
-		//if(qFuzzyIsNull(edgeRect.height())) edgeRect.setHeight(0.0001);
-		//if(!boundingRect.intersects(edgeRect)) continue;
+		if(!rectIntersectsLine(boundingRect, vert1, vert2)) continue;
 
 		//2. Determine contact time
 		qreal contactTime = minTime/**1.1*/;
@@ -290,8 +274,8 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 
 		Particle p2 = pi2->moved(acceleration, dt);//warp p2 forward in time to the moment p.posTime
 
-		//QRectF p2BoundingRect = getBoundingRect(p2, acceleration, timeLeft);
-		//if(!boundingRect.intersects(p2BoundingRect)) continue;
+		QRectF p2BoundingRect = getBoundingRect(p2, acceleration, timeLeft);
+		if(!boundingRect.intersects(p2BoundingRect)) continue;
 		
 		qreal minDistance = p.radius+p2.radius;
 
@@ -538,5 +522,31 @@ QRectF SimplePhysicsEngine::getBoundingRect(Particle p, QVector2D acceleration, 
 	}
 
 	return boundingRect;
+}
+
+bool SimplePhysicsEngine::rectIntersectsLine(const QRectF& rect, QVector2D p1, QVector2D p2) const
+{
+	//F(x y) = (y2-y1)x + (x1-x2)y + (x2*y1-x1*y2) <- line equation
+	qreal dy = p2.y()-p1.y();
+	qreal dx = p1.x()-p2.x();
+	qreal C = p2.x()*p1.y()-p1.x()*p2.y();
+
+	bool a = dy*rect.topLeft().x() + dx*rect.topLeft().y() + C > 0.0;
+	bool b = dy*rect.topRight().x() + dx*rect.topRight().y() + C > 0.0;
+	bool c = dy*rect.bottomLeft().x() + dx*rect.bottomLeft().y() + C > 0.0;
+	bool d = dy*rect.bottomRight().x() + dx*rect.bottomRight().y() + C > 0.0;
+
+	if(a == b && b == c && c == d)
+	{
+		return false;//all corners on the same side of the line if all signs are the same
+	}
+
+	//x axis
+	if(p1.x() > rect.right() && p2.x() > rect.right()) return false;	//line lays to the right
+	if(p1.x() < rect.left() && p2.x() < rect.left()) return false;		//line lays to the left
+	if(p1.y() > rect.bottom() && p2.y() > rect.bottom()) return false;	//line lays lower
+	if(p1.y() < rect.top() && p2.y() < rect.top()) return false;		//line lays higher
+
+	return true;
 }
 
