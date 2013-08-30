@@ -48,7 +48,7 @@ void Figure::insertPoint(Point *pos)
 
 Point* Figure::getPoint(int number)
 {
-    if (number>0)
+    if (number>=0)
     {
         return figure_matrix[number-1];
     }
