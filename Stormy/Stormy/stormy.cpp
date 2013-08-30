@@ -30,18 +30,16 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	{
 		Particle p;
 		p.sn = i;
-		p.radius = randBetween(0.001, 0.005);
+		p.setRadius(randBetween(0.001, 0.005));
 		//p.radius = 0.01;
-		p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
+		p.setMass(c_pi*p.radius()*p.radius() * p.radius() * 7800);
 
-		p.pos.setX(randBetween(p.radius+0.001, 0.4 - p.radius - 0.001));
-		p.pos.setY(randBetween(p.radius+0.001, 0.1 - p.radius - 0.001));
+		p.setPos(QVector2D(randBetween(p.radius()+0.001, 0.4 - p.radius() - 0.001), randBetween(p.radius()+0.001, 0.1 - p.radius() - 0.001)));
 
 		static const double maxSpeed = 0.1;
-		p.speed.setX(randBetween(-maxSpeed, maxSpeed));
-		p.speed.setY(randBetween(-maxSpeed, maxSpeed));
+		p.setSpeed(QVector2D(randBetween(-maxSpeed, maxSpeed), randBetween(-maxSpeed, maxSpeed)));
 
-		m_glass.particles.insert(p.pos.x(), p);
+		m_glass.particles.insert(p.pos().x(), p);
 	}
 
 	//Particle p;
@@ -116,11 +114,9 @@ void Stormy::glassWasUpdated()
 void Stormy::onButton1()
 {
 	Particle p;
-	p.pos.setX(0.2);
-	p.pos.setY(0.05);
-	p.radius = 0.01;
-	p.mass = c_pi*p.radius*p.radius * p.radius * 7800;
-	p.speed.setX(0.001);
-	p.speed.setY(0.0);
-	m_glass.particles.insert(p.pos.x(), p);
+	p.setPos(QVector2D(0.2 ,0.05));
+	p.setRadius(0.01);
+	p.setMass(c_pi*p.radius()*p.radius() * p.radius() * 7800);
+	p.setSpeed(QVector2D(0.001, 0.0));
+	m_glass.particles.insert(p.pos().x(), p);
 }
