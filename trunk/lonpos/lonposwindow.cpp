@@ -2,6 +2,7 @@
 #include "ui_lonposwindow.h"
 #include "QLabel"
 #include "QVBoxLayout"
+#include "figurewidget.h"
 
 LonposWindow::
 LonposWindow(QWidget *parent) :
@@ -9,10 +10,7 @@ LonposWindow(QWidget *parent) :
     ui(new Ui::LonposWindow)
 {
     ui->setupUi(this);
-//    QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
-//    QVBL->addWidget(new QLabel("LOL1"));
-//    QVBL->addWidget(new QLabel("LOL2"));
-    //
+
     this->canvasP = new canvasPlace(9,9);
 	ui->lonposCanvasWidget->setcanvasPlace(this->canvasP);
     //заполнение матрицы блокировки
@@ -72,6 +70,12 @@ LonposWindow(QWidget *parent) :
     //
 
     canvasP->insertFigure(Figvect[1],3,4);
+
+
+    QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
+    QVBL->addWidget(new FigureWidget(Figvect[1]));
+    QVBL->addWidget(new QLabel("LOL2"));
+    //
 }
 
 LonposWindow::~LonposWindow()

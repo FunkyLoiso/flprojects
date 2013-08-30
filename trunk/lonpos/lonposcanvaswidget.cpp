@@ -4,37 +4,7 @@
 LonposCanvasWidget::LonposCanvasWidget(QWidget *parent):
     QWidget(parent)
 {
-//    this->x_weight = this->canvasLCW->getSizeCanvasX();
-//    this->y_height = this->canvasLCW->getSizeCanvasY();
-
-//    this->x_weight = x;
-//    this->y_height = y;
 }
-
-//void LonposCanvasWidget::paintFonCircle(Qt::GlobalColor fon, Qt::GlobalColor circle,int x, int y)
-//{
-//    QPainter paint(this);       //объект рисовальщика
-//    paint.setRenderHint(QPainter::Antialiasing);
-//    //серый фон
-//    paint.save();
-//    paint.setBrush(fon);
-//    paint.setPen(Qt::NoPen);
-//    paint.drawRect(0,0,this->width(),this->height());   //квадрат
-
-//    //полости для фигур
-//    paint.restore();
-//    paint.setPen(Qt::NoPen);
-//    paint.setBrush(circle);
-//    int tmp_x = (this->width()/(x+1));   //расстояние между центрами кругов
-//    int tmp_y = (this->height()/(y+1));  //up
-//    for(int yi = 1;yi<=y;yi++)
-//    {
-//        for(int xi = 1;xi<=x;xi++)
-//        {
-//            paint.drawEllipse(QRectF( tmp_x*xi-tmp_x/2,(tmp_y*yi)-tmp_y/2,tmp_x,tmp_y));
-//        }
-//    }
-//}
 
 bool LonposCanvasWidget::paintFonCircle()
 {

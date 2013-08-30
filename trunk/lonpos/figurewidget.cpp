@@ -4,6 +4,7 @@ FigureWidget::FigureWidget(Figure *FigureL, QWidget *parent) :
     QWidget(parent)
 {
     this->setFigure(FigureL);
+    this->setSizeCanvasFigure();
 }
 
 void FigureWidget::setFigure(Figure* FigureL)
@@ -13,12 +14,25 @@ void FigureWidget::setFigure(Figure* FigureL)
 
 void FigureWidget::paintForFigure()
 {
-//    this->paintFigure->
+    for(int i=0; i<this->paintFigure->getSizePointOfFigure();i++)
+    {
+        this->pointCircle(this->paintFigure->getPoint(i)->getX(),this->paintFigure->getPoint(i)->getY(),this->x,this->y);
+    }
+}
+
+void FigureWidget::setSizeCanvasFigure()
+{
+    for(int i=0;i<this->paintFigure->getSizePointOfFigure();i++)
+    {
+        Point* cur = this->paintFigure->getPoint(i);
+        if (this->x<cur->getX()) {this->x=cur->getX();}
+        if (this->y<cur->getY()) {this->y=cur->getY();}
+    }
 }
 
 void FigureWidget:: paintEvent(QPaintEvent *)
 {
-
+    this->paintForFigure();
 }
 
 void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor color)
@@ -32,3 +46,5 @@ void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor co
     paint.setBrush(color);
     paint.drawEllipse(width*(x+1)-width/2, height*(y+1)-height/2, width, height);
 }
+
+
