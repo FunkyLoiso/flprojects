@@ -4,7 +4,9 @@ FigureWidget::FigureWidget(Figure *FigureL, QWidget *parent) :
     QWidget(parent)
 {
     this->setFigure(FigureL);
-    this->setSizeCanvasFigure();
+    this->x=5;
+    this->y=5;
+//    this->setSizeCanvasFigure();
 }
 
 void FigureWidget::setFigure(Figure* FigureL)
@@ -14,7 +16,7 @@ void FigureWidget::setFigure(Figure* FigureL)
 
 void FigureWidget::paintForFigure()
 {
-    for(int i=1; i<this->paintFigure->getSizePointOfFigure();i++)
+    for(int i=1; i<=this->paintFigure->getSizePointOfFigure();i++)
     {
         this->pointCircle(this->paintFigure->getPoint(i)->getX(),this->paintFigure->getPoint(i)->getY(),this->x,this->y);
     }
@@ -22,12 +24,23 @@ void FigureWidget::paintForFigure()
 
 void FigureWidget::setSizeCanvasFigure()
 {
-    for(int i=1;i<this->paintFigure->getSizePointOfFigure();i++)
+    Point* cur;
+    int min_x,min_y,max_x,max_y;
+
+    max_x=this->paintFigure->getPoint(1)->getX();
+    min_x=this->paintFigure->getPoint(1)->getX();
+    max_y=this->paintFigure->getPoint(1)->getY();
+    min_y=this->paintFigure->getPoint(1)->getY();
+    for(int i=1;i<=this->paintFigure->getSizePointOfFigure();i++)
     {
-        Point* cur = this->paintFigure->getPoint(i);
-        if (this->x<cur->getX()) {this->x=cur->getX();}
-        if (this->y<cur->getY()) {this->y=cur->getY();}
-    }
+        cur = this->paintFigure->getPoint(i);
+        if (max_x<cur->getX()) {max_x=cur->getX();}
+        if (min_x>cur->getX()) {min_x=cur->getX();}
+        if (max_y<cur->getY()) {max_y=cur->getY();}
+        if (min_y>cur->getY()) {min_y=cur->getY();}
+     }
+    this->x=abs(min_x-max_x);
+    this->y=abs(min_y-max_y);
 }
 
 void FigureWidget:: paintEvent(QPaintEvent *)
