@@ -26,7 +26,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
-	for(int i = 0; i < 50; ++i)
+	for(int i = 0; i < 100; ++i)
 	{
 		Particle p;
 		p.sn = i;
@@ -77,7 +77,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
 	m_engine.setGravityX(0.0/*ui.sbGravityX->value()*/);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
-	m_engine.setGravityY(0.0/*ui.sbGravityY->value()*/);
+	m_engine.setGravityY(0.4/*ui.sbGravityY->value()*/);
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);

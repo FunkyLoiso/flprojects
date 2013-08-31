@@ -41,7 +41,7 @@ void GlassWidget::paintEvent(QPaintEvent *)
 	p.setPen(Qt::red);
 	p.drawPolygon(m_glass->border);
 
-	for(Glass::TParticlesMap::ConstIterator i = m_glass->particles.constBegin(); i != m_glass->particles.constEnd(); ++i)
+	for(Glass::TParticlesVector::ConstIterator i = m_glass->particles.constBegin(); i != m_glass->particles.constEnd(); ++i)
 	{
 		p.setPen(Qt::blue);
 		p.setBrush(QColor(i->dbg_level%256, 0, 255, 128));
