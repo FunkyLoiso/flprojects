@@ -53,11 +53,13 @@ void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor co
     int width = (this->width()/(numberX+1));
     int height = (this->height()/(numberY+1));
 
+	int size = qMin(width, height);
+
     QPainter paint(this);
     paint.setRenderHints(QPainter::Antialiasing);
     paint.setPen(Qt::NoPen);
     paint.setBrush(color);
-    paint.drawEllipse(width*(x+1)-width/2, height*(y+1)-height/2, width, height);
+    paint.drawEllipse(size*(x+1)-size/2, size*(y+1)-size/2, size, size);
 }
 
 
