@@ -42,21 +42,26 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 void SimplePhysicsEngine::doCollisions()
 {
-	QMultiMap<qreal, Collision> colls;
 	for(;;)
 	{
+		qreal firstCollisionTime = m_time_s*1.1;
+		Collision firstCollision;
 		for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 		{
 			Collision c;
 			if(findFirstCollision(*pi, c))
 			{
-				colls.insert(c.contactTime_s+c.particle->posTime(), c);
+				qreal collisionTime = c.contactTime_s+c.particle->posTime();
+				if(collisionTime < firstCollisionTime)
+				{
+					firstCollisionTime = collisionTime;
+					firstCollision = c;
+				}
 			}
 		}
-		if(!colls.isEmpty())
+		if(firstCollisionTime < m_time_s)
 		{
-			processCollision(*colls.begin());
-			colls.clear();
+			processCollision(firstCollision);
 		}
 		else
 		{
