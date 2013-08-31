@@ -26,7 +26,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.2f, 0.3f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
-	for(int i = 0; i < 100; ++i)
+	for(int i = 0; i < 50; ++i)
 	{
 		Particle p;
 		p.sn = i;
