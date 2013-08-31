@@ -4,7 +4,7 @@
 #include <QVector2D>
 #include <QRectF>
 #include <QTransform>
-#include <qmath.h>
+#include <qmath.h> 
 
 #include "quartic/quartic.hpp"
 
@@ -16,20 +16,16 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 	//timePassed_s = 2.0;
 	m_glass = glass;
 	m_time_s = timePassed_s;
-	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
-	{// 1. Write projected speeds and positions for all particles 
-		//pi->passive = false;// mark that this particle can initiate collisions
-		pi->dbg_level = 0;
-	}
-	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
-	{// 2. Do collision detection and corresponding projected speed and location modifications for each particle
-		pi->dbg_level = 0;
-		/*if(!pi->passive) */doCollisions(*pi, 0);
-	}
-	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
-	{// 3. Write projected to actual after all collisions were detected
-		//writeActualSpeedAndPosition(*pi);
+	//for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+	//{
+	//	pi->dbg_level = 0;
+	//}
 
+	//do all collisions for all particles
+	doCollisions();
+
+	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+	{//move all particles to the end of the frame
 		qreal timeLeft = m_time_s - pi->posTime();
 		pi->move(m_gravity, timeLeft);
 
@@ -38,50 +34,9 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 	}
 }
 
-//void SimplePhysicsEngine::writeProjectedSpeedAndPosition(Particle& p)
-//{
-//	QVector2D dv = m_gravity * m_time_s;
-//	QVector2D dp = (p.speed + dv/2) * m_time_s;
-//
-//	p.projectedSpeed = p.speed + dv;
-//	p.projectedPos = p.pos + dp;
-//	p.posTime = 0.0;
-//}
-
-void SimplePhysicsEngine::doCollisions(Particle& _p, int level)
+void SimplePhysicsEngine::doCollisions()
 {
-	//Q_ASSERT(level < 50);
-	//Collision c;
-	//if(findFirstCollision(p, c) && level < 50)
-	//{
-	//	processCollision(c);//updates projected speed and position
-	//	doCollisions(*c.particle, level+1);	//recursion is fishy here...
-	//	if(c.type == Collision::WithParticle) doCollisions(*c.otherParticle, level+1);
-	//}
-	//p.passive = true;
-
-	//QVector<Particle*> ps;
-	//ps.push_back(&_p);
-	//for(int i = 0; i < ps.size(); ++i)
-	//{
-	//	Particle& p = *ps[i];
-	//	Collision c;
-	//	if(findFirstCollision(p, c))
-	//	{
-	//		++p.dbg_level;
-	//		processCollision(c);
-	//		
-	//		if(c.type == Collision::WithParticle)
-	//		{
-	//			++c.otherParticle->dbg_level;
-	//			ps.push_back(c.otherParticle);
-	//		}
-	//		ps.push_back(&p);
-	//		
-	//	}
-	//	else p.passive = true;
-	//}
-
+	QMultiMap<qreal, Collision> colls;
 	for(;;)
 	{
 		for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
@@ -112,7 +67,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 	QVector2D acceleration = m_gravity;
 
 	//determine bounding rect of p
-	QRectF boundingRect = p.boundingRect(acceleration, timeLeft);
+	//QRectF boundingRect = p.boundingRect(acceleration, timeLeft);
 	
 	//1. Check for collisions with the border (both edges and vertices)
 	for(QPolygonF::ConstIterator bi = m_glass->border.begin(); bi != m_glass->border.end(); ++bi)
@@ -126,7 +81,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
 
-		if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
+		//if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
 
 		//2. Determine contact time
 		qreal contactTime = minTime/**1.1*/;
@@ -269,8 +224,8 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 
 		Particle p2 = pi2->moved(acceleration, dt);//warp p2 forward in time to the moment p.posTime
 
-		QRectF p2BoundingRect = p2.boundingRect(acceleration, timeLeft);
-		if(!boundingRect.intersects(p2BoundingRect)) continue;
+		//QRectF p2BoundingRect = p2.boundingRect(acceleration, timeLeft);
+		//if(!boundingRect.intersects(p2BoundingRect)) continue;
 		
 		qreal minDistance = p.radius()+p2.radius();
 
