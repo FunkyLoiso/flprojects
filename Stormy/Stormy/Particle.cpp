@@ -59,10 +59,10 @@ QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 	}
 	else
 	{
-		qreal critTimeX = -2.0*p.speed().x()/acceleration.x();//point where speed changes sign
+		qreal critTimeX = -p.speed().x()/acceleration.x();//point where speed changes sign
 		if(critTimeX < 0.0 || critTimeX > timeLeft)
 		{
-			qreal dx = (p.speed().x() + acceleration.x()*timeLeft/2)*timeLeft;
+			qreal dx = (p.speed().x() + acceleration.x()*timeLeft/2.0)*timeLeft;
 			if(dx > 0.0)
 			{
 				boundingRect.setLeft(p.pos().x()-p.radius());
@@ -76,7 +76,8 @@ QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 		}
 		else
 		{
-			qreal dxCrit = (p.speed().x() + acceleration.x()*critTimeX/2)*critTimeX;
+			//qreal dxCrit = (p.speed().x() + acceleration.x()*critTimeX/2.0)*critTimeX;
+			qreal dxCrit = p.speed().x()/2.0 * critTimeX;
 			if(dxCrit > 0.0)
 			{
 				boundingRect.setLeft(p.pos().x()-p.radius());
@@ -107,10 +108,10 @@ QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 	}
 	else
 	{
-		qreal critTimeY = -2.0*p.speed().y()/acceleration.y();//point where speed changes sign
+		qreal critTimeY = -p.speed().y()/acceleration.y();//point where speed changes sign
 		if(critTimeY < 0.0 || critTimeY > timeLeft)
 		{
-			qreal dy = (p.speed().y() + acceleration.y()*timeLeft/2)*timeLeft;
+			qreal dy = (p.speed().y() + acceleration.y()*timeLeft/2.0)*timeLeft;
 			if(dy > 0.0)
 			{
 				boundingRect.setTop(p.pos().y()-p.radius());
@@ -124,16 +125,20 @@ QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 		}
 		else
 		{
-			qreal dyCrit = (p.speed().y() + acceleration.y()*critTimeY/2)*critTimeY;
+			//qreal dyCrit = (p.speed().y() + acceleration.y()*critTimeY/2)*critTimeY;
+			qreal dyCrit = p.speed().y()/2.0 * critTimeY;
+			qreal dyFinal = (p.speed().y() + acceleration.y()*timeLeft/2.0)*timeLeft;
 			if(dyCrit > 0.0)
 			{
-				boundingRect.setTop(p.pos().y()-p.radius());
 				boundingRect.setBottom(p.pos().y()+dyCrit+p.radius());
+				if(dyFinal > 0.0) dyFinal = 0.0;
+				boundingRect.setTop(p.pos().y()+dyFinal-p.radius());
 			}
 			else
 			{
 				boundingRect.setTop(p.pos().y()+dyCrit-p.radius());
-				boundingRect.setBottom(p.pos().y()+p.radius());
+				if(dyFinal < 0.0) dyFinal = 0.0;
+				boundingRect.setBottom(p.pos().y()+dyFinal+p.radius());
 			}
 		}
 	}
