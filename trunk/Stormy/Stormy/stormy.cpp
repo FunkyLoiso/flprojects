@@ -103,7 +103,7 @@ void Stormy::glassWasUpdated()
 	static int count = 0;
 	++count;
 	quint64 curTime = m_timer.elapsed();
-	if(curTime-m_lastTime > 1000.0f)
+	if(curTime-m_lastTime > 10000.0f)
 	{
 		m_fpsLabel->setText(QString("fps: %1").arg(count/((curTime-m_lastTime)/1000.0f)));
 		m_lastTime = curTime;
