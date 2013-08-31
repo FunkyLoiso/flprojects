@@ -54,6 +54,12 @@ LonposWindow(QWidget *parent) :
     tmp->insertPoint(0,-1);
     tmp->insertPoint(1,0);
     tmp->insertPoint(-1,0);
+//решение проблемы сдвига фигуры
+//    tmp->insertPoint(1,1);
+//    tmp->insertPoint(1,2);
+//    tmp->insertPoint(1,0);
+//    tmp->insertPoint(2,1);
+//    tmp->insertPoint(0,1);
 //    tmp->turnFigureMatrix(90);
     // +
     // +
@@ -66,14 +72,18 @@ LonposWindow(QWidget *parent) :
     tmp->insertPoint(0,1);
     tmp->insertPoint(0,2);
     tmp->insertPoint(0,3);
-//    tmp->turnFigureMatrix(90);
+//    tmp->insertPoint(0,-1);
+//    tmp->insertPoint(1,0);
+//    tmp->insertPoint(2,0);
+//    tmp->insertPoint(-1,0);
+    tmp->turnFigureMatrix(0);
     //
 
     canvasP->insertFigure(Figvect[1],3,4);
 
 
     QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
-    QVBL->addWidget(new FigureWidget(Figvect[0]));
+    QVBL->addWidget(new FigureWidget(Figvect[1]));
     QVBL->addWidget(new FigureWidget(Figvect[1]));
     QVBL->addWidget(new QLabel("LOL2"));
     //

@@ -23,8 +23,7 @@ protected:
 public slots:
 private:
     Figure* paintFigure;
-    int x;
-    int y;
+    int x,y,min_x,min_y;
     void setSizeCanvasFigure();
     void pointCircle(int x, int y, int numberX, int numberY, QColor color=QColor(160,152,152));   //нарисовать кружок в точке //x и y считаются с 0
 };
