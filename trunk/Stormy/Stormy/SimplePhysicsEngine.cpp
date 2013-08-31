@@ -24,6 +24,9 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 	//do all collisions for all particles
 	doCollisions();
 
+#ifndef NDEBUG
+	QRectF borderRect = m_glass->border.boundingRect();
+#endif
 	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 	{//move all particles to the end of the frame
 		qreal timeLeft = m_time_s - pi->posTime();
@@ -31,6 +34,9 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 
 		//pi->passive = false;
 		pi->setPosTime(0.0);
+#ifndef NDEBUG
+		Q_ASSERT(borderRect.contains(pi->pos().toPointF()));
+#endif
 	}
 }
 
@@ -67,7 +73,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 	QVector2D acceleration = m_gravity;
 
 	//determine bounding rect of p
-	//QRectF boundingRect = p.boundingRect(acceleration, timeLeft);
+	QRectF boundingRect = p.boundingRect(acceleration, timeLeft);
 	
 	//1. Check for collisions with the border (both edges and vertices)
 	for(QPolygonF::ConstIterator bi = m_glass->border.begin(); bi != m_glass->border.end(); ++bi)
@@ -81,7 +87,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
 
-		//if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
+		if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
 
 		//2. Determine contact time
 		qreal contactTime = minTime/**1.1*/;
