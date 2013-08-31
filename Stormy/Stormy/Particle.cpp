@@ -92,7 +92,7 @@ void getAxisBounds(qreal p, qreal v, qreal a, qreal t, qreal& out_left, qreal& o
 
 QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 {
-	const qreal margin = m_radius*1.01;// 1%
+	const qreal margin = m_radius*1.001;// radius + 0.1%
 	qreal l, r, t, b;
 	getAxisBounds(m_pos.x(), m_speed.x(), acceleration.x(), timeLeft, l, r);
 	getAxisBounds(m_pos.y(), m_speed.y(), acceleration.y(), timeLeft, t, b);

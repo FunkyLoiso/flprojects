@@ -14,19 +14,14 @@ public:
 	virtual void update(Glass* glass, qreal timePassed_s);
 
 private:
-	void writeProjectedSpeedAndPosition(Particle& p);
-	void doCollisions();//recursively detect and process collisions for p and everything it touches
+	void doCollisions();//detect and process all collisions for all particles
 	bool findFirstCollision(Particle& p, Collision& out_collision) const;//returns true if collision was detected
-
-	void processCollision(Collision& c);//update projected speed and position due to collision c
+	void processCollision(Collision& c);//moves p to collision point and updates speed direction
 	
-	//QRectF getBoundingRect(Particle p, QVector2D acceleration, qreal timeLeft) const;
-	bool rectIntersectsLineSegment(const QRectF& rect, QVector2D p1, QVector2D p2) const;
-
 	Glass* m_glass;
 	qreal m_time_s;
 
-//debug
-	/*QMultiMap<qreal, Collision> colls;*/
+	//utility functions
+	bool rectIntersectsLineSegment(const QRectF& rect, QVector2D p1, QVector2D p2) const;
 };
 #endif // SimplePhysicsEngine_h__

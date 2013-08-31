@@ -72,9 +72,8 @@ void SimplePhysicsEngine::doCollisions()
 
 bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collision) const
 {
-	static const qreal MIN_TIME = 0.0;
 	qreal timeLeft = m_time_s - p.posTime();//time until end of frame for this particle
-	qreal minTime = timeLeft;//*1.1 to make sure minTime initially greather than timeLeft
+	qreal minTime = timeLeft;
 	QVector2D acceleration = m_gravity;
 
 	//determine bounding rect of p
@@ -92,11 +91,11 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
 
+		//check whether bounding rectangle intersects with this border
 		if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
-		//bool intersects = rectIntersectsLineSegment(boundingRect, vert1, vert2);
 
 		//2. Determine contact time
-		qreal contactTime = minTime/**1.1*/;
+		qreal contactTime = minTime;
 		QVector2D directionVector;
 		//if(contactVert == NULL)
 		//contact with an edge
@@ -167,7 +166,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 						}
 					}
 				}
-				//if(qAbs(t1) < MIN_TIME || qAbs(t2) < MIN_TIME) contactTime = 0.0;
 			}
 		}
 
@@ -208,11 +206,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 						contactVertex = true;
 					}
 				}
-				//if(qAbs(root) < MIN_TIME)
-				//{
-				//	contactTime = 0.0;
-				//	break;
-				//}
 			}
 		}		
 
@@ -255,7 +248,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		bool solved = magnet::math::quadraticSolve(B/A, C/A, t1, t2);
 		if(solved)
 		{
-			qreal contactTime = minTime/**1.1*/;
+			qreal contactTime = minTime;
 			if(t1 > 0 && t1 < contactTime)
 			{
 				Particle p1Contact = p.moved(acceleration, t1);
@@ -274,7 +267,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 					contactTime = t2;
 				}
 			}
-			//if(qAbs(t1) < MIN_TIME || qAbs(t2) < MIN_TIME) contactTime = 0.0;
 
 
 			if(contactTime < minTime)
