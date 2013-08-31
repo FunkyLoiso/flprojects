@@ -27,7 +27,7 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 #ifndef NDEBUG
 	QRectF borderRect = m_glass->border.boundingRect();
 #endif
-	for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+	for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 	{//move all particles to the end of the frame
 		qreal timeLeft = m_time_s - pi->posTime();
 		pi->move(m_gravity, timeLeft);
@@ -45,7 +45,7 @@ void SimplePhysicsEngine::doCollisions()
 	QMultiMap<qreal, Collision> colls;
 	for(;;)
 	{
-		for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+		for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 		{
 			Collision c;
 			if(findFirstCollision(*pi, c))
@@ -222,7 +222,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		}
 	}
 	// 2. Now check for collisions with other particles
-	for(Glass::TParticlesMap::Iterator pi2 = m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
+	for(Glass::TParticlesVector::Iterator pi2 = m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
 	{
 		if(p == *pi2) continue;
 		qreal dt = p.posTime()-pi2->posTime();
