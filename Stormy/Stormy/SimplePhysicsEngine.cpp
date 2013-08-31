@@ -92,8 +92,8 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(bi != m_glass->border.end()-1)	vert2 = QVector2D(*(bi+1));
 		else								vert2 = QVector2D(*(m_glass->border.begin()));
 
-		//if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
-		bool intersects = rectIntersectsLineSegment(boundingRect, vert1, vert2);
+		if(!rectIntersectsLineSegment(boundingRect, vert1, vert2)) continue;
+		//bool intersects = rectIntersectsLineSegment(boundingRect, vert1, vert2);
 
 		//2. Determine contact time
 		qreal contactTime = minTime/**1.1*/;

@@ -34,118 +34,6 @@ Particle& Particle::move(QVector2D acceleration, qreal time_s)
 	return *this;
 }
 
-QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
-{
-	Particle p(*this);
-	QRectF boundingRect;
-
-	//expand radius a little bit so that bounding rect is a bit bigger and no border errors are present
-	p.setRadius(p.radius() * 1.01);//1%
-
-	//x
-	if(qFuzzyIsNull(acceleration.x()))
-	{
-		qreal dx = p.speed().x()*timeLeft;
-		if(dx > 0.0)
-		{
-			boundingRect.setLeft(p.pos().x()-p.radius());
-			boundingRect.setRight(p.pos().x()+dx+p.radius());
-		}
-		else
-		{
-			boundingRect.setLeft(p.pos().x()+dx-p.radius());
-			boundingRect.setRight(p.pos().x()+p.radius());
-		}
-	}
-	else
-	{
-		qreal critTimeX = -p.speed().x()/acceleration.x();//point where speed changes sign
-		if(critTimeX < 0.0 || critTimeX > timeLeft)
-		{
-			qreal dx = (p.speed().x() + acceleration.x()*timeLeft/2.0)*timeLeft;
-			if(dx > 0.0)
-			{
-				boundingRect.setLeft(p.pos().x()-p.radius());
-				boundingRect.setRight(p.pos().x()+dx+p.radius());
-			}
-			else
-			{
-				boundingRect.setLeft(p.pos().x()+dx-p.radius());
-				boundingRect.setRight(p.pos().x()+p.radius());
-			}
-		}
-		else
-		{
-			//qreal dxCrit = (p.speed().x() + acceleration.x()*critTimeX/2.0)*critTimeX;
-			qreal dxCrit = p.speed().x()/2.0 * critTimeX;
-			if(dxCrit > 0.0)
-			{
-				boundingRect.setLeft(p.pos().x()-p.radius());
-				boundingRect.setRight(p.pos().x()+dxCrit+p.radius());
-			}
-			else
-			{
-				boundingRect.setLeft(p.pos().x()+dxCrit-p.radius());
-				boundingRect.setRight(p.pos().x()+p.radius());
-			}
-		}
-	}
-
-	//y
-	if(qFuzzyIsNull(acceleration.y()))
-	{
-		qreal dy = p.speed().y()*timeLeft;
-		if(dy > 0.0)
-		{
-			boundingRect.setTop(p.pos().y()-p.radius());
-			boundingRect.setBottom(p.pos().y()+dy+p.radius());
-		}
-		else
-		{
-			boundingRect.setTop(p.pos().y()+dy-p.radius());
-			boundingRect.setBottom(p.pos().y()+p.radius());
-		}
-	}
-	else
-	{
-		qreal critTimeY = -p.speed().y()/acceleration.y();//point where speed changes sign
-		if(critTimeY < 0.0 || critTimeY > timeLeft)
-		{
-			qreal dy = (p.speed().y() + acceleration.y()*timeLeft/2.0)*timeLeft;
-			if(dy > 0.0)
-			{
-				boundingRect.setTop(p.pos().y()-p.radius());
-				boundingRect.setBottom(p.pos().y()+dy+p.radius());
-			}
-			else
-			{
-				boundingRect.setTop(p.pos().y()+dy-p.radius());
-				boundingRect.setBottom(p.pos().y()+p.radius());
-			}
-		}
-		else
-		{
-			//qreal dyCrit = (p.speed().y() + acceleration.y()*critTimeY/2)*critTimeY;
-			qreal dyCrit = p.speed().y()/2.0 * critTimeY;
-			qreal dyFinal = (p.speed().y() + acceleration.y()*timeLeft/2.0)*timeLeft;
-			if(dyCrit > 0.0)
-			{
-				boundingRect.setBottom(p.pos().y()+dyCrit+p.radius());
-				if(dyFinal > 0.0) dyFinal = 0.0;
-				boundingRect.setTop(p.pos().y()+dyFinal-p.radius());
-			}
-			else
-			{
-				boundingRect.setTop(p.pos().y()+dyCrit-p.radius());
-				if(dyFinal < 0.0) dyFinal = 0.0;
-				boundingRect.setBottom(p.pos().y()+dyFinal+p.radius());
-			}
-		}
-	}
-
-	return boundingRect;
-}
-
 void Particle::setMass(qreal mass)
 {
 	m_mass = mass;
@@ -169,4 +57,47 @@ void Particle::setSpeed(QVector2D speed)
 void Particle::setPosTime(qreal time)
 {
 	m_posTime = time;
+}
+
+inline void expand(qreal& left, qreal& right, qreal val)
+{
+	if(val > 0.0)	right += val;
+	else			left += val;
+}
+
+void getAxisBounds(qreal p, qreal v, qreal a, qreal t, qreal& out_left, qreal& out_right)
+{
+	out_left = out_right = p;
+	if(qFuzzyIsNull(a))
+	{//no acceleration, particle just travels v*t
+		expand(out_left, out_right, v*t);
+	}
+	else
+	{//we have acceleration, particle travels over a parabola
+		qreal ct = -v/a;		//time where speed changes sign: {v = v0 + a*ct; v = 0;} => ct = -v0/a
+		if(ct < 0.0 || ct > t)	//critical point is outside the frame
+		{//particle travels v*t + (a*t^2)/2
+			expand(out_left, out_right, (v + a*t/2.0)*t);
+		}
+		else	//critical point (the vertex of the parabola) is inside the frame
+		{//particle travels v0*ct + (a*ct^2)/2 = v0/2 * ct forward, and than backward. Final position is at v0*t + (a*t^2)/2
+			qreal dpCrit = v/2.0 * ct;
+			qreal dpFinal = (v + a*t/2.0)*t;
+
+			expand(out_left, out_right, dpCrit);
+			if(dpCrit > 0.0 != dpFinal > 0.0) expand(out_left, out_right, dpFinal);
+		}
+	}
+}
+
+QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
+{
+	const qreal margin = m_radius*1.01;// 1%
+	qreal l, r, t, b;
+	getAxisBounds(m_pos.x(), m_speed.x(), acceleration.x(), timeLeft, l, r);
+	getAxisBounds(m_pos.y(), m_speed.y(), acceleration.y(), timeLeft, t, b);
+
+	QRectF boundingRect;
+	boundingRect.adjust(l-margin, t-margin, r+margin, b+margin);
+	return boundingRect;
 }
