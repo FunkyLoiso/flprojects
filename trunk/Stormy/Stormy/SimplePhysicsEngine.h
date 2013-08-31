@@ -15,7 +15,7 @@ public:
 
 private:
 	void writeProjectedSpeedAndPosition(Particle& p);
-	void doCollisions(Particle& p, int level);//recursively detect and process collisions for p and everything it touches
+	void doCollisions();//recursively detect and process collisions for p and everything it touches
 	bool findFirstCollision(Particle& p, Collision& out_collision) const;//returns true if collision was detected
 
 	void processCollision(Collision& c);//update projected speed and position due to collision c
@@ -27,6 +27,6 @@ private:
 	qreal m_time_s;
 
 //debug
-	QMultiMap<qreal, Collision> colls;
+	/*QMultiMap<qreal, Collision> colls;*/
 };
 #endif // SimplePhysicsEngine_h__
