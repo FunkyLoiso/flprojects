@@ -23,8 +23,8 @@ Particle Particle::moved(QVector2D acceleration, qreal time_s) const
 
 Particle& Particle::move(QVector2D acceleration, qreal time_s)
 {
-	QVector2D dv = acceleration * time_s;
-	QVector2D dp = (m_speed + dv/2) * time_s;
+	QVector2D dv(acceleration * time_s);
+	QVector2D dp((m_speed + dv/2) * time_s);
 
 	m_speed += dv;
 	m_pos += dp;

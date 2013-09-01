@@ -76,7 +76,7 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 	qreal minTime = timeLeft;
 	QVector2D acceleration = m_gravity;
 
-	//determine bounding rect of p
+	//determine bounding rect for p
 	QRectF boundingRect = p.boundingRect(acceleration, timeLeft);
 	
 	//1. Check for collisions with the border (both edges and vertices)
@@ -97,8 +97,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		//2. Determine contact time
 		qreal contactTime = minTime;
 		QVector2D directionVector;
-		//if(contactVert == NULL)
-		//contact with an edge
 		{
 			qreal x1, y1, x2, y2;//points on the line
 			directionVector = vert2 - vert1;
@@ -198,7 +196,6 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 				qreal root = roots[i];
 				if(root > 0.0 && root < contactTime)
 				{
-					//QVector2D speedAtContactPoint = p.speed + acceleration * root;
 					Particle pAtContact = p.moved(acceleration, root);
 					if(QVector2D::dotProduct(pAtContact.speed(), vert1-pAtContact.pos()) > 0.0)
 					{
