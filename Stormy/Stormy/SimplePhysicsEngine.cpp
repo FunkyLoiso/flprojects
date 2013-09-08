@@ -40,17 +40,31 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 	}
 }
 
+struct InitializedInt
+{
+	InitializedInt() : val(0){}
+	int val;
+};
+
 void SimplePhysicsEngine::doCollisions()
 {
+	typedef QMap<Particle, InitializedInt> TCounterMap;
+	TCounterMap numOfCollisions;
+	//p - number of particles, b - number of vertices in border
+	// O(p*(p+b)) - no collisions
+	// O(p^2*(p+b)) - 1 collision each
+	// ...
+	// O(p^(1+ac)*(p+b)) = O(p^(2+ac) * (1+b/p)) where ac - average collisions per particle
 	for(;;)
 	{
 		qreal firstCollisionTime = m_time_s*1.1;
 		Collision firstCollision;
-		for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+		for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)// O(p*(p+b)) = O(p^2 * (1+b/p))
 		{
 			Collision c;
-			if(findFirstCollision(*pi, c))
+			if(findFirstCollision(*pi, c)) // O(p+b)
 			{
+				++numOfCollisions[*pi].val;
 				qreal collisionTime = c.contactTime_s+c.particle->posTime();
 				if(collisionTime < firstCollisionTime)
 				{
@@ -61,13 +75,20 @@ void SimplePhysicsEngine::doCollisions()
 		}
 		if(firstCollisionTime < m_time_s)
 		{
-			processCollision(firstCollision);
+			processCollision(firstCollision);// O(1)
 		}
 		else
 		{
 			break;
 		}
 	}
+
+	m_avgCollisions = 0.0;
+	for(TCounterMap::Iterator i = numOfCollisions.begin(); i != numOfCollisions.end(); ++i)
+	{
+		m_avgCollisions += i->val;
+	}
+	m_avgCollisions /= m_glass->particles.count();
 }
 
 bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collision) const
@@ -337,7 +358,7 @@ void SimplePhysicsEngine::processCollision(Collision& c)
 		p.setSpeed(QVector2D(tr.inverted().map(newSpeed)));
 	}
 }
-
+ 
 
 
 bool SimplePhysicsEngine::rectIntersectsLineSegment(const QRectF& rect, QVector2D p1, QVector2D p2) const

@@ -26,7 +26,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.1f) << QPointF(0.2f, 0.3f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
-	for(int i = 0; i < 100; ++i)
+	for(int i = 0; i < 80; ++i)
 	{
 		Particle p;
 		p.sn = i;
@@ -69,11 +69,6 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	ui.glassWidget->setGlass(&m_glass);
 
-	//connect(ui.sbRestitution, SIGNAL(valueChanged(double)), &m_engine, SLOT(setRestitution(double)));
-	//m_engine.setRestitution(ui.sbRestitution->value());
-	//m_engine.setRestitution(0.01);
-	//connect(ui.sbFriction, SIGNAL(valueChanged(double)), &m_engine, SLOT(setFriction(double)));
-	//m_engine.setFriction(ui.sbFriction->value());
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
 	m_engine.setGravityX(0.0/*ui.sbGravityX->value()*/);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
@@ -84,8 +79,6 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	connect(&m_thread, SIGNAL(updated()), this, SLOT(glassWasUpdated()));
 
-	//QThread::currentThread()->setPriority(QThread::HighPriority);
-	//m_thread.setPriority(QThread::LowPriority);
 	m_thread.start();
 	m_timer.start();
 }
@@ -97,17 +90,23 @@ Stormy::~Stormy()
 
 void Stormy::glassWasUpdated()
 {
+	static const double updateInterval = 0.588; 
+	static double avgCollisions = 0.0;
 	ui.glassWidget->update();
-	//ui.leTotalEnergy->setText(QString::number(m_glass.totalEnegry, 'f'));
+	avgCollisions = m_engine.avgCollisions();
+	//ui.leAvgCollisions->setText(QString::number(m_engine.avgCollisions(), 'f'));
 
 	static int count = 0;
 	++count;
 	quint64 curTime = m_timer.elapsed();
-	if(curTime-m_lastTime > 588)
+	double elapsed((curTime-m_lastTime)/1000.0);
+	if(elapsed > updateInterval)
 	{
-		m_fpsLabel->setText(QString("fps: %1").arg(count/((curTime-m_lastTime)/588.0f)));
+		m_fpsLabel->setText(QString("fps: %1").arg(count/elapsed, 0, 'f', 2));
+		ui.leAvgCollisions->setText(QString::number(avgCollisions/count, 'f'));
 		m_lastTime = curTime;
 		count = 0;
+		avgCollisions = 0.0;
 	}
 }
 

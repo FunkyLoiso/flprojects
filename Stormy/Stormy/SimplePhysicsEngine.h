@@ -12,6 +12,7 @@ class SimplePhysicsEngine : public PhysicsEngine
 {
 public:
 	virtual void update(Glass* glass, qreal timePassed_s);
+	double avgCollisions() const {return m_avgCollisions;}
 
 private:
 	void doCollisions();//detect and process all collisions for all particles
@@ -23,5 +24,8 @@ private:
 
 	//utility functions
 	bool rectIntersectsLineSegment(const QRectF& rect, QVector2D p1, QVector2D p2) const;
+
+	//debug
+	double m_avgCollisions;
 };
 #endif // SimplePhysicsEngine_h__

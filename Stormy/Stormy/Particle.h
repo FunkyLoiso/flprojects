@@ -26,6 +26,7 @@ public:
 	void setPosTime(qreal time);
 
 	bool operator==(const Particle& other) const;
+	bool operator<(const Particle& other) const;
 	Particle moved(QVector2D acceleration, qreal time_s) const; //returns this particle after time_s seconds passed
 	Particle& move(QVector2D acceleration, qreal time_s); //modifies the particle so that time_s seconds passed
 
