@@ -29,19 +29,10 @@
     </item>
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="sbFriction">
-        <property name="minimum">
-         <double>-10.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.100000000000000</double>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="bButton1">
+        <property name="text">
+         <string>Button 1</string>
         </property>
        </widget>
       </item>
@@ -52,43 +43,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This factor determines how much kinetic energy is lost during collision&lt;/p&gt;&lt;p&gt;U1 - U2 = -&lt;span style=&quot; font-style:italic;&quot;&gt;k&lt;/span&gt;(V1 - V2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Restitution factor</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;F = &lt;span style=&quot; font-style:italic;&quot;&gt;μ&lt;/span&gt;*m*g/S&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Friction factor</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="sbRestitution">
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.010000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.560000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
+      <item row="2" column="0" colspan="2">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -140,29 +95,22 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="4" column="0">
        <widget class="QPushButton" name="bRedraw">
         <property name="text">
          <string>Redraw</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QPushButton" name="bButton1">
-        <property name="text">
-         <string>Button 1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Total energy</string>
+         <string>Avg collisions</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QLineEdit" name="leTotalEnergy"/>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="leAvgCollisions"/>
       </item>
      </layout>
     </item>

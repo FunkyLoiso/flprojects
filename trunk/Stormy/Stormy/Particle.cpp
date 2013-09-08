@@ -15,6 +15,11 @@ bool Particle::operator==(const Particle& other) const
 	return m_pos == other.m_pos;
 }
 
+bool Particle::operator<(const Particle& other) const
+{
+	return (m_pos.x() < other.m_pos.x()) ^ (m_pos.y() < other.m_pos.y());
+}
+
 Particle Particle::moved(QVector2D acceleration, qreal time_s) const
 {
 	Particle result(*this);
