@@ -2,7 +2,9 @@
 #define Glass_h__
 
 #include <QPolygonF>
+#include <QMultiMap>
 #include <QVector>
+#include <QMutex>
 #include "Particle.h"
 
 class Glass
@@ -11,9 +13,11 @@ public:
 	Glass(void);
 	~Glass(void);
 
-	typedef QVector<Particle> TParticlesVector;
+	typedef QMultiMap<double, Particle> TParticlesMMap;
+	//typedef QVector<Particle> TParticlesMMap;
 	QPolygonF border;	//in m
-	TParticlesVector particles;//map coordX to particle
+	TParticlesMMap particles;//map coordX to particle
+	QMutex particlesMutex;
 	double totalEnegry;
 };
 #endif // Glass_h__

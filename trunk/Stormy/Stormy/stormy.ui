@@ -29,7 +29,7 @@
     </item>
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="QPushButton" name="bButton1">
         <property name="text">
          <string>Button 1</string>
@@ -59,7 +59,7 @@
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="sbGravityY">
         <property name="suffix">
-         <string> g</string>
+         <string> m/s^2</string>
         </property>
         <property name="minimum">
          <double>-10.000000000000000</double>
@@ -75,7 +75,7 @@
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="sbGravityX">
         <property name="suffix">
-         <string> g</string>
+         <string> m/s^2</string>
         </property>
         <property name="minimum">
          <double>-10.000000000000000</double>
@@ -95,22 +95,32 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QPushButton" name="bRedraw">
         <property name="text">
          <string>Redraw</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Avg collisions</string>
+         <string>Avg collisions/frame/particle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="leAvgCollisions"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Total collisions/frame</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="leAvgCollisions"/>
+       <widget class="QLineEdit" name="leTotalCollisions"/>
       </item>
      </layout>
     </item>
