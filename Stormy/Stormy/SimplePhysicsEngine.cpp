@@ -13,9 +13,11 @@
 
 void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 {
-	//timePassed_s = 2.0;
+	//timePassed_s = 0.01;
 	m_glass = glass;
 	m_time_s = timePassed_s;
+	
+	m_glass->particlesMutex.lock();
 	//for(Glass::TParticlesMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 	//{
 	//	pi->dbg_level = 0;
@@ -27,17 +29,22 @@ void SimplePhysicsEngine::update(Glass* glass, qreal timePassed_s)
 #ifndef NDEBUG
 	QRectF borderRect = m_glass->border.boundingRect();
 #endif
-	for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
+	Glass::TParticlesMMap newMap;
+	
+	for(Glass::TParticlesMMap::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)
 	{//move all particles to the end of the frame
 		qreal timeLeft = m_time_s - pi->posTime();
 		pi->move(m_gravity, timeLeft);
 
 		//pi->passive = false;
 		pi->setPosTime(0.0);
+		newMap.insert(0.0, *pi);
 #ifndef NDEBUG
 		Q_ASSERT(borderRect.contains(pi->pos().toPointF()));
 #endif
 	}
+	m_glass->particles = newMap;
+	m_glass->particlesMutex.unlock();
 }
 
 struct InitializedInt
@@ -48,23 +55,24 @@ struct InitializedInt
 
 void SimplePhysicsEngine::doCollisions()
 {
-	typedef QMap<Particle, InitializedInt> TCounterMap;
-	TCounterMap numOfCollisions;
+	int totalCollisions = 0;
 	//p - number of particles, b - number of vertices in border
-	// O(p*(p+b)) - no collisions
-	// O(p^2*(p+b)) - 1 collision each
+	// O(p*(log(p)+b)) - 0 or 1 collision total.
+	// O(p*p*(log(p)+b)) - 1 collision each. Total number of collisions is p
+	// O(2*p*p(log(p)+b)) - 2 collisions each. Total number of collisions is 2*p
 	// ...
-	// O(p^(1+ac)*(p+b)) = O(p^(2+ac) * (1+b/p)) where ac - average collisions per particle
+	// O(ac*p*p(log(p)+b)) = O(ac * p^2(log(p)+b)) where ac - average collisions per particle per frame
 	for(;;)
 	{
 		qreal firstCollisionTime = m_time_s*1.1;
 		Collision firstCollision;
-		for(Glass::TParticlesVector::Iterator pi = m_glass->particles.begin(); pi != m_glass->particles.end(); ++pi)// O(p*(p+b)) = O(p^2 * (1+b/p))
+		Glass::TParticlesMMap::Iterator pi = m_glass->particles.end();
+		while(pi != m_glass->particles.begin())	// O(p*(log(p)+b))
 		{
+			--pi;
 			Collision c;
-			if(findFirstCollision(*pi, c)) // O(p+b)
+			if(findFirstCollision(pi, c))
 			{
-				++numOfCollisions[*pi].val;
 				qreal collisionTime = c.contactTime_s+c.particle->posTime();
 				if(collisionTime < firstCollisionTime)
 				{
@@ -75,24 +83,35 @@ void SimplePhysicsEngine::doCollisions()
 		}
 		if(firstCollisionTime < m_time_s)
 		{
+			
+
 			processCollision(firstCollision);// O(1)
+			Particle p = *firstCollision.particle;
+			++totalCollisions;
+			
+			m_glass->particles.erase(firstCollision.particle);
+			m_glass->particles.insert(p.posTime(), p);
+			if(firstCollision.type == Collision::WithParticle)
+			{
+				Particle p2 = *firstCollision.otherParticle;
+				m_glass->particles.erase(firstCollision.otherParticle);
+				m_glass->particles.insert(p2.posTime(), p2);
+			}
 		}
 		else
 		{
 			break;
 		}
 	}
-
-	m_avgCollisions = 0.0;
-	for(TCounterMap::Iterator i = numOfCollisions.begin(); i != numOfCollisions.end(); ++i)
-	{
-		m_avgCollisions += i->val;
-	}
-	m_avgCollisions /= m_glass->particles.count();
+	m_totalCollisions = totalCollisions;
 }
 
-bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collision) const
+bool SimplePhysicsEngine::findFirstCollision(Glass::TParticlesMMap::Iterator pi, Collision& out_collision) const
 {
+	static int counter = 0;
+	++counter;
+	const Particle p = *pi;
+	//Q_ASSERT(m_glass->particles.values().contains(p));
 	qreal timeLeft = m_time_s - p.posTime();//time until end of frame for this particle
 	qreal minTime = timeLeft;
 	QVector2D acceleration = m_gravity;
@@ -230,7 +249,8 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		if(contactTime < minTime)
 		{
 			out_collision.type = contactVertex ? Collision::WithVertex : Collision::WithEdge;
-			out_collision.particle = &p;
+			//out_collision.particle = &p;
+			out_collision.particle = pi;
 			out_collision.contactTime_s = contactTime;
 			//out_collision.contactTime_s = contactTime - MIN_TIME;
 			out_collision.contactVal = contactVertex ? vert1 : directionVector;
@@ -239,13 +259,22 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 		}
 	}
 	// 2. Now check for collisions with other particles
-	for(Glass::TParticlesVector::Iterator pi2 = m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
+	//for(Glass::TParticlesMMap::Iterator pi2 = /*pi+1*/m_glass->particles.begin(); pi2 != m_glass->particles.end(); ++pi2)
+	Glass::TParticlesMMap::Iterator pi2 = pi;
+	while(pi2 != m_glass->particles.begin())
 	{
-		if(p == *pi2) continue;
-		qreal dt = p.posTime()-pi2->posTime();
-		if(dt < 0.0) continue;//p2 is from the future, we will consider this collision when searching for p2 collisions
+		Glass::TParticlesMMap::Iterator begin2 = m_glass->particles.begin();
+		--pi2;
+		//if(p == *pi2) continue;
+		Particle p2(*pi2);
+		qreal dt = p.posTime()-p2.posTime();
+		Q_ASSERT(dt >= 0.0);
+		//if(dt < 0.0)
+		//{
+		//	continue;//p2 is from the future, we will consider this collision when searching for p2 collisions
+		//}
 
-		Particle p2 = pi2->moved(acceleration, dt);//warp p2 forward in time to the moment p.posTime
+		p2 = pi2->moved(acceleration, dt);//warp p2 forward in time to the moment p.posTime
 
 		//QRectF p2BoundingRect = p2.boundingRect(acceleration, timeLeft);
 		//if(!boundingRect.intersects(p2BoundingRect)) continue;
@@ -290,9 +319,11 @@ bool SimplePhysicsEngine::findFirstCollision(Particle& p, Collision& out_collisi
 			if(contactTime < minTime)
 			{
 				out_collision.type = Collision::WithParticle;
-				out_collision.particle = &p;
+				//out_collision.particle = &p;
+				out_collision.particle = pi;
 				//*pi2 = p2;
-				out_collision.otherParticle = &*pi2;
+				//out_collision.otherParticle = &*pi2;
+				out_collision.otherParticle = pi2;
 				out_collision.contactTime_s = contactTime;
 				//out_collision.contactTime_s = contactTime - MIN_TIME;
 

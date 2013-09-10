@@ -6,6 +6,26 @@ Particle::Particle(void)
 {
 }
 
+//Particle::Particle(const Particle& other)
+//: m_mass(other.m_mass), m_pos(other.m_pos), m_posTime(other.m_posTime)
+//, m_radius(other.m_radius), m_speed(other.m_speed), dbg_level(other.dbg_level), sn(other.sn)
+//{
+//}
+//
+//Particle& Particle::operator=(const Particle& other)
+//{
+//	m_mass = other.m_mass;
+//	m_pos = other.m_pos;
+//	m_posTime = other.m_posTime;
+//	m_radius = other.m_radius;
+//	m_speed = other.m_speed;
+//	dbg_level = other.dbg_level;
+//	sn = other.sn;
+//
+//	return *this;
+//}
+
+
 Particle::~Particle(void)
 {
 }
@@ -106,3 +126,4 @@ QRectF Particle::boundingRect(QVector2D acceleration, qreal timeLeft) const
 	boundingRect.adjust(l-margin, t-margin, r+margin, b+margin);
 	return boundingRect;
 }
+

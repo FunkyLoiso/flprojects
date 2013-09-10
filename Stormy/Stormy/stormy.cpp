@@ -26,7 +26,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 
 	m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.4f, 0.3f) << QPointF(0.2f, 0.1f) << QPointF(0.2f, 0.3f) << QPointF(0.0f, 0.3f);
 	//m_glass.border << QPointF(0.0f, 0.0f) << QPointF(0.4f, 0.0f) << QPointF(0.2f, 0.4f);
-	for(int i = 0; i < 80; ++i)
+	for(int i = 0; i < 100; ++i)
 	{
 		Particle p;
 		p.sn = i;
@@ -39,7 +39,8 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 		static const double maxSpeed = 0.1;
 		p.setSpeed(QVector2D(randBetween(-maxSpeed, maxSpeed), randBetween(-maxSpeed, maxSpeed)));
 
-		m_glass.particles.push_back(p);
+		//m_glass.particles.push_back(p);
+		m_glass.particles.insert(p.posTime(), p);
 	}
 
 	//Particle p;
@@ -70,9 +71,9 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	ui.glassWidget->setGlass(&m_glass);
 
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
-	m_engine.setGravityX(0.0/*ui.sbGravityX->value()*/);
+	ui.sbGravityX->setValue(0.0);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
-	m_engine.setGravityY(0.4/*ui.sbGravityY->value()*/);
+	ui.sbGravityY->setValue(0.4);
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
@@ -90,10 +91,10 @@ Stormy::~Stormy()
 
 void Stormy::glassWasUpdated()
 {
-	static const double updateInterval = 0.588; 
-	static double avgCollisions = 0.0;
+	static const double updateInterval = 0.888; 
+	static double totalCollisions = 0.0;
 	ui.glassWidget->update();
-	avgCollisions = m_engine.avgCollisions();
+	totalCollisions += m_engine.totalCollisions();
 	//ui.leAvgCollisions->setText(QString::number(m_engine.avgCollisions(), 'f'));
 
 	static int count = 0;
@@ -103,19 +104,21 @@ void Stormy::glassWasUpdated()
 	if(elapsed > updateInterval)
 	{
 		m_fpsLabel->setText(QString("fps: %1").arg(count/elapsed, 0, 'f', 2));
-		ui.leAvgCollisions->setText(QString::number(avgCollisions/count, 'f'));
+		ui.leTotalCollisions->setText(QString::number(totalCollisions/count, 'f'));
+		ui.leAvgCollisions->setText(QString::number(totalCollisions/count/m_glass.particles.count(), 'f'));
 		m_lastTime = curTime;
 		count = 0;
-		avgCollisions = 0.0;
+		totalCollisions = 0.0;
 	}
 }
 
 void Stormy::onButton1()
 {
 	Particle p;
-	p.setPos(QVector2D(0.2 ,0.05));
+	p.setPos(QVector2D(0.2, 0.05));
 	p.setRadius(0.01);
 	p.setMass(c_pi*p.radius()*p.radius() * p.radius() * 7800);
 	p.setSpeed(QVector2D(0.001, 0.0));
-	m_glass.particles.push_back(p);
+	//m_glass.particles.push_back(p);
+	m_glass.particles.insert(p.posTime(), p);
 }

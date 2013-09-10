@@ -41,7 +41,12 @@ void GlassWidget::paintEvent(QPaintEvent *)
 	p.setPen(Qt::red);
 	p.drawPolygon(m_glass->border);
 
-	for(Glass::TParticlesVector::ConstIterator i = m_glass->particles.constBegin(); i != m_glass->particles.constEnd(); ++i)
+	m_glass->particlesMutex.lock();
+	Glass::TParticlesMMap tmp(m_glass->particles);
+	m_glass->particlesMutex.unlock();
+	
+
+	for(Glass::TParticlesMMap::ConstIterator i = tmp.constBegin(); i != tmp.constEnd(); ++i)
 	{
 		p.setPen(Qt::blue);
 		p.setBrush(QColor(i->dbg_level%256, 0, 255, 128));
@@ -56,6 +61,7 @@ void GlassWidget::paintEvent(QPaintEvent *)
 		p.setMatrixEnabled(true);
 #endif
 	}
+	
 }
 
 void GlassWidget::mousePressEvent(QMouseEvent *)

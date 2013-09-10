@@ -9,6 +9,8 @@ class Particle
 public:
 	Particle(void);
 	~Particle(void);
+	//Particle(const Particle& other);
+	//Particle& operator=(const Particle& other);
 
 	//debug
 	int dbg_level;

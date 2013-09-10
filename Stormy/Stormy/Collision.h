@@ -3,6 +3,7 @@
 
 #include <QVector2D>
 #include "Particle.h"
+#include "Glass.h"
 
 class Collision
 {
@@ -14,10 +15,12 @@ public:
 		WithParticle
 	}type;
 
-	Particle* particle;
+	//Particle* particle;
+	Glass::TParticlesMMap::Iterator particle;
 	qreal contactTime_s;	//time after last stable position when collision took place
 
-	Particle* otherParticle;//NULL if type is not WithParticle
+	//Particle* otherParticle;//NULL if type is not WithParticle
+	Glass::TParticlesMMap::Iterator otherParticle;
 	QVector2D contactVal;//direction vector for edge or contact vertex
 
 };
