@@ -73,7 +73,7 @@ Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
 	connect(ui.sbGravityX, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityX(double)));
 	ui.sbGravityX->setValue(0.0);
 	connect(ui.sbGravityY, SIGNAL(valueChanged(double)), &m_engine, SLOT(setGravityY(double)));
-	ui.sbGravityY->setValue(0.4);
+	ui.sbGravityY->setValue(0.0);
 
 	m_thread.setEngine(&m_engine);
 	m_thread.setGlass(&m_glass);
