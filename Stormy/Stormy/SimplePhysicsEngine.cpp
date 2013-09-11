@@ -57,17 +57,17 @@ void SimplePhysicsEngine::doCollisions()
 {
 	int totalCollisions = 0;
 	//p - number of particles, b - number of vertices in border
-	// O(p*(log(p)+b)) - 0 or 1 collision total.
-	// O(p*p*(log(p)+b)) - 1 collision each. Total number of collisions is p
-	// O(2*p*p(log(p)+b)) - 2 collisions each. Total number of collisions is 2*p
+	// O(p*(p+b)) - 0 or 1 collision total.
+	// O(p*p*(p+b)) - 1 collision each. Total number of collisions is p
+	// O(2*p*p(p+b)) - 2 collisions each. Total number of collisions is 2*p
 	// ...
-	// O(ac*p*p(log(p)+b)) = O(ac * p^2(log(p)+b)) where ac - average collisions per particle per frame
+	// O(ac*p*p(p+b)) = O(ac * p^2(p+b)) where ac - average collisions per particle per frame
 	for(;;)
 	{
 		qreal firstCollisionTime = m_time_s*1.1;
 		Collision firstCollision;
 		Glass::TParticlesMMap::Iterator pi = m_glass->particles.end();
-		while(pi != m_glass->particles.begin())	// O(p*(log(p)+b))
+		while(pi != m_glass->particles.begin())	// O(p*(p+b))
 		{
 			--pi;
 			Collision c;
