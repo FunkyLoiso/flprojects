@@ -1,7 +1,7 @@
 #ifndef LONPOSCANVASWIDGET_H
 #define LONPOSCANVASWIDGET_H
 //отображения состояния холста
-#include <QWidget>
+#include <QtWidgets/qwidget.h>
 #include <QPainter>
 #include "canvasplace.h"
 
