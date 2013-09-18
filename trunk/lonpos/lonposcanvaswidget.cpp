@@ -19,7 +19,6 @@ bool LonposCanvasWidget::paintFonCircle()
     paint.restore();
 
     //полости фигур
-    paint.restore();
     paint.setPen(Qt::NoPen);
     int canvasSizeX = this->canvasLCW->getSizeCanvasX();
     int canvasSizeY = this->canvasLCW->getSizeCanvasY();
