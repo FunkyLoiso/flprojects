@@ -29,21 +29,18 @@ bool LonposCanvasWidget::paintFonCircle()
     {
        for(int xi = 0;xi<canvasSizeX;xi++)
        {
+
            if(canvasLCW->getStateCanvas(xi,yi))
            {
                pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::blue);
+               continue;
            }
-       }
-    }
-    //отрисовка инвертированного холста
-    for(int yi = 0;yi<canvasSizeY;yi++)
-    {
-       for(int xi = 0;xi<canvasSizeX;xi++)
-       {
            if(canvasLCW->getStateInvertCanvas(xi,yi))
            {
-               pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::red);
+//               pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::red);
+               continue;
            }
+           pointCircle(xi,yi,canvasSizeX,canvasSizeY,Qt::gray);
        }
     }
     return true;
@@ -70,7 +67,6 @@ void LonposCanvasWidget::pointCircle(int x, int y, int numberX, int numberY,QCol
 //    paint.drawEllipse(width*(x+1)-width/2, height*(y+1)-height/2, width, height);
 }
 
-//присвоить указатель на холст
 void LonposCanvasWidget::setcanvasPlace(canvasPlace* canvasLCW)
 {
 	this->canvasLCW = canvasLCW;
