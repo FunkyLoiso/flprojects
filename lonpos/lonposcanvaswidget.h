@@ -12,8 +12,8 @@ public:
     explicit LonposCanvasWidget( QWidget *parent = 0/*, int x = 9, int y = 9*/);
     void setSize(int x, int y);
 //    void paintFonCircle(Qt::GlobalColor fon, Qt::GlobalColor circle, int x, int y);
-    bool paintFonCircle();
-	void setcanvasPlace(canvasPlace* canvasLCW);
+    bool paintFonCircle();                        //отрисовка  того что вставленно в холст и инверсного холста
+    void setcanvasPlace(canvasPlace* canvasLCW);  //присвоить указатель на холст
 signals:
     
 public slots:
@@ -23,10 +23,9 @@ protected:
 
 private:
     QColor colorC;
-//    int x_weight,y_height;                       //размеры холста полученные из canvasLCW
     canvasPlace* canvasLCW;                      //указатель на созданный холст
-	//metod
-    void pointCircle(int x, int y, int numberX, int numberY, QColor color=QColor(160,152,152));   //нарисовать кружок в точке //x и y считаются с 0
+    //нарисовать кружок в точке x и y, начинается с 0
+    void pointCircle(int x, int y, int numberX, int numberY, QColor color=QColor(160,152,152));
 };
 
 #endif // LONPOSCANVASWIDGET_H
