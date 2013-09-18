@@ -4,9 +4,9 @@ FigureWidget::FigureWidget(Figure *FigureL, QWidget *parent) :
     QWidget(parent)
 {
     this->setFigure(FigureL);
-    this->x=5;
-    this->y=5;
-//    this->setSizeCanvasFigure();
+//    this->x=5;
+//    this->y=5;
+    this->setSizeCanvasFigure();
 }
 
 void FigureWidget::setFigure(Figure* FigureL)
@@ -39,12 +39,17 @@ void FigureWidget::setSizeCanvasFigure()
         if (max_y<cur->getY()) {max_y=cur->getY();}
         if (min_y>cur->getY()) {min_y=cur->getY();}
      }
-    this->x=abs(min_x-max_x);
-    this->y=abs(min_y-max_y);
+    this->x=abs(max_x-min_y)+1;  //потому что (-1,2) расстояние между ними 3, а точек 4
+    this->y=abs(max_y-min_y)+1;
 }
 
 void FigureWidget:: paintEvent(QPaintEvent *)
 {
+    QPainter paint(this);
+    paint.setRenderHints(QPainter::Antialiasing);
+    paint.setPen(Qt::NoPen);
+    paint.setBrush(Qt::green);
+    paint.drawRect(0,0,this->width(),this->height());
     this->paintForFigure();
 }
 
