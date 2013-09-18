@@ -56,35 +56,32 @@ LonposWindow(QWidget *parent) :
 //    tmp->insertPoint(1,0);
 //    tmp->insertPoint(-1,0);
 //решение проблемы сдвига фигуры
-    tmp->insertPoint(1,1);
-    tmp->insertPoint(1,2);
-    tmp->insertPoint(1,0);
-    tmp->insertPoint(2,1);
-    tmp->insertPoint(0,1);
-//    tmp->turnFigureMatrix(90);
+//    tmp->insertPoint(1,1);
+//    tmp->insertPoint(1,2);
+//    tmp->insertPoint(1,0);
+//    tmp->insertPoint(2,1);
+//    tmp->insertPoint(0,1);
     // +
     // +
     // +
     // +
-    Figvect.append(new Figure());
-    tmp = Figvect.last();
+//    Figvect.append(new Figure());
+//    tmp = Figvect.last();
     tmp->clearPoints();
     tmp->insertPoint(0,0);
     tmp->insertPoint(0,1);
     tmp->insertPoint(0,2);
     tmp->insertPoint(0,3);
-    tmp->insertPoint(-1,-1);
-    tmp->turnFigureMatrix(0);
-    //
 
-    canvasP->insertFigure(Figvect[1],3,4);
+    canvasP->insertFigure(Figvect[0],3,4);
 
 
     QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
-    QVBL->addWidget(new FigureWidget(Figvect[0]));
-    QVBL->addWidget(new FigureWidget(Figvect[1]));
+    for (int i=0;i<Figvect.size();i++)
+    {
+        QVBL->addWidget(new FigureWidget(Figvect[i]));
+    }
 //    QVBL->addWidget(new QLabel("LOL2"));
-    //
 }
 
 LonposWindow::~LonposWindow()
