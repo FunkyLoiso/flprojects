@@ -48,7 +48,7 @@ void FigureWidget:: paintEvent(QPaintEvent *)
     this->paintForFigure();
 }
 
-void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor color)
+void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor color/*=QColor(160,152,152)*/)
 {
     int width = (this->width()/(numberX+1));
     int height = (this->height()/(numberY+1));
