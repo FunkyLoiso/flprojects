@@ -59,7 +59,12 @@ void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor co
     paint.setRenderHints(QPainter::Antialiasing);
     paint.setPen(Qt::NoPen);
     paint.setBrush(color);
-    paint.drawEllipse(size*(x+1)-size/2, size*(y+1)-size/2, size, size);
+
+	//смещение к центру по x - половина ширины минус половина ширины фигуры
+	int centerShiftX = this->width()/2 - numberX*size/2;
+	int centerShiftY = this->height()/2 - numberY*size/2;
+
+    paint.drawEllipse(size*(x+1) + centerShiftX, size*(y+1) + centerShiftY, size, size);
 }
 
 
