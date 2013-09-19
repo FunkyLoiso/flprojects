@@ -40,40 +40,143 @@ LonposWindow(QWidget *parent) :
     canvasP->addInvert(8,7);
     canvasP->addInvert(8,8);
     canvasP->addInvert(2,3);
-//    canvasP->addCellCanvas(3,4);
-//    canvasP->addCellCanvas(3,3);
     //описание фигур
-    //фигуры должны располагаться в в правой части графика функций  !!
+    //фигуры должны располагаться в в правой положительной части графика функций  !!
     //  +
     // +++
     //  +
     Figvect.append(new Figure());
     Figure* tmp = Figvect.last();
-//    tmp->clearPoints();
-//    tmp->insertPoint(0,0);
-//    tmp->insertPoint(0,1);
-//    tmp->insertPoint(0,-1);
-//    tmp->insertPoint(1,0);
-//    tmp->insertPoint(-1,0);
-//решение проблемы сдвига фигуры
-//    tmp->insertPoint(1,1);
-//    tmp->insertPoint(1,2);
-//    tmp->insertPoint(1,0);
-//    tmp->insertPoint(2,1);
-//    tmp->insertPoint(0,1);
+    tmp->insertPoint(1,1);
+    tmp->insertPoint(1,2);
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(2,1);
+    tmp->insertPoint(0,1);
+    // ++
     // +
     // +
     // +
-    // +
-//    Figvect.append(new Figure());
-//    tmp = Figvect.last();
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(2,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    //+
+    //+
+    //+
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
     tmp->clearPoints();
     tmp->insertPoint(0,0);
     tmp->insertPoint(0,1);
     tmp->insertPoint(0,2);
     tmp->insertPoint(0,3);
+    //+
+    //++
+    //+
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(1,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(0,3);
+    //++
+    //+
+    //++
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(1,2);
+    //+
+    //++
+    //++
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(1,1);
+    tmp->insertPoint(1,2);
+    //++
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(1,0);
+    // ++
+    //++
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(1,1);
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(2,0);
+    //++
+    //+
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    //++
+    //+
+    //+
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(0,3);
+    //++
+    //++
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(0,0);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(1,1);
+    // +
+    //++
+    //+
+    //+
+    Figvect.append(new Figure());
+    tmp = Figvect.last();
+    tmp->clearPoints();
+    tmp->insertPoint(1,0);
+    tmp->insertPoint(1,1);
+    tmp->insertPoint(0,1);
+    tmp->insertPoint(0,2);
+    tmp->insertPoint(0,3);
 
-    canvasP->insertFigure(Figvect[0],3,4);
+
+
+
+
+    canvasP->insertFigure(Figvect[1],3,4);
 
 
     QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);

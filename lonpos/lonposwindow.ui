@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,1">
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,0">
       <item row="0" column="1">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -29,8 +29,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>305</width>
-             <height>506</height>
+             <width>71</width>
+             <height>532</height>
             </rect>
            </property>
           </widget>
@@ -65,7 +65,7 @@
      <x>0</x>
      <y>0</y>
      <width>965</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
