@@ -55,21 +55,28 @@ void FigureWidget:: paintEvent(QPaintEvent *)
 
 void FigureWidget::pointCircle(int x, int y, int numberX, int numberY, QColor color/*=QColor(160,152,152)*/)
 {
-    int width = (this->width()/(numberX+1));
-    int height = (this->height()/(numberY+1));
-
+    //размер шара
+//    if ()
+    int width = (this->width()/(numberX));
+    int height = (this->height()/(numberY));
 	int size = qMin(width, height);
+
+//    int size_long_X=numberX*size;
+//    int size_long_Y=numberY*size;
+//    int borderX=this->width()-size_long_X;
+//    int borderY=this->height()-size_long_Y;
 
     QPainter paint(this);
     paint.setRenderHints(QPainter::Antialiasing);
     paint.setPen(Qt::NoPen);
     paint.setBrush(color);
 
-	//смещение к центру по x - половина ширины минус половина ширины фигуры
-	int centerShiftX = this->width()/2 - numberX*size/2;
-	int centerShiftY = this->height()/2 - numberY*size/2;
+    paint.drawEllipse(size*(x)/*-size/2*/, size*(y)/*-size/2*/, size, size);
+//смещение к центру по x - половина ширины минус половина ширины фигуры
+//    int centerShiftX = this->width()/2 - numberX*size/2;
+//    int centerShiftY = this->height()/2 - numberY*size/2;
 
-    paint.drawEllipse(size*(x+1) + centerShiftX, size*(y+1) + centerShiftY, size, size);
+//    paint.drawEllipse(size*(x+1) + centerShiftX, size*(y+1) + centerShiftY, size, size);
 }
 
 
