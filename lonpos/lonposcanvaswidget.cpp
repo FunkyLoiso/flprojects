@@ -1,6 +1,7 @@
 #include "lonposcanvaswidget.h"
 #include <qpainter.h>
 #include <QtGui>
+#include "qdebug.h"
 LonposCanvasWidget::LonposCanvasWidget(QWidget *parent):
     QWidget(parent)
 {
@@ -48,6 +49,18 @@ bool LonposCanvasWidget::paintFonCircle()
 void LonposCanvasWidget::paintEvent(QPaintEvent *)
 {
     paintFonCircle();
+}
+
+void LonposCanvasWidget::mousePressEvent(QMouseEvent *event)
+{
+    this->test=event->globalPos();
+//    QWidget::mousePressEvent(event);
+    //    QDebug() << "lol";
+}
+
+void LonposCanvasWidget::mouseReleaseEvent(QMouseEvent *)
+{
+
 }
 
 //нарисовать заданный круг на холсте
