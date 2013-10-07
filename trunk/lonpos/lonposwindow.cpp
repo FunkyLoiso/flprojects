@@ -2,6 +2,9 @@
 #include "ui_lonposwindow.h"
 #include "QLabel"
 #include "QVBoxLayout"
+#include "QFormLayout"
+#include "QGridLayout"
+#include "qbitarray.h"
 #include "figurewidget.h"
 
 LonposWindow::
@@ -174,16 +177,26 @@ LonposWindow(QWidget *parent) :
 
 
 
+//вставка фигур
+//    canvasP->insertFigure(Figvect[1],3,4);
 
 
-    canvasP->insertFigure(Figvect[1],3,4);
-
-
-    QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
-    for (int i=0;i<Figvect.size();i++)
+//использование для расположения фигур gridlayout
+    QGridLayout* QGL = new QGridLayout(ui->scrollArea);
+    for (int i=0,row=0,column=0;i<Figvect.size();i++,column++)
     {
-        QVBL->addWidget(new FigureWidget(Figvect[i]));
+        if (column>2) {row++;column=0;}
+        QGL->addWidget(new FigureWidget(Figvect[i]),row,column);
     }
+
+//использование для расположения фигур vertlayout
+//    QVBoxLayout* QVBL = new QVBoxLayout(ui->scrollArea);
+//    for (int i=0;i<Figvect.size();i++)
+//    {
+//        QVBL->addWidget(new FigureWidget(Figvect[i]));
+//    }
+
+
 //    QVBL->addWidget(new QLabel("LOL2"));
 }
 
