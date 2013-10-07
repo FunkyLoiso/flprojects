@@ -1,6 +1,7 @@
 #include "lonposcanvaswidget.h"
 #include <qpainter.h>
 #include <QtGui>
+
 #include "qdebug.h"
 LonposCanvasWidget::LonposCanvasWidget(QWidget *parent):
     QWidget(parent)
@@ -53,9 +54,28 @@ void LonposCanvasWidget::paintEvent(QPaintEvent *)
 
 void LonposCanvasWidget::mousePressEvent(QMouseEvent *event)
 {
-    this->test=event->globalPos();
-//    QWidget::mousePressEvent(event);
-    //    QDebug() << "lol";
+    int canvasSizeX = this->canvasLCW->getSizeCanvasX();
+    int canvasSizeY = this->canvasLCW->getSizeCanvasY();
+    int width = (this->width()/(canvasSizeX+1));
+    int height = (this->height()/(canvasSizeX+1));
+    int size = qMin(width,height);
+//    size*(x+1)-> center
+    QPointF current = event->localPos();
+
+    int  curX = current.x()/size;
+    int  curY = current.y()/size;
+    qDebug() << "curX="  << curX;
+    qDebug() << "curY="  << curY;
+
+//    curX++;
+//    curY++;
+    if (canvasLCW->getStateCanvas(curX,curY))
+    {
+        canvasLCW->delCellCanvas(curX,curY);
+    }
+    else { canvasLCW->addCellCanvas(curX,curY); }
+    this->update();
+    qDebug() << event->localPos();
 }
 
 void LonposCanvasWidget::mouseReleaseEvent(QMouseEvent *)
@@ -68,7 +88,6 @@ void LonposCanvasWidget::pointCircle(int x, int y, int numberX, int numberY,QCol
 {
     int width = (this->width()/(numberX+1));
     int height = (this->height()/(numberY+1));
-
     int size = qMin(width,height);
 
 	QPainter paint(this);

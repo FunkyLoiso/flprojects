@@ -29,8 +29,6 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *);
 
 private:
-    QPoint  test;
-
     QColor colorC;
     canvasPlace* canvasLCW;                      //указатель на созданный холст
     //нарисовать кружок в точке x и y, начинается с 0
