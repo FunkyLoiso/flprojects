@@ -10,8 +10,12 @@
 class FieldPlace : public QPoint
 {
 public:
+	FieldPlace() : QPoint() {}
+	FieldPlace(int x, int y) : QPoint(x, y) {}
+	FieldPlace(const QPoint& pt) : QPoint(pt) {}
 	typedef QList<FieldPlace> list;
 };
+
 
 /**	Фигура. Содержит цвет, местоположение центра и всех остальных элементов, может быть повёрнута. */
 class Figure
@@ -30,7 +34,7 @@ public:
 	Figure(const QString& configuration, QColor color);
 
 	bool isValid() const;	///< Является ли фигура допустимой.
-	void setConfiguration(const QString& configuration);
+	bool setConfiguration(const QString& configuration);
 	void setColor(QColor color);
 	QColor color() const;
 	int width() const;	///< Максимальное число элементов по горизонтали
@@ -47,6 +51,8 @@ private:
 	QColor m_color;
 	FieldPlace m_center;	///< Координаты центра
 	FieldPlace::list m_relativeElements;	//Смещения остальных элементов относительно центра
-	enum{R0, R90, R180, R270} m_rotation;	//Поворот фигуры
+	int m_width, m_height;
+
+	void rotate(bool clockwise);
 };
 #endif // Figure_h__
