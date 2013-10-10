@@ -6,31 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>575</height>
+    <width>698</width>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Lonpos_F_L</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="FieldWidget" name="fieldWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>9</y>
-      <width>418</width>
-      <height>504</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
+  <widget class="FieldWidget" name="fieldWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>623</width>
+     <width>698</width>
      <height>21</height>
     </rect>
    </property>
@@ -55,23 +44,27 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QScrollArea" name="scrollArea">
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
+       <widget class="FieldWidget" name="spareFiguresWidget">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>163</width>
-          <height>480</height>
+          <width>52</width>
+          <height>16</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="FieldWidget" name="unusedFiguresWidget" native="true"/>
-         </item>
-        </layout>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
        </widget>
       </widget>
      </item>
@@ -88,8 +81,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="lonpos_f_l.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -1,8 +1,15 @@
 #include "FieldWidget.h"
 
-FieldWidget::FieldWidget(QWidget *parent) : QWidget(parent)
-{
+#include <QMouseEvent>
+#include <QResizeEvent>
+#include <QPainter>
 
+FieldWidget::FieldWidget(QWidget *parent)
+: QWidget(parent)
+, m_fieldConf(0), m_figures(0)
+, m_fieldWidth(0), m_fieldHeight(0)
+, m_layoutMode(MODE_FIT)
+{
 }
 
 FieldWidget::~FieldWidget()
@@ -10,68 +17,110 @@ FieldWidget::~FieldWidget()
 
 }
 
-void FieldWidget::setWidth(int width)
+void FieldWidget::setFieldWidth(int width)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_fieldWidth = width;
 }
 
-int FieldWidget::width() const
+int FieldWidget::fieldWidth() const
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	return m_fieldWidth;
 }
 
-void FieldWidget::setHeight(int height)
+void FieldWidget::setFieldHeight(int height)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_fieldHeight = height;
 }
 
-int FieldWidget::height() const
+int FieldWidget::fieldHeight() const
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	return m_fieldHeight;
 }
 
 void FieldWidget::setLayoutMode(LayoutMode mode)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_layoutMode = mode;
 }
 
 void FieldWidget::setFigures(Figure::list* figures)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_figures = figures;
 }
 
 void FieldWidget::setFieldConfiguration(FieldPlace::list* fieldConfiguration)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_fieldConf = fieldConfiguration;
 }
 
 void FieldWidget::setOverlayFigure(const Figure& overlayFigure)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_overlayFigure = overlayFigure;
 }
 
 void FieldWidget::removeOverlayFigure()
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_overlayFigure = Figure::InvalidFigure();
 }
 
-void FieldWidget::setTrackingFigure(const Figure&)
+void FieldWidget::setTrackingFigure(const Figure& trackingFigure)
 {
-	throw std::exception("The method or operation is not implemented.");
-
+	m_trackingFigure = trackingFigure;
 }
 
 void FieldWidget::removeTrackingFigure()
 {
-	throw std::exception("The method or operation is not implemented.");
+	m_trackingFigure = Figure::InvalidFigure();
+}
 
+void FieldWidget::mousePressEvent(QMouseEvent *e)
+{
+	if(e->button() == Qt::RightButton) emit rmbClicked();
+	else if(e->button() == Qt::LeftButton)
+	{
+
+	}
+}
+
+void FieldWidget::mouseMoveEvent(QMouseEvent *)
+{
+}
+
+void FieldWidget::keyPressEvent(QKeyEvent *)
+{
+}
+
+void FieldWidget::paintEvent(QPaintEvent *)
+{
+	double cellSize = 0;	//размер €чейки
+	switch(m_layoutMode)
+	{
+	case MODE_VERTICAL:
+		cellSize = double(width())/m_fieldWidth;
+		break;
+	case MODE_FIT:
+		cellSize = qMin(double(width())/m_fieldWidth, double(height())/m_fieldHeight);
+		break;
+	}
+
+	QPainter p(this);
+
+	if(m_fieldConf != NULL)
+	{
+		p.setPen(Qt::black);
+		p.setBrush(Qt::gray);
+		Q_FOREACH(FieldPlace place, *m_fieldConf)
+		{
+			p.drawEllipse(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+		}
+	}
+}
+
+QSize FieldWidget::sizeHint() const
+{
+	if(m_layoutMode == MODE_VERTICAL)
+	{
+		double cellSize = double(width())/m_fieldWidth;
+		return QSize(0, cellSize * m_fieldHeight);
+	}
+	else return QSize();
 }
