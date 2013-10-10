@@ -103,14 +103,31 @@ void FieldWidget::paintEvent(QPaintEvent *)
 	}
 
 	QPainter p(this);
+	p.setRenderHint(QPainter::Antialiasing);
+	p.fillRect(rect(), Qt::white);
 
 	if(m_fieldConf != NULL)
 	{
-		p.setPen(Qt::black);
-		p.setBrush(Qt::gray);
+		p.setPen(Qt::NoPen);
+		p.setBrush(Qt::lightGray);
 		Q_FOREACH(FieldPlace place, *m_fieldConf)
 		{
-			p.drawEllipse(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+			QRectF circleRect(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+			p.drawEllipse(circleRect);
+		}
+	}
+
+	p.setPen(Qt::black);
+	if(m_figures != NULL)
+	{
+		Q_FOREACH(const Figure& figure, *m_figures)
+		{
+			p.setBrush(figure.color());
+			Q_FOREACH(FieldPlace place, figure.places())
+			{
+				QRectF circleRect(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+				p.drawEllipse(circleRect);
+			}
 		}
 	}
 }
