@@ -50,6 +50,8 @@ private:
 	Figure m_overlayFigure;
 	Figure m_trackingFigure;
 	FieldPlace::list* m_fieldConf;
+	QPoint m_mouseTrackingPos;
+	double m_cellSize;
 	int m_fieldWidth;
 	int m_fieldHeight;
 

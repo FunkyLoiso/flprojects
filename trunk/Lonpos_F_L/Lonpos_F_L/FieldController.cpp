@@ -3,18 +3,18 @@
 #include <QSet>
 
 FieldController::FieldController()
-: m_spareFiguresFieldHeight(0)
+: m_spareFiguresFieldWidth(0), m_spareFiguresFieldHeight(0)
 , m_fieldWidget(NULL), m_spareFiguresWidget(NULL)
-, m_fieldFigureSelected(NULL), m_spareFigureSelected(NULL)
+, m_fieldFigureSelected(m_fieldFigures.end()), m_spareFigureSelected(m_spareFigures.end())
+, m_fieldWidth(0), m_fieldHeight(0)
 {
 
 }
 
 void FieldController::addSpareFigure(Figure spareFigure)
 {
-	spareFigure.move(0, m_spareFiguresFieldHeight);
-	m_spareFiguresFieldHeight += spareFigure.height()+1;
 	m_spareFigures.append(spareFigure);
+	updateSpareFiguresList();
 }
 
 void FieldController::addFieldFigure(const Figure& fieldFigure)
@@ -24,6 +24,7 @@ void FieldController::addFieldFigure(const Figure& fieldFigure)
 
 void FieldController::setFieldConfiguration(const QString& configuration)
 {
+	m_fieldWidth = m_fieldHeight = 0;
 	QStringList lines = configuration.split('\n');
 	for(int y = 0; y < lines.count(); ++y)
 	{
@@ -31,7 +32,15 @@ void FieldController::setFieldConfiguration(const QString& configuration)
 		for(int x = 0; x < line.length(); ++x)
 		{
 			if(line.at(x) == 'O') m_fieldConf.append(FieldPlace(x, y));
+			if(m_fieldWidth < x+1) m_fieldWidth = x+1;
+			if(m_fieldHeight < y+1) m_fieldHeight = y+1;
 		}
+	}
+
+	if(m_fieldWidget != NULL)
+	{
+		m_fieldWidget->setFieldWidth(m_fieldWidth);
+		m_fieldWidget->setFieldHeight(m_fieldHeight);
 	}
 }
 
@@ -43,6 +52,8 @@ void FieldController::connectSpareFiguresWidget(FieldWidget* spareFiguresWidget)
 	connect(m_spareFiguresWidget, SIGNAL(rmbClicked()), this, SLOT(onSpareFiguresRmbClicked()));
 
 	m_spareFiguresWidget->setFigures(&m_spareFigures);
+	m_spareFiguresWidget->setFieldWidth(m_spareFiguresFieldWidth);
+	m_spareFiguresWidget->setFieldHeight(m_spareFiguresFieldHeight);
 }
 
 void FieldController::disconnectSpareFiguresWidget()
@@ -51,6 +62,8 @@ void FieldController::disconnectSpareFiguresWidget()
 	{
 		m_spareFiguresWidget->disconnect(this);
 		m_spareFiguresWidget->setFigures(NULL);
+		m_fieldWidget->setFieldWidth(0);
+		m_fieldWidget->setFieldHeight(0);
 		m_spareFiguresWidget = NULL;
 	}
 }
@@ -59,6 +72,10 @@ void FieldController::connectFieldWidget(FieldWidget* fieldWidget)
 {
 	disconnectFieldWidget();
 	m_fieldWidget = fieldWidget;
+	m_fieldWidget->setFieldConfiguration(&m_fieldConf);
+	m_fieldWidget->setFieldWidth(m_fieldWidth);
+	m_fieldWidget->setFieldHeight(m_fieldHeight);
+	m_fieldWidget->setFigures(&m_fieldFigures);
 	connect(m_fieldWidget, SIGNAL(lmbClicked(FieldPlace)), this, SLOT(onFieldLmbClicked(FieldPlace)));
 	connect(m_fieldWidget, SIGNAL(rmbClicked()), this, SLOT(onFieldRmbClicked()));
 	connect(m_fieldWidget, SIGNAL(rotated(bool)), this, SLOT(onFieldRotated(bool)));
@@ -72,6 +89,8 @@ void FieldController::disconnectFieldWidget()
 		m_fieldWidget->disconnect(this);
 		m_fieldWidget->setFigures(NULL);
 		m_fieldWidget->setFieldConfiguration(NULL);
+		m_fieldWidget->setFieldWidth(0);
+		m_fieldWidget->setFieldHeight(0);
 		m_fieldWidget = NULL;
 	}
 }
@@ -92,7 +111,7 @@ void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 			{
 				m_spareFigureSelected = i;
 
-				m_fieldWidget->setTrackingFigure(*m_spareFigureSelected);
+				if(m_fieldWidget != NULL) m_fieldWidget->setTrackingFigure(*m_spareFigureSelected);
 				break;
 			}
 		}
@@ -114,6 +133,7 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 		{
 			m_fieldFigureSelected->setCenter(place);
 			clearFieldSelection();
+			if(m_fieldWidget != NULL) m_fieldWidget->update();
 		}
 	}
 	else if(m_spareFigureSelected != m_spareFigures.end())
@@ -126,6 +146,10 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 			figureToInsert.setCenter(place);
 			m_fieldFigures.append(figureToInsert);
 			clearFieldSelection();
+
+			updateSpareFiguresList();
+			if(m_fieldWidget != NULL) m_fieldWidget->update();
+			if(m_spareFiguresWidget != NULL) m_spareFiguresWidget->update();
 		}
 	}
 	else
@@ -134,8 +158,12 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 		if(i != m_fieldFigures.end())
 		{
 			m_fieldFigureSelected = i;
-			m_fieldWidget->setOverlayFigure(*i);
-			m_fieldWidget->setTrackingFigure(*i);
+			if(m_fieldWidget != NULL)
+			{
+				m_fieldWidget->setOverlayFigure(*i);
+				m_fieldWidget->setTrackingFigure(*i);
+				m_fieldWidget->update();
+			}
 		}
 	}
 }
@@ -150,8 +178,12 @@ void FieldController::onFieldRotated(bool clockwise)
 	if(m_fieldFigureSelected != m_fieldFigures.end())
 	{
 		clockwise ? m_fieldFigureSelected->rotateCW() : m_fieldFigureSelected->rotateCCW();
-		m_fieldWidget->setOverlayFigure(*m_fieldFigureSelected);
-		m_fieldWidget->setTrackingFigure(*m_fieldFigureSelected);
+		if(m_fieldWidget != NULL)
+		{
+			m_fieldWidget->setOverlayFigure(*m_fieldFigureSelected);
+			m_fieldWidget->setTrackingFigure(*m_fieldFigureSelected);
+			m_fieldWidget->update();
+		}
 	}
 }
 
@@ -162,6 +194,11 @@ void FieldController::onFieldRemoved()
 	addSpareFigure(figure);
 
 	clearFieldSelection();
+
+	updateSpareFiguresList();
+
+	if(m_fieldWidget != NULL) m_fieldWidget->update();
+	if(m_spareFiguresWidget != NULL) m_spareFiguresWidget->update();
 }
 
 //может ли фигура, на которую указывает figureToPlace быть расположена с центром в place
@@ -208,4 +245,24 @@ Figure::list::Iterator FieldController::getFigureInPlace(FieldPlace place)
 		if(i->elements().contains(place)) return i;
 	}
 	return m_fieldFigures.end();
+}
+
+void FieldController::updateSpareFiguresList()
+{
+	m_spareFiguresFieldWidth = 0;
+	m_spareFiguresFieldHeight = 0;
+
+	for(Figure::list::Iterator i = m_spareFigures.begin(); i != m_spareFigures.end(); ++i)
+	{
+		i->setCenter(i->originalCenter());
+		i->move(0, m_spareFiguresFieldHeight);
+		m_spareFiguresFieldHeight += i->height()+1;
+		if(m_spareFiguresFieldWidth < i->width()) m_spareFiguresFieldWidth = i->width();
+	}
+
+	if(m_spareFiguresWidget != NULL)
+	{
+		m_spareFiguresWidget->setFieldWidth(m_spareFiguresFieldWidth);
+		m_spareFiguresWidget->setFieldHeight(m_spareFiguresFieldHeight);
+	}
 }

@@ -38,7 +38,7 @@ bool Figure::setConfiguration(const QString& configuration)
 		}
 		++centerX;
 	}
-	m_center = FieldPlace(centerX, centerY);
+	m_center = m_originalCenter = FieldPlace(centerX, centerY);
 
 	int minX, minY, maxX, maxY;
 	minX = maxX = centerX;
@@ -65,7 +65,7 @@ bool Figure::setConfiguration(const QString& configuration)
 		}
 	}
 	m_width = maxX - minX + 1;
-	m_height = maxY = minY + 1;
+	m_height = maxY - minY + 1;
 
 	return true;
 }
@@ -105,6 +105,12 @@ FieldPlace Figure::center() const
 {
 	return m_center;
 }
+
+FieldPlace Figure::originalCenter() const
+{
+	return m_originalCenter;
+}
+
 
 void Figure::setCenter(FieldPlace place)
 {
