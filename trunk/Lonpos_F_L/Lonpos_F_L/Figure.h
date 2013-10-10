@@ -5,16 +5,26 @@
 #include <QString>
 #include <QList>
 #include <QColor>
+#include <QHash>
 
 /**	Позиция на поле в координатах поля. Введена чтобы не путать с координатами в пикселах */
 class FieldPlace : public QPoint
 {
 public:
-	FieldPlace() : QPoint() {}
+	typedef QList<FieldPlace> list;
+
+	FieldPlace() : QPoint(INT_MIN, INT_MIN) {}
 	FieldPlace(int x, int y) : QPoint(x, y) {}
 	FieldPlace(const QPoint& pt) : QPoint(pt) {}
-	typedef QList<FieldPlace> list;
+	
+	static FieldPlace Invalid() {return FieldPlace();}
+	bool isValid() {return *this != Invalid();}
 };
+
+static uint qHash(const FieldPlace& place)
+{
+	return qHash(place.x()) ^ qHash(place.y());
+}
 
 
 /**	Фигура. Содержит цвет, местоположение центра и всех остальных элементов, может быть повёрнута. */
@@ -24,14 +34,14 @@ public:
 	typedef QList<Figure> list;
 
 	Figure();	///< Недопустимая фигура
-	static Figure InvalidFigure() {return Figure();}; ///< Возвращает недопустимую фигуру
+	static Figure Invalid() {return Figure();}; ///< Возвращает недопустимую фигуру
 
 	/**	Фигура, заданная строкой. Пустое место задаётся символом '_', элемент символом 'O', центральный элемент символом 'X'.
 	  *	Строчки фигуры разделяются символом '\n'. Пример:
 	  *	QString figure =	"_O\n"
 							"OXO\n"
 							"_O";			*/
-	Figure(const QString& configuration, FieldPlace center, QColor color);
+	Figure(const QString& configuration, QColor color, FieldPlace center = FieldPlace::Invalid());
 
 	bool isValid() const;	///< Является ли фигура допустимой.
 	bool setConfiguration(const QString& configuration);
@@ -39,7 +49,7 @@ public:
 	QColor color() const;
 	int width() const;	///< Максимальное число элементов по горизонтали
 	int height() const;	///< Максимальное число элементов по вертикали
-	FieldPlace::list places() const; ///< Список координат всех элементов фигуры, включая центр
+	FieldPlace::list elements() const; ///< Список координат всех элементов фигуры, включая центр
 	FieldPlace center() const;
 	void setCenter(FieldPlace place);
 	void move(int dx, int dy); ///< Передвинуть фигуру на dx по горизонтали и на dy по вертикали

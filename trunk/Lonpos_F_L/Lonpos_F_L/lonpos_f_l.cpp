@@ -25,12 +25,12 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 	QString f =	"_O\n"
 				"OXO\n"
 				"_O";
-	m_fieldFigures.append(Figure(f, FieldPlace(2, 2), Qt::red));
+	m_fieldFigures.append(Figure(f, Qt::red, FieldPlace(2, 2)));
 	f =	"__O\n"
 		"_XO\n"	
 		"_O\n"
 		"OO";
-	m_fieldFigures.append(Figure(f, FieldPlace(3, 3), Qt::blue));
+	m_fieldFigures.append(Figure(f, Qt::blue, FieldPlace(3, 3)));
 
 	ui.fieldWidget->setFigures(&m_fieldFigures);
 }

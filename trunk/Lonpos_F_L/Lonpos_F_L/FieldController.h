@@ -12,8 +12,9 @@ class FieldController : QObject
 {
 	Q_OBJECT
 public:
+	FieldController();
 
-	void addSpareFigure(const Figure& spareFigure);	///< ƒобавить фигуру в список возможных к установке на поле
+	void addSpareFigure(Figure spareFigure);	///< ƒобавить фигуру в список возможных к установке на поле
 	void addFieldFigure(const Figure& fieldFigure);	///< ƒобавить фигуру в список установленных на поле
 
 	/**	«адать конфигурацию пол€ ввиде сторки. Ќедопустимые €чейки обозначаютс€ символом '_', допустимые - 'O'.
@@ -35,7 +36,25 @@ private slots:
 	void onSpareFiguresRmbClicked();
 	void onFieldLmbClicked(FieldPlace place);
 	void onFieldRmbClicked();
-	void onFieldRotated();	///< команда повернуть выбранную фигуру
+	void onFieldRotated(bool clockwise);	///< команда повернуть выбранную фигуру
 	void onFieldRemoved();	///< команда удалить выбранную фигуру
+
+private:
+	Figure::list m_fieldFigures;
+	Figure::list m_spareFigures;
+	int m_spareFiguresFieldHeight;
+	FieldPlace::list m_fieldConf;
+
+	FieldWidget* m_spareFiguresWidget;
+	FieldWidget* m_fieldWidget;
+
+	Figure::list::Iterator m_fieldFigureSelected;
+	Figure::list::Iterator m_spareFigureSelected;
+
+	void clearFieldSelection();
+	void clearSpareSelection();
+
+	bool canBePlaced(Figure::list::Iterator i, FieldPlace place) const;
+	Figure::list::Iterator getFigureInPlace(FieldPlace place);
 };
 #endif // FieldController_h__
