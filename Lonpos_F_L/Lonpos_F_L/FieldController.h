@@ -42,8 +42,9 @@ private slots:
 private:
 	Figure::list m_fieldFigures;
 	Figure::list m_spareFigures;
-	int m_spareFiguresFieldHeight;
+	int m_spareFiguresFieldWidth, m_spareFiguresFieldHeight;
 	FieldPlace::list m_fieldConf;
+	int m_fieldWidth, m_fieldHeight;
 
 	FieldWidget* m_spareFiguresWidget;
 	FieldWidget* m_fieldWidget;
@@ -56,5 +57,6 @@ private:
 
 	bool canBePlaced(Figure::list::Iterator i, FieldPlace place) const;
 	Figure::list::Iterator getFigureInPlace(FieldPlace place);
+	void updateSpareFiguresList();
 };
 #endif // FieldController_h__

@@ -51,6 +51,7 @@ public:
 	int height() const;	///< Максимальное число элементов по вертикали
 	FieldPlace::list elements() const; ///< Список координат всех элементов фигуры, включая центр
 	FieldPlace center() const;
+	FieldPlace originalCenter() const;
 	void setCenter(FieldPlace place);
 	void move(int dx, int dy); ///< Передвинуть фигуру на dx по горизонтали и на dy по вертикали
 
@@ -60,6 +61,7 @@ public:
 private:
 	QColor m_color;
 	FieldPlace m_center;	///< Координаты центра
+	FieldPlace m_originalCenter;	///< Координаты центра как они были заданы в конфигурационно строке
 	FieldPlace::list m_relativeElements;	//Смещения остальных элементов относительно центра
 	int m_width, m_height;
 

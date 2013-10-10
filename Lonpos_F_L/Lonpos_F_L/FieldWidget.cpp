@@ -9,6 +9,7 @@ FieldWidget::FieldWidget(QWidget *parent)
 , m_fieldConf(0), m_figures(0)
 , m_fieldWidth(0), m_fieldHeight(0)
 , m_layoutMode(MODE_FIT)
+, m_cellSize(1.0)
 {
 }
 
@@ -65,11 +66,14 @@ void FieldWidget::removeOverlayFigure()
 void FieldWidget::setTrackingFigure(const Figure& trackingFigure)
 {
 	m_trackingFigure = trackingFigure;
+	m_trackingFigure.setCenter(FieldPlace(0, 0));
+	setMouseTracking(true);
 }
 
 void FieldWidget::removeTrackingFigure()
 {
 	m_trackingFigure = Figure::Invalid();
+	setMouseTracking(false);
 }
 
 void FieldWidget::mousePressEvent(QMouseEvent *e)
@@ -77,12 +81,15 @@ void FieldWidget::mousePressEvent(QMouseEvent *e)
 	if(e->button() == Qt::RightButton) emit rmbClicked();
 	else if(e->button() == Qt::LeftButton)
 	{
-
+		//вычислим, по какой €чейке совершЄн щелчок
+		emit lmbClicked(e->pos()/m_cellSize);
 	}
 }
 
-void FieldWidget::mouseMoveEvent(QMouseEvent *)
+void FieldWidget::mouseMoveEvent(QMouseEvent *e)
 {
+	m_mouseTrackingPos = e->pos();
+	update();
 }
 
 void FieldWidget::keyPressEvent(QKeyEvent *)
@@ -91,14 +98,13 @@ void FieldWidget::keyPressEvent(QKeyEvent *)
 
 void FieldWidget::paintEvent(QPaintEvent *)
 {
-	double cellSize = 0;	//размер €чейки
 	switch(m_layoutMode)
 	{
 	case MODE_VERTICAL:
-		cellSize = double(width())/m_fieldWidth;
+		m_cellSize = double(width())/m_fieldWidth;
 		break;
 	case MODE_FIT:
-		cellSize = qMin(double(width())/m_fieldWidth, double(height())/m_fieldHeight);
+		m_cellSize = qMin(double(width())/m_fieldWidth, double(height())/m_fieldHeight);
 		break;
 	}
 
@@ -112,7 +118,7 @@ void FieldWidget::paintEvent(QPaintEvent *)
 		p.setBrush(Qt::lightGray);
 		Q_FOREACH(FieldPlace place, *m_fieldConf)
 		{
-			QRectF circleRect(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+			QRectF circleRect(place.x()*m_cellSize, place.y()*m_cellSize, m_cellSize, m_cellSize);
 			p.drawEllipse(circleRect);
 		}
 	}
@@ -125,9 +131,21 @@ void FieldWidget::paintEvent(QPaintEvent *)
 			p.setBrush(figure.color());
 			Q_FOREACH(FieldPlace place, figure.elements())
 			{
-				QRectF circleRect(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
+				QRectF circleRect(place.x()*m_cellSize, place.y()*m_cellSize, m_cellSize, m_cellSize);
 				p.drawEllipse(circleRect);
 			}
+		}
+	}
+
+	if(m_trackingFigure.isValid())
+	{
+		QColor color = m_trackingFigure.color();
+		color.setAlphaF(0.7);
+		p.setBrush(color);
+		Q_FOREACH(FieldPlace place, m_trackingFigure.elements())
+		{
+			QRectF circleRect(place.x()*m_cellSize+m_mouseTrackingPos.x(), place.y()*m_cellSize+m_mouseTrackingPos.y(), m_cellSize, m_cellSize);
+			p.drawEllipse(circleRect);
 		}
 	}
 }
