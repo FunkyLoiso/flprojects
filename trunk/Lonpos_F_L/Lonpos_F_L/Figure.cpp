@@ -1,13 +1,15 @@
 #include "Figure.h"
 
 Figure::Figure(void)
+: m_center(0, 0)
 {
 }
 
-Figure::Figure(const QString& configuration, QColor color)
+Figure::Figure(const QString& configuration, FieldPlace center, QColor color)
 : m_color(color)
 {
 	setConfiguration(configuration);
+	setCenter(center);
 }
 
 bool Figure::isValid() const
@@ -28,6 +30,7 @@ bool Figure::setConfiguration(const QString& configuration)
 		{
 			++centerY;
 			centerX = 0;
+			continue;
 		}
 		else if(ch == 'X')
 		{
@@ -51,7 +54,7 @@ bool Figure::setConfiguration(const QString& configuration)
 		{
 			if(line.at(x) == 'O')
 			{
-				FieldPlace relativePlace(m_center - FieldPlace(x, y));
+				FieldPlace relativePlace(FieldPlace(x, y) - m_center);
 				m_relativeElements.append(relativePlace);
 
 				if(minX > x) minX = x;
@@ -90,6 +93,7 @@ int Figure::height() const
 FieldPlace::list Figure::places() const
 {
 	FieldPlace::list result;
+	result.append(m_center);
 	Q_FOREACH(const FieldPlace& place, m_relativeElements)
 	{
 		result.append(m_center + place);

@@ -31,7 +31,7 @@ public:
 	  *	QString figure =	"_O\n"
 							"OXO\n"
 							"_O";			*/
-	Figure(const QString& configuration, QColor color);
+	Figure(const QString& configuration, FieldPlace center, QColor color);
 
 	bool isValid() const;	///< явл€етс€ ли фигура допустимой.
 	bool setConfiguration(const QString& configuration);
