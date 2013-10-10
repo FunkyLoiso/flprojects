@@ -59,7 +59,7 @@ void FieldWidget::setOverlayFigure(const Figure& overlayFigure)
 
 void FieldWidget::removeOverlayFigure()
 {
-	m_overlayFigure = Figure::InvalidFigure();
+	m_overlayFigure = Figure::Invalid();
 }
 
 void FieldWidget::setTrackingFigure(const Figure& trackingFigure)
@@ -69,7 +69,7 @@ void FieldWidget::setTrackingFigure(const Figure& trackingFigure)
 
 void FieldWidget::removeTrackingFigure()
 {
-	m_trackingFigure = Figure::InvalidFigure();
+	m_trackingFigure = Figure::Invalid();
 }
 
 void FieldWidget::mousePressEvent(QMouseEvent *e)
@@ -123,7 +123,7 @@ void FieldWidget::paintEvent(QPaintEvent *)
 		Q_FOREACH(const Figure& figure, *m_figures)
 		{
 			p.setBrush(figure.color());
-			Q_FOREACH(FieldPlace place, figure.places())
+			Q_FOREACH(FieldPlace place, figure.elements())
 			{
 				QRectF circleRect(place.x()*cellSize, place.y()*cellSize, cellSize, cellSize);
 				p.drawEllipse(circleRect);

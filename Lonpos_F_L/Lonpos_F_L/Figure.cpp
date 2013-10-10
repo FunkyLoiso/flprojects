@@ -5,11 +5,11 @@ Figure::Figure(void)
 {
 }
 
-Figure::Figure(const QString& configuration, FieldPlace center, QColor color)
+Figure::Figure(const QString& configuration, QColor color, FieldPlace center/* = FieldPlace::Invalid()*/)
 : m_color(color)
 {
 	setConfiguration(configuration);
-	setCenter(center);
+	if(center.isValid()) setCenter(center);
 }
 
 bool Figure::isValid() const
@@ -90,7 +90,7 @@ int Figure::height() const
 	return m_height;
 }
 
-FieldPlace::list Figure::places() const
+FieldPlace::list Figure::elements() const
 {
 	FieldPlace::list result;
 	result.append(m_center);
