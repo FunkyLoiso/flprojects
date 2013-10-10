@@ -17,13 +17,13 @@ public:
 		MODE_VERTICAL,	///< ѕоле занимает всю ширину виджета, может по€витьс€ вертикальна€ полоса прокрутки
 		MODE_FIT		///< ѕол€ целиком помещаетс€ в виджет, полосы прокрутки не могут по€витьс€
 	};
-	FieldWidget(QWidget *parent);
+	FieldWidget(QWidget *parent = NULL);
 	~FieldWidget();
 
-	void setWidth(int width);
-	int width() const;
-	void setHeight(int height);
-	int height() const;
+	void setFieldWidth(int width);
+	int fieldWidth() const;
+	void setFieldHeight(int height);
+	int fieldHeight() const;
 
 	void setLayoutMode(LayoutMode mode);
 	void setFigures(Figure::list* figures);	///< «адать список отображаемых фигур
@@ -44,12 +44,20 @@ signals:
 	void rotated(bool clockwise);	///< ѕользователь инициировал поворот
 	void removed();	///< ѕользователь инициировал удаление фигуры с пол€
 
-
 private:
 	LayoutMode m_layoutMode;
 	Figure::list* m_figures;
 	Figure m_overlayFigure;
 	Figure m_trackingFigure;
+	FieldPlace::list* m_fieldConf;
+	int m_fieldWidth;
+	int m_fieldHeight;
+
+	virtual void mousePressEvent(QMouseEvent *);
+	virtual void mouseMoveEvent(QMouseEvent *);
+	virtual void keyPressEvent(QKeyEvent *);
+	virtual void paintEvent(QPaintEvent *);
+	virtual QSize sizeHint() const;
 };
 
 #endif // FIELDWIDGET_H
