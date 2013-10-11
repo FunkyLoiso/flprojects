@@ -42,11 +42,8 @@ bool Figure::setConfiguration(const QString& configuration)
 		}
 		++centerX;
 	}
-	m_center = m_originalCenter = FieldPlace(centerX, centerY);
+	m_center = FieldPlace(centerX, centerY);
 
-	int minX, minY, maxX, maxY;
-	minX = maxX = centerX;
-	minY = maxY = centerY;
 	//разделим конфигурацию на строчки и найдём относительные координаты всех элементов (O)
 	//за одно определим минимальные и максимальные координаты, чтобы потом высчтитать ширину и высоту
 	QStringList lines = configuration.split('\n');
@@ -60,17 +57,10 @@ bool Figure::setConfiguration(const QString& configuration)
 			{
 				FieldPlace relativePlace(FieldPlace(x, y) - m_center);
 				m_relativeElements.append(relativePlace);
-
-				if(minX > x) minX = x;
-				if(maxX < x) maxX = x;
-				if(minY > y) minY = y;
-				if(maxY < y) maxY = y;
 			}
 		}
 	}
-	m_width = maxX - minX + 1;
-	m_height = maxY - minY + 1;
-
+	updateSize();
 	return true;
 }
 
@@ -110,12 +100,6 @@ FieldPlace Figure::center() const
 	return m_center;
 }
 
-FieldPlace Figure::originalCenter() const
-{
-	return m_originalCenter;
-}
-
-
 void Figure::setCenter(FieldPlace place)
 {
 	m_center = place;
@@ -125,6 +109,19 @@ void Figure::move(int dx, int dy)
 {
 	m_center += FieldPlace(dx, dy);
 }
+
+void Figure::setUpperLeft(FieldPlace place)
+{
+	int minX(INT_MAX), minY(INT_MAX);
+	Q_FOREACH(FieldPlace place, elements())
+	{
+		if(minX > place.x()) minX = place.x();
+		if(minY > place.y()) minY = place.y();
+	}
+
+	move(place.x()-minX, place.y()-minY);
+}
+
 
 void Figure::rotateCW()
 {
@@ -152,15 +149,30 @@ void Figure::rotate(bool clockwise)
 			i->ry() = -temp;
 		}
 	}
+	updateSize();//размеры могли изменться после поворота
 }
 
 bool Figure::operator==(const Figure& figure) const
 {
 	return	m_id == figure.m_id;
-
 }
 
 bool Figure::operator!=(const Figure& figure) const
 {
 	return !operator==(figure);
+}
+
+void Figure::updateSize()
+{
+	int minX(INT_MAX), minY(INT_MAX), maxX(INT_MIN), maxY(INT_MIN);
+	Q_FOREACH(FieldPlace place, elements())
+	{
+		if(minX > place.x()) minX = place.x();
+		if(maxX < place.x()) maxX = place.x();
+		if(minY > place.y()) minY = place.y();
+		if(maxY < place.y()) maxY = place.y();
+	}
+
+	m_width = maxX - minX + 1;
+	m_height = maxY - minY + 1;
 }
