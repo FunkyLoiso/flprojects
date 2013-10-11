@@ -14,21 +14,20 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 	//поле
 	QString field =	"__O\n"
 					"_OOO\n"
-					"OOOOO\n"
+					"OO_OO\n"
 					"_OOO\n"
 					"__O";
 	m_controller.setFieldConfiguration(field);
 
 	//фигуры
 	QString f =	"_O\n"
-				"OXO\n"
+				"OX\n"
 				"_O";
 	m_controller.addSpareFigure(Figure(f, Qt::red));
 
 	f =	"__O\n"
 		"_XO\n"	
-		"_O\n"
-		"OO";
+		"OO\n";
 	m_controller.addSpareFigure(Figure(f, Qt::blue));
 
 	f =	"XO\n"

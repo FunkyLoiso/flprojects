@@ -31,6 +31,14 @@ int FieldWidget::fieldWidth() const
 void FieldWidget::setFieldHeight(int height)
 {
 	m_fieldHeight = height;
+	if(m_layoutMode == MODE_VERTICAL)
+	{
+		if(m_fieldWidth != 0 && m_fieldHeight != 0)
+		{
+			double cellSize = double(width())/m_fieldWidth;
+			return resize(0, cellSize * m_fieldHeight);
+		}
+	}
 }
 
 int FieldWidget::fieldHeight() const
@@ -152,8 +160,11 @@ QSize FieldWidget::sizeHint() const
 {
 	if(m_layoutMode == MODE_VERTICAL)
 	{
-		double cellSize = double(width())/m_fieldWidth;
-		return QSize(0, cellSize * m_fieldHeight);
+		if(m_fieldWidth != 0 && m_fieldHeight != 0)
+		{
+			double cellSize = double(width())/m_fieldWidth;
+			return QSize(50, cellSize * m_fieldHeight);
+		}
 	}
-	else return QSize();
+	return QSize(50, 50);
 }
