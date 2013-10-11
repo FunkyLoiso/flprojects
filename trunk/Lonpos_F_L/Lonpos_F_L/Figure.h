@@ -42,6 +42,7 @@ public:
 							"OXO\n"
 							"_O";			*/
 	Figure(const QString& configuration, QColor color, FieldPlace center = FieldPlace::Invalid());
+	bool operator==(const Figure& figure);
 
 	bool isValid() const;	///< явл€етс€ ли фигура допустимой.
 	bool setConfiguration(const QString& configuration);
