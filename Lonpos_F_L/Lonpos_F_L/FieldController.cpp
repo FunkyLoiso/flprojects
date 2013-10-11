@@ -49,7 +49,7 @@ void FieldController::connectSpareFiguresWidget(FieldWidget* spareFiguresWidget)
 	disconnectSpareFiguresWidget();
 	m_spareFiguresWidget = spareFiguresWidget;
 	connect(m_spareFiguresWidget, SIGNAL(lmbClicked(FieldPlace)), this, SLOT(onSpareFiguresLmbClicked(FieldPlace)));
-	connect(m_spareFiguresWidget, SIGNAL(rmbClicked()), this, SLOT(onSpareFiguresRmbClicked()));
+	connect(m_spareFiguresWidget, SIGNAL(rmbClicked()), this, SLOT(onCancelSelection()));
 
 	m_spareFiguresWidget->setFigures(&m_spareFigures);
 	m_spareFiguresWidget->setFieldWidth(m_spareFiguresFieldWidth);
@@ -77,9 +77,7 @@ void FieldController::connectFieldWidget(FieldWidget* fieldWidget)
 	m_fieldWidget->setFieldHeight(m_fieldHeight);
 	m_fieldWidget->setFigures(&m_fieldFigures);
 	connect(m_fieldWidget, SIGNAL(lmbClicked(FieldPlace)), this, SLOT(onFieldLmbClicked(FieldPlace)));
-	connect(m_fieldWidget, SIGNAL(rmbClicked()), this, SLOT(onFieldRmbClicked()));
-	connect(m_fieldWidget, SIGNAL(rotated(bool)), this, SLOT(onFieldRotated(bool)));
-	connect(m_fieldWidget, SIGNAL(removed()), this, SLOT(onFieldRemoved()));
+	connect(m_fieldWidget, SIGNAL(rmbClicked()), this, SLOT(onCancelSelection()));
 }
 
 void FieldController::disconnectFieldWidget()
@@ -116,13 +114,6 @@ void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 			}
 		}
 	}
-}
-
-void FieldController::onSpareFiguresRmbClicked()
-{
-	clearFieldSelection();
-	clearSpareSelection();
-	if(m_fieldWidget != NULL) m_fieldWidget->update();
 }
 
 void FieldController::onFieldLmbClicked(FieldPlace place)
@@ -168,9 +159,11 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 	}
 }
 
-void FieldController::onFieldRmbClicked()
+void FieldController::onCancelSelection()
 {
-	onSpareFiguresRmbClicked();
+	clearFieldSelection();
+	clearSpareSelection();
+	if(m_fieldWidget != NULL) m_fieldWidget->update();
 }
 
 void FieldController::onFieldRotated(bool clockwise)
@@ -189,16 +182,19 @@ void FieldController::onFieldRotated(bool clockwise)
 
 void FieldController::onFieldRemoved()
 {
-	Figure figure = *m_fieldFigureSelected;
-	m_fieldFigures.removeAll(figure);
-	addSpareFigure(figure);
-
-	clearFieldSelection();
-
-	updateSpareFiguresList();
-
-	if(m_fieldWidget != NULL) m_fieldWidget->update();
-	if(m_spareFiguresWidget != NULL) m_spareFiguresWidget->update();
+	if(m_fieldFigureSelected != NULL)
+	{
+		Figure figure = *m_fieldFigureSelected;
+		m_fieldFigures.removeAll(figure);
+		addSpareFigure(figure);
+	
+		clearFieldSelection();
+	
+		updateSpareFiguresList();
+	
+		if(m_fieldWidget != NULL) m_fieldWidget->update();
+		if(m_spareFiguresWidget != NULL) m_spareFiguresWidget->update();
+	}
 }
 
 //может ли фигура, на которую указывает figureToPlace быть расположена с центром в place

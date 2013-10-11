@@ -41,8 +41,6 @@ public:
 signals:
 	void lmbClicked(FieldPlace place);	///< Пользователь щёлкнул левой кнопкой по элементу поля place
 	void rmbClicked();	///< Пользователь щёлкнул правой кнопкой
-	void rotated(bool clockwise);	///< Пользователь инициировал поворот
-	void removed();	///< Пользователь инициировал удаление фигуры с поля
 
 private:
 	LayoutMode m_layoutMode;
@@ -57,7 +55,6 @@ private:
 
 	virtual void mousePressEvent(QMouseEvent *);
 	virtual void mouseMoveEvent(QMouseEvent *);
-	virtual void keyPressEvent(QKeyEvent *);
 	virtual void paintEvent(QPaintEvent *);
 	virtual QSize sizeHint() const;
 };
