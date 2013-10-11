@@ -53,9 +53,9 @@ public:
 	int height() const;	///< Максимальное число элементов по вертикали
 	FieldPlace::list elements() const; ///< Список координат всех элементов фигуры, включая центр
 	FieldPlace center() const;
-	FieldPlace originalCenter() const;
 	void setCenter(FieldPlace place);
 	void move(int dx, int dy); ///< Передвинуть фигуру на dx по горизонтали и на dy по вертикали
+	void setUpperLeft(FieldPlace place);	///< Сдвинуть центр так, чтобы верхний левый угол фигуры совпадал с place
 
 	void rotateCW();	///< Повернуть фигуру на 90 градусов по часовой стрелке
 	void rotateCCW();	///< Повернуть фигуру на 90 градусов против часовой стрелке	
@@ -64,11 +64,11 @@ private:
 	QUuid m_id;
 	QColor m_color;
 	FieldPlace m_center;	///< Координаты центра
-	FieldPlace m_originalCenter;	///< Координаты центра как они были заданы в конфигурационно строке
 	FieldPlace::list m_relativeElements;	//Смещения остальных элементов относительно центра
 	int m_width, m_height;
 
 	bool setConfiguration(const QString& configuration);
 	void rotate(bool clockwise);
+	void updateSize();	///< Пересчитать для фигуры ширину и высоту
 };
 #endif // Figure_h__

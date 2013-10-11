@@ -5,7 +5,6 @@
 FieldController::FieldController()
 : m_spareFiguresFieldWidth(0), m_spareFiguresFieldHeight(0)
 , m_fieldWidget(NULL), m_spareFiguresWidget(NULL)
-, m_fieldFigureSelected(NULL), m_spareFigureSelected(NULL)
 , m_fieldWidth(0), m_fieldHeight(0)
 {
 
@@ -95,7 +94,7 @@ void FieldController::disconnectFieldWidget()
 
 void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 {
-	if(m_fieldFigureSelected != NULL)
+	if(m_fieldFigureSelected.isValid())
 	{//помещаем фигуру с поля обратно к неиспользованным
 		onFieldRemoved();//то же самое, что удаление фигуры с поля
 	}
@@ -107,9 +106,9 @@ void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 			lowerBound += i->height()+1;
 			if(lowerBound > place.y())
 			{
-				m_spareFigureSelected = &*i;
+				m_spareFigureSelected = *i;
 
-				if(m_fieldWidget != NULL) m_fieldWidget->setTrackingFigure(*m_spareFigureSelected);
+				if(m_fieldWidget != NULL) m_fieldWidget->setTrackingFigure(m_spareFigureSelected);
 				break;
 			}
 		}
@@ -118,24 +117,25 @@ void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 
 void FieldController::onFieldLmbClicked(FieldPlace place)
 {
-	if(m_fieldFigureSelected != NULL)
+	if(m_fieldFigureSelected.isValid())
 	{//попытка перенести фигуру с одного места на другое
 		if(canBePlaced(m_fieldFigureSelected, place))
 		{
-			m_fieldFigureSelected->setCenter(place);
+			m_fieldFigures.removeAll(m_fieldFigureSelected);
+			m_fieldFigureSelected.setCenter(place);
+			m_fieldFigures.append(m_fieldFigureSelected);
 			clearFieldSelection();
 			if(m_fieldWidget != NULL) m_fieldWidget->update();
 		}
 	}
-	else if(m_spareFigureSelected != NULL)
+	else if(m_spareFigureSelected.isValid())
 	{//попытка перенести фигуру из неиспользованных на поле
 		if(canBePlaced(m_spareFigureSelected, place))
 		{
-			Figure figureToInsert(*m_spareFigureSelected);
-			m_spareFigures.removeAll(figureToInsert);
+			m_spareFigures.removeAll(m_spareFigureSelected);
+			m_spareFigureSelected.setCenter(place);
+			m_fieldFigures.append(m_spareFigureSelected);
 			clearSpareSelection();
-			figureToInsert.setCenter(place);
-			m_fieldFigures.append(figureToInsert);
 			clearFieldSelection();
 
 			updateSpareFiguresList();
@@ -148,7 +148,7 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 		Figure::list::Iterator i = getFigureInPlace(place);
 		if(i != m_fieldFigures.end())
 		{
-			m_fieldFigureSelected = &*i;
+			m_fieldFigureSelected = *i;
 			if(m_fieldWidget != NULL)
 			{
 				m_fieldWidget->setOverlayFigure(*i);
@@ -168,25 +168,26 @@ void FieldController::onCancelSelection()
 
 void FieldController::onFieldRotated(bool clockwise)
 {
-	if(m_fieldFigureSelected != NULL)
+	Figure* selectedFigure;
+	if(m_fieldFigureSelected.isValid()) selectedFigure = &m_fieldFigureSelected;
+	else if(m_spareFigureSelected.isValid()) selectedFigure = &m_spareFigureSelected;
+	else return;
+
+	clockwise ? selectedFigure->rotateCW() : selectedFigure->rotateCCW();
+	if(m_fieldWidget != NULL)
 	{
-		clockwise ? m_fieldFigureSelected->rotateCW() : m_fieldFigureSelected->rotateCCW();
-		if(m_fieldWidget != NULL)
-		{
-			m_fieldWidget->setOverlayFigure(*m_fieldFigureSelected);
-			m_fieldWidget->setTrackingFigure(*m_fieldFigureSelected);
-			m_fieldWidget->update();
-		}
+		m_fieldWidget->setOverlayFigure(*selectedFigure);
+		m_fieldWidget->setTrackingFigure(*selectedFigure);
+		m_fieldWidget->update();
 	}
 }
 
 void FieldController::onFieldRemoved()
 {
-	if(m_fieldFigureSelected != NULL)
+	if(m_fieldFigureSelected.isValid())
 	{
-		Figure figure = *m_fieldFigureSelected;
-		m_fieldFigures.removeAll(figure);
-		addSpareFigure(figure);
+		m_fieldFigures.removeAll(m_fieldFigureSelected);
+		addSpareFigure(m_fieldFigureSelected);
 	
 		clearFieldSelection();
 	
@@ -198,15 +199,15 @@ void FieldController::onFieldRemoved()
 }
 
 //может ли фигура, на которую указывает figureToPlace быть расположена с центром в place
-bool FieldController::canBePlaced(Figure* figureToPlace, FieldPlace newPlace) const
+bool FieldController::canBePlaced(const Figure& figureToPlace, FieldPlace newPlace) const
 {
-	Figure potentialFigure(*figureToPlace);
+	Figure potentialFigure(figureToPlace);
 	potentialFigure.setCenter(newPlace);
 	FieldPlace::list elemnets(potentialFigure.elements());//список элементов новый фигуры
 
 	for(Figure::list::ConstIterator f = m_fieldFigures.begin(); f != m_fieldFigures.end(); ++f)
 	{//для каждой фигуры на поле
-		if(*figureToPlace != *f)
+		if(figureToPlace != *f)
 		{//если она не та же самая, которую мы собираемся размещать
 
 			//если у текущей фигуры есть пересечения в вставляемой, то вставка невозможна
@@ -224,14 +225,14 @@ bool FieldController::canBePlaced(Figure* figureToPlace, FieldPlace newPlace) co
 
 void FieldController::clearFieldSelection()
 {
-	m_fieldFigureSelected = NULL;
+	m_fieldFigureSelected = Figure::Invalid();
 	m_fieldWidget->removeOverlayFigure();
 	m_fieldWidget->removeTrackingFigure();
 }
 
 void FieldController::clearSpareSelection()
 {
-	m_spareFigureSelected = NULL;
+	m_spareFigureSelected = Figure::Invalid();
 }
 
 Figure::list::Iterator FieldController::getFigureInPlace(FieldPlace place)
@@ -250,8 +251,7 @@ void FieldController::updateSpareFiguresList()
 
 	for(Figure::list::Iterator i = m_spareFigures.begin(); i != m_spareFigures.end(); ++i)
 	{
-		i->setCenter(i->originalCenter());
-		i->move(0, m_spareFiguresFieldHeight);
+		i->setUpperLeft(FieldPlace(0, m_spareFiguresFieldHeight));
 		m_spareFiguresFieldHeight += i->height()+1;
 		if(m_spareFiguresFieldWidth < i->width()) m_spareFiguresFieldWidth = i->width();
 	}

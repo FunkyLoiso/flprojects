@@ -35,7 +35,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
    <property name="windowTitle">
-    <string>Unused figures</string>
+    <string>Фигуры</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
