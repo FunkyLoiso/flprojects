@@ -122,7 +122,7 @@ void FieldController::onSpareFiguresRmbClicked()
 {
 	clearFieldSelection();
 	clearSpareSelection();
-
+	if(m_fieldWidget != NULL) m_fieldWidget->update();
 }
 
 void FieldController::onFieldLmbClicked(FieldPlace place)
@@ -208,13 +208,13 @@ bool FieldController::canBePlaced(Figure* figureToPlace, FieldPlace newPlace) co
 	potentialFigure.setCenter(newPlace);
 	FieldPlace::list elemnets(potentialFigure.elements());//список элементов новый фигуры
 
-	for(Figure::list::ConstIterator figureToPlace = m_fieldFigures.begin(); figureToPlace != m_fieldFigures.end(); ++figureToPlace)
+	for(Figure::list::ConstIterator f = m_fieldFigures.begin(); f != m_fieldFigures.end(); ++f)
 	{//для каждой фигуры на поле
-		if(figureToPlace != figureToPlace)
+		if(*figureToPlace != *f)
 		{//если она не та же самая, которую мы собираемся размещать
 
 			//если у текущей фигуры есть пересечения в вставляемой, то вставка невозможна
-			if( !figureToPlace->elements().toSet().intersect(elemnets.toSet()).isEmpty() ) return false;
+			if( !f->elements().toSet().intersect(elemnets.toSet()).isEmpty() ) return false;
 		}
 	}
 	Q_FOREACH(FieldPlace newPlace, elemnets)

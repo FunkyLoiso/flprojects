@@ -18,7 +18,7 @@ public:
 	FieldPlace(const QPoint& pt) : QPoint(pt) {}
 	
 	static FieldPlace Invalid() {return FieldPlace();}
-	bool isValid() {return *this != Invalid();}
+	bool isValid() const {return *this != Invalid();}
 };
 
 static uint qHash(const FieldPlace& place)
@@ -42,7 +42,8 @@ public:
 							"OXO\n"
 							"_O";			*/
 	Figure(const QString& configuration, QColor color, FieldPlace center = FieldPlace::Invalid());
-	bool operator==(const Figure& figure);
+	bool operator==(const Figure& figure) const;
+	bool operator!=(const Figure& figure) const;
 
 	bool isValid() const;	///< явл€етс€ ли фигура допустимой.
 	bool setConfiguration(const QString& configuration);

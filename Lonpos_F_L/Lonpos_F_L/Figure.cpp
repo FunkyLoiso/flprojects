@@ -151,10 +151,15 @@ void Figure::rotate(bool clockwise)
 	}
 }
 
-bool Figure::operator==(const Figure& figure)
+bool Figure::operator==(const Figure& figure) const
 {
 	return	m_center == figure.m_center &&
 			m_originalCenter == figure.m_originalCenter &&
 			m_relativeElements.toSet() == figure.m_relativeElements.toSet();
 
+}
+
+bool Figure::operator!=(const Figure& figure) const
+{
+	return !operator==(figure);
 }
