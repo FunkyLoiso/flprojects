@@ -49,13 +49,13 @@ private:
 	FieldWidget* m_spareFiguresWidget;
 	FieldWidget* m_fieldWidget;
 
-	Figure::list::Iterator m_fieldFigureSelected;
-	Figure::list::Iterator m_spareFigureSelected;
+	Figure* m_fieldFigureSelected;
+	Figure* m_spareFigureSelected;
 
 	void clearFieldSelection();
 	void clearSpareSelection();
 
-	bool canBePlaced(Figure::list::Iterator i, FieldPlace place) const;
+	bool canBePlaced(Figure* figureToPlace, FieldPlace newPlace) const;
 	Figure::list::Iterator getFigureInPlace(FieldPlace place);
 	void updateSpareFiguresList();
 };

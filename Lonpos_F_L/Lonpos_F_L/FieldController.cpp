@@ -5,7 +5,7 @@
 FieldController::FieldController()
 : m_spareFiguresFieldWidth(0), m_spareFiguresFieldHeight(0)
 , m_fieldWidget(NULL), m_spareFiguresWidget(NULL)
-, m_fieldFigureSelected(m_fieldFigures.end()), m_spareFigureSelected(m_spareFigures.end())
+, m_fieldFigureSelected(NULL), m_spareFigureSelected(NULL)
 , m_fieldWidth(0), m_fieldHeight(0)
 {
 
@@ -97,7 +97,7 @@ void FieldController::disconnectFieldWidget()
 
 void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 {
-	if(m_fieldFigureSelected != m_fieldFigures.end())
+	if(m_fieldFigureSelected != NULL)
 	{//помещаем фигуру с поля обратно к неиспользованным
 		onFieldRemoved();//то же самое, что удаление фигуры с поля
 	}
@@ -109,7 +109,7 @@ void FieldController::onSpareFiguresLmbClicked(FieldPlace place)
 			lowerBound += i->height()+1;
 			if(lowerBound > place.y())
 			{
-				m_spareFigureSelected = i;
+				m_spareFigureSelected = &*i;
 
 				if(m_fieldWidget != NULL) m_fieldWidget->setTrackingFigure(*m_spareFigureSelected);
 				break;
@@ -127,7 +127,7 @@ void FieldController::onSpareFiguresRmbClicked()
 
 void FieldController::onFieldLmbClicked(FieldPlace place)
 {
-	if(m_fieldFigureSelected != m_fieldFigures.end())
+	if(m_fieldFigureSelected != NULL)
 	{//попытка перенести фигуру с одного места на другое
 		if(canBePlaced(m_fieldFigureSelected, place))
 		{
@@ -136,12 +136,12 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 			if(m_fieldWidget != NULL) m_fieldWidget->update();
 		}
 	}
-	else if(m_spareFigureSelected != m_spareFigures.end())
+	else if(m_spareFigureSelected != NULL)
 	{//попытка перенести фигуру из неиспользованных на поле
 		if(canBePlaced(m_spareFigureSelected, place))
 		{
 			Figure figureToInsert(*m_spareFigureSelected);
-			m_spareFigures.erase(m_spareFigureSelected);
+			m_spareFigures.removeAll(figureToInsert);
 			clearSpareSelection();
 			figureToInsert.setCenter(place);
 			m_fieldFigures.append(figureToInsert);
@@ -157,7 +157,7 @@ void FieldController::onFieldLmbClicked(FieldPlace place)
 		Figure::list::Iterator i = getFigureInPlace(place);
 		if(i != m_fieldFigures.end())
 		{
-			m_fieldFigureSelected = i;
+			m_fieldFigureSelected = &*i;
 			if(m_fieldWidget != NULL)
 			{
 				m_fieldWidget->setOverlayFigure(*i);
@@ -175,7 +175,7 @@ void FieldController::onFieldRmbClicked()
 
 void FieldController::onFieldRotated(bool clockwise)
 {
-	if(m_fieldFigureSelected != m_fieldFigures.end())
+	if(m_fieldFigureSelected != NULL)
 	{
 		clockwise ? m_fieldFigureSelected->rotateCW() : m_fieldFigureSelected->rotateCCW();
 		if(m_fieldWidget != NULL)
@@ -190,7 +190,7 @@ void FieldController::onFieldRotated(bool clockwise)
 void FieldController::onFieldRemoved()
 {
 	Figure figure = *m_fieldFigureSelected;
-	m_fieldFigures.erase(m_fieldFigureSelected);
+	m_fieldFigures.removeAll(figure);
 	addSpareFigure(figure);
 
 	clearFieldSelection();
@@ -202,25 +202,25 @@ void FieldController::onFieldRemoved()
 }
 
 //может ли фигура, на которую указывает figureToPlace быть расположена с центром в place
-bool FieldController::canBePlaced(Figure::list::Iterator figureToPlace, FieldPlace newPlace) const
+bool FieldController::canBePlaced(Figure* figureToPlace, FieldPlace newPlace) const
 {
 	Figure potentialFigure(*figureToPlace);
 	potentialFigure.setCenter(newPlace);
 	FieldPlace::list elemnets(potentialFigure.elements());//список элементов новый фигуры
 
-	for(Figure::list::ConstIterator i = m_fieldFigures.begin(); i != m_fieldFigures.end(); ++i)
+	for(Figure::list::ConstIterator figureToPlace = m_fieldFigures.begin(); figureToPlace != m_fieldFigures.end(); ++figureToPlace)
 	{//для каждой фигуры на поле
-		if(i != figureToPlace)
+		if(figureToPlace != figureToPlace)
 		{//если она не та же самая, которую мы собираемся размещать
 
 			//если у текущей фигуры есть пересечения в вставляемой, то вставка невозможна
-			if( !i->elements().toSet().intersect(elemnets.toSet()).isEmpty() ) return false;
+			if( !figureToPlace->elements().toSet().intersect(elemnets.toSet()).isEmpty() ) return false;
 		}
 	}
-	Q_FOREACH(FieldPlace place, elemnets)
+	Q_FOREACH(FieldPlace newPlace, elemnets)
 	{//для каждого элемента вставляемой фигуры
 		//если нет соответствующего элемента поля, то вставка невозможна
-		if(!m_fieldConf.contains(place)) return false;
+		if(!m_fieldConf.contains(newPlace)) return false;
 	}
 
 	return true;
@@ -228,14 +228,14 @@ bool FieldController::canBePlaced(Figure::list::Iterator figureToPlace, FieldPla
 
 void FieldController::clearFieldSelection()
 {
-	m_fieldFigureSelected = m_fieldFigures.end();
+	m_fieldFigureSelected = NULL;
 	m_fieldWidget->removeOverlayFigure();
 	m_fieldWidget->removeTrackingFigure();
 }
 
 void FieldController::clearSpareSelection()
 {
-	m_spareFigureSelected = m_spareFigures.end();
+	m_spareFigureSelected = NULL;
 }
 
 Figure::list::Iterator FieldController::getFigureInPlace(FieldPlace place)

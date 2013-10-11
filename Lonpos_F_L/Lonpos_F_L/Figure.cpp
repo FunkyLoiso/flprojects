@@ -1,4 +1,5 @@
 #include "Figure.h"
+#include <QSet>
 
 Figure::Figure(void)
 : m_center(0, 0)
@@ -148,4 +149,12 @@ void Figure::rotate(bool clockwise)
 			i->ry() = -temp;
 		}
 	}
+}
+
+bool Figure::operator==(const Figure& figure)
+{
+	return	m_center == figure.m_center &&
+			m_originalCenter == figure.m_originalCenter &&
+			m_relativeElements.toSet() == figure.m_relativeElements.toSet();
+
 }
