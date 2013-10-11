@@ -94,10 +94,6 @@ void FieldWidget::mouseMoveEvent(QMouseEvent *e)
 	update();
 }
 
-void FieldWidget::keyPressEvent(QKeyEvent *)
-{
-}
-
 void FieldWidget::paintEvent(QPaintEvent *)
 {
 	switch(m_layoutMode)

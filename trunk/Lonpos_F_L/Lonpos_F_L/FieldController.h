@@ -31,11 +31,10 @@ public:
 	void connectFieldWidget(FieldWidget* fieldWidget);	///< —оединить с виджетом пол€
 	void disconnectFieldWidget();
 
-private slots:
-	void onSpareFiguresLmbClicked(FieldPlace place);
-	void onSpareFiguresRmbClicked();
-	void onFieldLmbClicked(FieldPlace place);
-	void onFieldRmbClicked();
+public slots:
+	void onSpareFiguresLmbClicked(FieldPlace place);	///< ўелчок левой кнопкой по элементу place пол€
+	void onFieldLmbClicked(FieldPlace place);			///< ўелчок левой кнопкой по элементу place списка неиспользованных фигур
+	void onCancelSelection();
 	void onFieldRotated(bool clockwise);	///< команда повернуть выбранную фигуру
 	void onFieldRemoved();	///< команда удалить выбранную фигуру
 

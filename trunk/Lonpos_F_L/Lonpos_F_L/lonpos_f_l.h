@@ -23,6 +23,8 @@ private:
 	FieldPlace::list m_fieldConf;
 
 	FieldController m_controller;
+
+	virtual void keyPressEvent(QKeyEvent *);
 };
 
 #endif // LONPOS_F_L_H

@@ -1,6 +1,7 @@
 #include "lonpos_f_l.h"
 
 #include <QString>
+#include <QKeyEvent>
 
 Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
@@ -10,13 +11,7 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 	ui.spareFiguresWidget->setLayoutMode(FieldWidget::MODE_VERTICAL);
 	ui.fieldWidget->setLayoutMode(FieldWidget::MODE_FIT);
 
-	//m_fieldConf.append(FieldPlace(0, 0));
-	//m_fieldConf.append(FieldPlace(1, 1));
-	//m_fieldConf.append(FieldPlace(1, 3));
-	//m_fieldConf.append(FieldPlace(2, 1));
-	//m_fieldConf.append(FieldPlace(5, 5));
-	//m_fieldConf.append(FieldPlace(6, 5));
-
+	//поле
 	QString field =	"__O\n"
 					"_OOO\n"
 					"OOOOO\n"
@@ -24,17 +19,18 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 					"__O";
 	m_controller.setFieldConfiguration(field);
 
-
+	//фигуры
 	QString f =	"_O\n"
 				"OXO\n"
 				"_O";
-
 	m_controller.addSpareFigure(Figure(f, Qt::red));
+
 	f =	"__O\n"
 		"_XO\n"	
 		"_O\n"
 		"OO";
 	m_controller.addSpareFigure(Figure(f, Qt::blue));
+
 	f =	"XO\n"
 		"O\n";
 	m_controller.addSpareFigure(Figure(f, Qt::green));
@@ -46,4 +42,13 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 Lonpos_F_L::~Lonpos_F_L()
 {
 
+}
+
+void Lonpos_F_L::keyPressEvent(QKeyEvent *e)
+{
+	if(e->key() == Qt::Key_Delete || e->key() == Qt::Key_Backspace) m_controller.onFieldRemoved();
+	else if(e->key() == Qt::Key_Space) emit m_controller.onFieldRotated(true);
+	else if(e->key() == Qt::Key_Shift) emit m_controller.onFieldRotated(false);
+	else if(e->key() == Qt::Key_Escape) emit m_controller.onCancelSelection();
+	else __super::keyPressEvent(e);
 }
