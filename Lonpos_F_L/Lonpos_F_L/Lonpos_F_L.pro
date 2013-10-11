@@ -16,14 +16,13 @@ MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
-HEADERS += ./lonpos_f_l.h \
+HEADERS += ./FieldController.h \
     ./FieldWidget.h \
     ./Figure.h \
-    ./FieldController.h
-SOURCES += ./main.cpp \
-    ./lonpos_f_l.cpp \
+    ./lonpos_f_l.h
+SOURCES += ./FieldController.cpp \
     ./FieldWidget.cpp \
     ./Figure.cpp \
-    ./FieldController.cpp
+    ./lonpos_f_l.cpp \
+    ./main.cpp
 FORMS += ./lonpos_f_l.ui
-RESOURCES += ./lonpos_f_l.qrc
