@@ -81,8 +81,10 @@ void FieldWidget::mousePressEvent(QMouseEvent *e)
 	if(e->button() == Qt::RightButton) emit rmbClicked();
 	else if(e->button() == Qt::LeftButton)
 	{
+		m_mouseTrackingPos = e->pos();//сохраним позицию курсора дл€ отображени€ полупрозрачной фигуры
 		//вычислим, по какой €чейке совершЄн щелчок
-		emit lmbClicked(e->pos()/m_cellSize);
+		FieldPlace clickedPlace(e->pos().x()/m_cellSize, e->pos().y()/m_cellSize);
+		emit lmbClicked(clickedPlace);
 	}
 }
 
@@ -144,8 +146,8 @@ void FieldWidget::paintEvent(QPaintEvent *)
 		p.setBrush(color);
 		Q_FOREACH(FieldPlace place, m_trackingFigure.elements())
 		{
-			QRectF circleRect(place.x()*m_cellSize+m_mouseTrackingPos.x(), place.y()*m_cellSize+m_mouseTrackingPos.y(), m_cellSize, m_cellSize);
-			p.drawEllipse(circleRect);
+			QPointF center(place*m_cellSize+m_mouseTrackingPos);
+			p.drawEllipse(center, m_cellSize/2, m_cellSize/2);
 		}
 	}
 }

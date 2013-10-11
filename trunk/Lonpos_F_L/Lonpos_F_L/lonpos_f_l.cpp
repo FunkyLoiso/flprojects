@@ -28,12 +28,16 @@ Lonpos_F_L::Lonpos_F_L(QWidget *parent, Qt::WFlags flags)
 	QString f =	"_O\n"
 				"OXO\n"
 				"_O";
-	m_controller.addSpareFigure(Figure(f, Qt::red, FieldPlace(2, 2)));
+
+	m_controller.addSpareFigure(Figure(f, Qt::red));
 	f =	"__O\n"
 		"_XO\n"	
 		"_O\n"
 		"OO";
-	m_controller.addSpareFigure(Figure(f, Qt::blue, FieldPlace(3, 3)));
+	m_controller.addSpareFigure(Figure(f, Qt::blue));
+	f =	"XO\n"
+		"O\n";
+	m_controller.addSpareFigure(Figure(f, Qt::green));
 
 	m_controller.connectFieldWidget(ui.fieldWidget);
 	m_controller.connectSpareFiguresWidget(ui.spareFiguresWidget);
