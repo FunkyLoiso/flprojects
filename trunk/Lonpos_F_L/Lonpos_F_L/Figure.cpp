@@ -9,13 +9,16 @@ Figure::Figure(void)
 Figure::Figure(const QString& configuration, QColor color, FieldPlace center/* = FieldPlace::Invalid()*/)
 : m_color(color)
 {
-	setConfiguration(configuration);
-	if(center.isValid()) setCenter(center);
+	if(setConfiguration(configuration))
+	{
+		m_id = QUuid::createUuid();
+		if(center.isValid()) setCenter(center);
+	}
 }
 
 bool Figure::isValid() const
 {
-	return m_relativeElements.count() > 0;
+	return m_id != QUuid();
 }
 
 bool Figure::setConfiguration(const QString& configuration)
@@ -153,9 +156,7 @@ void Figure::rotate(bool clockwise)
 
 bool Figure::operator==(const Figure& figure) const
 {
-	return	m_center == figure.m_center &&
-			m_originalCenter == figure.m_originalCenter &&
-			m_relativeElements.toSet() == figure.m_relativeElements.toSet();
+	return	m_id == figure.m_id;
 
 }
 

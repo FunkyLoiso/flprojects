@@ -6,6 +6,7 @@
 #include <QList>
 #include <QColor>
 #include <QHash>
+#include <QUuid>
 
 /**	Позиция на поле в координатах поля. Введена чтобы не путать с координатами в пикселах */
 class FieldPlace : public QPoint
@@ -46,7 +47,6 @@ public:
 	bool operator!=(const Figure& figure) const;
 
 	bool isValid() const;	///< Является ли фигура допустимой.
-	bool setConfiguration(const QString& configuration);
 	void setColor(QColor color);
 	QColor color() const;
 	int width() const;	///< Максимальное число элементов по горизонтали
@@ -61,12 +61,14 @@ public:
 	void rotateCCW();	///< Повернуть фигуру на 90 градусов против часовой стрелке	
 
 private:
+	QUuid m_id;
 	QColor m_color;
 	FieldPlace m_center;	///< Координаты центра
 	FieldPlace m_originalCenter;	///< Координаты центра как они были заданы в конфигурационно строке
 	FieldPlace::list m_relativeElements;	//Смещения остальных элементов относительно центра
 	int m_width, m_height;
 
+	bool setConfiguration(const QString& configuration);
 	void rotate(bool clockwise);
 };
 #endif // Figure_h__
