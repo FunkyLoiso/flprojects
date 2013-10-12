@@ -51,3 +51,15 @@ void Lonpos_F_L::keyPressEvent(QKeyEvent *e)
 	else if(e->key() == Qt::Key_Escape) emit m_controller.onCancelSelection();
 	else __super::keyPressEvent(e);
 }
+
+void Lonpos_F_L::wheelEvent(QWheelEvent *e)
+{
+	int numDegrees = e->delta() / 8;
+	int numSteps = numDegrees / 15;
+
+	for(int step = 0; step < qAbs(numSteps); ++step)
+	{
+		emit m_controller.onFieldRotated(numSteps > 0);
+	}
+	e->accept();
+}
