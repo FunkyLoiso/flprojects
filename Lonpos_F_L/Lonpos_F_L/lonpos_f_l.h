@@ -25,6 +25,7 @@ private:
 	FieldController m_controller;
 
 	virtual void keyPressEvent(QKeyEvent *);
+	virtual void wheelEvent(QWheelEvent *);
 };
 
 #endif // LONPOS_F_L_H
