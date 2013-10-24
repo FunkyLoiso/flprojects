@@ -1,0 +1,283 @@
+24.10.2013 23:36:46.708 0 DEBUG 3984 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+24.10.2013 23:36:46.708 0 DEBUG 3984 TemplateCache: timeout=60000, size=1000000
+24.10.2013 23:36:46.709 0 DEBUG 3984 HttpSessionStore: Sessions expire after 3600000 milliseconds
+24.10.2013 23:36:46.709 0 DEBUG 3984 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+24.10.2013 23:36:46.709 0 DEBUG 3984 StaticFileController: cache timeout=60000, size=1000000
+24.10.2013 23:36:46.709 0 DEBUG 3984 ServiceHelper: Starting service
+24.10.2013 23:36:46.712 0 DEBUG 3984 HttpListener: Listening on port 8080
+24.10.2013 23:36:46.712 0 DEBUG 3984 You see these debug messages because the logging buffer is enabled
+24.10.2013 23:36:46.712 1 WARNING 3984 ServiceHelper: Service has started
+24.10.2013 23:38:37.724 0 DEBUG 3596 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+24.10.2013 23:38:37.724 0 DEBUG 3596 TemplateCache: timeout=60000, size=1000000
+24.10.2013 23:38:37.724 0 DEBUG 3596 HttpSessionStore: Sessions expire after 3600000 milliseconds
+24.10.2013 23:38:37.724 0 DEBUG 3596 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+24.10.2013 23:38:37.724 0 DEBUG 3596 StaticFileController: cache timeout=60000, size=1000000
+24.10.2013 23:38:37.724 0 DEBUG 3596 ServiceHelper: Starting service
+24.10.2013 23:38:38.004 0 DEBUG 3596 HttpListener: Listening on port 8080
+24.10.2013 23:38:38.004 0 DEBUG 3596 You see these debug messages because the logging buffer is enabled
+24.10.2013 23:38:38.004 1 WARNING 3596 ServiceHelper: Service has started
+24.10.2013 23:43:27.208 0 DEBUG 5512 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+24.10.2013 23:43:27.208 0 DEBUG 5512 TemplateCache: timeout=60000, size=1000000
+24.10.2013 23:43:27.208 0 DEBUG 5512 HttpSessionStore: Sessions expire after 3600000 milliseconds
+24.10.2013 23:43:27.208 0 DEBUG 5512 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+24.10.2013 23:43:27.208 0 DEBUG 5512 StaticFileController: cache timeout=60000, size=1000000
+24.10.2013 23:43:27.208 0 DEBUG 5512 ServiceHelper: Starting service
+24.10.2013 23:43:27.482 0 DEBUG 5512 HttpListener: Listening on port 8080
+24.10.2013 23:43:27.482 0 DEBUG 5512 You see these debug messages because the logging buffer is enabled
+24.10.2013 23:43:27.482 1 WARNING 5512 ServiceHelper: Service has started
+25.10.2013 00:25:26.468 0 DEBUG 4104 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:25:26.468 0 DEBUG 4104 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:25:26.468 0 DEBUG 4104 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:25:26.468 0 DEBUG 4104 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:25:26.468 0 DEBUG 4104 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:25:26.468 0 DEBUG 4104 ServiceHelper: Starting service
+25.10.2013 00:25:26.762 0 DEBUG 4104 HttpListener: Listening on port 8080
+25.10.2013 00:25:26.762 0 DEBUG 4104 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:25:26.762 1 WARNING 4104 ServiceHelper: Service has started
+25.10.2013 00:26:09.922 0 DEBUG 5488 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:26:09.922 0 DEBUG 5488 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:26:09.923 0 DEBUG 5488 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:26:09.923 0 DEBUG 5488 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:26:09.923 0 DEBUG 5488 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:26:09.923 0 DEBUG 5488 ServiceHelper: Starting service
+25.10.2013 00:26:10.196 0 DEBUG 5488 HttpListener: Listening on port 8080
+25.10.2013 00:26:10.196 0 DEBUG 5488 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:26:10.196 1 WARNING 5488 ServiceHelper: Service has started
+25.10.2013 00:29:10.043 0 DEBUG 3416 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:29:10.043 0 DEBUG 3416 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:29:10.043 0 DEBUG 3416 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:29:10.043 0 DEBUG 3416 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:29:10.043 0 DEBUG 3416 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:29:10.043 0 DEBUG 3416 ServiceHelper: Starting service
+25.10.2013 00:29:10.047 0 DEBUG 3416 HttpListener: Listening on port 8080
+25.10.2013 00:29:10.047 0 DEBUG 3416 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:29:10.047 1 WARNING 3416 ServiceHelper: Service has started
+25.10.2013 00:33:49.055 0 DEBUG 7716 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:33:49.055 0 DEBUG 7716 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:33:49.055 0 DEBUG 7716 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:33:49.055 0 DEBUG 7716 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:33:49.055 0 DEBUG 7716 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:33:49.055 0 DEBUG 7716 ServiceHelper: Starting service
+25.10.2013 00:33:49.059 0 DEBUG 7716 HttpListener: Listening on port 8080
+25.10.2013 00:33:49.059 0 DEBUG 7716 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:33:49.059 1 WARNING 7716 ServiceHelper: Service has started
+25.10.2013 00:34:04.972 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): thread started
+25.10.2013 00:34:04.973 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): handle new connection
+25.10.2013 00:34:04.973 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): read input
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: read request
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: received header Host: localhost:8080
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: received header Connection: keep-alive
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: received header Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+25.10.2013 00:34:04.974 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: received header User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: received header Referer: http://localhost:8080/
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: received header Accept-Encoding: gzip,deflate,sdch
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: received header Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: headers completed
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: expect no body
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: extract and decode request parameters
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpRequest: extract cookies
+25.10.2013 00:34:04.975 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): received request
+25.10.2013 00:34:04.975 0 DEBUG 7660 RequestMapper: path=/scriptForm
+25.10.2013 00:34:04.978 0 DEBUG 7660 RequestMapper: finished request
+25.10.2013 00:34:09.021 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): read input
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read request
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Host: localhost:8080
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Connection: keep-alive
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Content-Length: 21
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Origin: http://localhost:8080
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Content-Type: application/x-www-form-urlencoded
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Referer: http://localhost:8080/scriptForm
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Accept-Encoding: gzip,deflate,sdch
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: received header Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: read header
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: headers completed
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: expect 21 bytes body
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: receive body
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: extract and decode request parameters
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpRequest: extract cookies
+25.10.2013 00:34:09.022 0 DEBUG 7660 HttpConnectionHandler (0x251ee58): received request
+25.10.2013 00:34:09.022 0 DEBUG 7660 RequestMapper: path=/scriptForm
+25.10.2013 00:34:09.025 3 FATAL 7660 ASSERT failure in QList<T>::operator[]: "index out of range", file ..\..\..\Qt\5.1.1\mingw48_32\include/QtCore/qlist.h, line 460
+25.10.2013 00:34:33.595 0 DEBUG 8008 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:34:33.595 0 DEBUG 8008 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:34:33.596 0 DEBUG 8008 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:34:33.596 0 DEBUG 8008 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:34:33.596 0 DEBUG 8008 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:34:33.596 0 DEBUG 8008 ServiceHelper: Starting service
+25.10.2013 00:34:33.873 0 DEBUG 8008 HttpListener: Listening on port 8080
+25.10.2013 00:34:33.873 0 DEBUG 8008 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:34:33.873 1 WARNING 8008 ServiceHelper: Service has started
+25.10.2013 00:36:17.044 0 DEBUG 7752 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:36:17.044 0 DEBUG 7752 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:36:17.044 0 DEBUG 7752 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:36:17.044 0 DEBUG 7752 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:36:17.044 0 DEBUG 7752 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:36:17.044 0 DEBUG 7752 ServiceHelper: Starting service
+25.10.2013 00:36:17.048 0 DEBUG 7752 HttpListener: Listening on port 8080
+25.10.2013 00:36:17.048 0 DEBUG 7752 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:36:17.048 1 WARNING 7752 ServiceHelper: Service has started
+25.10.2013 00:40:23.148 0 DEBUG 7332 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:40:23.148 0 DEBUG 7332 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:40:23.150 0 DEBUG 7332 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:40:23.150 0 DEBUG 7332 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:40:23.150 0 DEBUG 7332 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:40:23.150 0 DEBUG 7332 ServiceHelper: Starting service
+25.10.2013 00:40:23.154 0 DEBUG 7332 HttpListener: Listening on port 8080
+25.10.2013 00:40:23.154 0 DEBUG 7332 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:40:23.154 1 WARNING 7332 ServiceHelper: Service has started
+25.10.2013 00:40:54.291 0 DEBUG 8468 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:40:54.291 0 DEBUG 8468 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:40:54.291 0 DEBUG 8468 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:40:54.291 0 DEBUG 8468 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:40:54.291 0 DEBUG 8468 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:40:54.291 0 DEBUG 8468 ServiceHelper: Starting service
+25.10.2013 00:40:54.295 0 DEBUG 8468 HttpListener: Listening on port 8080
+25.10.2013 00:40:54.295 0 DEBUG 8468 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:40:54.295 1 WARNING 8468 ServiceHelper: Service has started
+25.10.2013 00:42:10.946 0 DEBUG 4452 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:42:10.946 0 DEBUG 4452 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:42:10.946 0 DEBUG 4452 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:42:10.946 0 DEBUG 4452 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:42:10.946 0 DEBUG 4452 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:42:10.946 0 DEBUG 4452 ServiceHelper: Starting service
+25.10.2013 00:42:10.949 0 DEBUG 4452 HttpListener: Listening on port 8080
+25.10.2013 00:42:10.949 0 DEBUG 4452 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:42:10.949 1 WARNING 4452 ServiceHelper: Service has started
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Host: localhost:8080
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Connection: keep-alive
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Content-Length: 24
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Origin: http://localhost:8080
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Content-Type: application/x-www-form-urlencoded
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Referer: http://localhost:8080/scriptForm
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Accept-Encoding: gzip,deflate,sdch
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: received header Cookie: sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:42:57.589 0 DEBUG 2620 HttpRequest: headers completed
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpRequest: expect 24 bytes body
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpRequest: receive body
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpRequest: extract and decode request parameters
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpRequest: extract cookies
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpRequest: found cookie sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:42:57.590 0 DEBUG 2620 HttpConnectionHandler (0x25bee58): received request
+25.10.2013 00:42:57.590 0 DEBUG 2620 RequestMapper: path=/scriptForm
+25.10.2013 00:42:57.600 0 DEBUG 2620 RequestMapper: finished request
+25.10.2013 00:43:03.004 0 DEBUG 2620 HttpConnectionHandler (0x25bee58): read input
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read request
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Host: localhost:8080
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Connection: keep-alive
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Content-Length: 24
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Origin: http://localhost:8080
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Content-Type: application/x-www-form-urlencoded
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Referer: http://localhost:8080/scriptForm
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Accept-Encoding: gzip,deflate,sdch
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: received header Cookie: sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: headers completed
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: expect 24 bytes body
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: receive body
+25.10.2013 00:43:03.005 0 DEBUG 2620 HttpRequest: extract and decode request parameters
+25.10.2013 00:43:03.006 0 DEBUG 2620 HttpRequest: extract cookies
+25.10.2013 00:43:03.006 0 DEBUG 2620 HttpRequest: found cookie sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:43:03.006 0 DEBUG 2620 HttpConnectionHandler (0x25bee58): received request
+25.10.2013 00:43:03.006 0 DEBUG 2620 RequestMapper: path=/scriptForm
+25.10.2013 00:43:03.016 0 DEBUG 2620 RequestMapper: finished request
+25.10.2013 00:43:03.593 0 DEBUG 2620 HttpConnectionHandler (0x25bee58): read input
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read request
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Host: localhost:8080
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Connection: keep-alive
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Content-Length: 19
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Origin: http://localhost:8080
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Content-Type: application/x-www-form-urlencoded
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: received header Referer: http://localhost:8080/scriptForm
+25.10.2013 00:43:03.594 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: received header Accept-Encoding: gzip,deflate,sdch
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: received header Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: received header Cookie: sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: read header
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: headers completed
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: expect 19 bytes body
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: receive body
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: extract and decode request parameters
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: extract cookies
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpRequest: found cookie sessionid={1be38886-dd53-41e6-84be-7f9fb18d294a}
+25.10.2013 00:43:03.595 0 DEBUG 2620 HttpConnectionHandler (0x25bee58): received request
+25.10.2013 00:43:03.595 0 DEBUG 2620 RequestMapper: path=/scriptForm
+25.10.2013 00:43:03.600 3 FATAL 2620 ASSERT failure in QList<T>::operator[]: "index out of range", file ..\..\..\Qt\5.1.1\mingw48_32\include/QtCore/qlist.h, line 460
+25.10.2013 00:43:24.823 0 DEBUG 1980 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:43:24.823 0 DEBUG 1980 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:43:24.823 0 DEBUG 1980 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:43:24.823 0 DEBUG 1980 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:43:24.823 0 DEBUG 1980 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:43:24.823 0 DEBUG 1980 ServiceHelper: Starting service
+25.10.2013 00:43:24.827 0 DEBUG 1980 HttpListener: Listening on port 8080
+25.10.2013 00:43:24.827 0 DEBUG 1980 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:43:24.827 1 WARNING 1980 ServiceHelper: Service has started
+25.10.2013 00:53:16.691 0 DEBUG 8388 TemplateLoader: path=C:/!kill_me(it hurts to live)/web_srv/etc/templates, codec=UTF-8
+25.10.2013 00:53:16.691 0 DEBUG 8388 TemplateCache: timeout=60000, size=1000000
+25.10.2013 00:53:16.691 0 DEBUG 8388 HttpSessionStore: Sessions expire after 3600000 milliseconds
+25.10.2013 00:53:16.691 0 DEBUG 8388 StaticFileController: docroot=C:/!kill_me(it hurts to live)/web_srv/etc/docroot, encoding=UTF-8, maxAge=60000
+25.10.2013 00:53:16.691 0 DEBUG 8388 StaticFileController: cache timeout=60000, size=1000000
+25.10.2013 00:53:16.691 0 DEBUG 8388 ServiceHelper: Starting service
+25.10.2013 00:53:16.991 0 DEBUG 8388 HttpListener: Listening on port 8080
+25.10.2013 00:53:16.991 0 DEBUG 8388 You see these debug messages because the logging buffer is enabled
+25.10.2013 00:53:16.991 1 WARNING 8388 ServiceHelper: Service has started
