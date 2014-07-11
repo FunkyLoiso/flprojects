@@ -1,6 +1,7 @@
 #include "shortestpathdijkstra.h"
 
 #include <algorithm>
+#include <set>
 
 ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, int from, int to)
 {
@@ -9,8 +10,8 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
     std::vector<int> prev(graph.vertCount(), -1);
 
     std::list<int> edges;
-    for(int i = 0; i < graph.vertCount(); ++i) edges.push_back(i);
-//    edges.push_back(from);
+    std::set<int> visited;
+    edges.push_back(from);
 
     struct
     {
@@ -22,18 +23,22 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
     {
         auto i = std::min_element(edges.begin(), edges.end(), lessDst);
         int vert = *i;
+        if(vert == to) break;//если целевая вершина здесь, то её расстояние окончательно
         edges.erase(i);
+        visited.insert(vert);
 
         auto edgesFromCur = graph.edges(vert);
         for(auto e : edgesFromCur)
         {
+            if(visited.count(e.to) != 0) continue;
+
             double thisPathDst = dst[e.from] + e.weight;
             if(thisPathDst < dst[e.to])
             {
                 dst[e.to] = thisPathDst;
                 prev[e.to] = e.from;
             }
-//            edges.push_back(e.to);
+            edges.push_back(e.to);
         }
     }
 
