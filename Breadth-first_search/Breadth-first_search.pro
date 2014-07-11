@@ -7,10 +7,12 @@ CONFIG -= qt
 SOURCES += main.cpp \
     Graph.cpp \
     bfs.cpp \
-    graphvisitor.cpp
+    graphvisitor.cpp \
+    shortestpathdijkstra.cpp
 
 HEADERS += \
     Graph.h \
     bfs.h \
-    graphvisitor.h
+    graphvisitor.h \
+    shortestpathdijkstra.h
 

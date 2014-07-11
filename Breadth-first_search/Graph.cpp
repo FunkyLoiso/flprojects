@@ -62,7 +62,7 @@ std::vector<EdgeDsc> DirectedWeightedGraph::edges(int from) const
 
     for(std::size_t i = 0; i < succs.size(); ++i)
     {
-        result.push_back( {from, succs.at(i), weights.at(i)} );
+        result[i] = {from, succs.at(i), weights.at(i)};
     }
     return result;
 }
