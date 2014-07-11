@@ -16,12 +16,16 @@ void printCollection(const C& coll)
     std::cout << std::endl;
 }
 
+std::tuple<int, int> var {1,2};
+std::vector<std::tuple<int, int>> vev {std::make_tuple(1,2), std::make_tuple(2,1) };
+
 int main()
 {
-    UndirectedGraph g(10);
+    DirectedWeightedGraph g(10);
     //g.addPath(5, 0, 1, 2, 0, 9, 0);
-    g.addPath(3, 4, 5, 6, 7);
-    g.addPath(2, 4, 1, 7);
+    g.addEdges({ {1, 2, 0.5}, {3, 4, -0.7} });
+    g.addPath( {3, 4, 5, 6, 7}, {1.0, 1.0, 1.0, 1.0} );
+    g.addPath( {2, 4, 1, 7}, {0.5, 0.5, 0.5} );
     std::cout << g.toString();
 
     BFS bfs(g);

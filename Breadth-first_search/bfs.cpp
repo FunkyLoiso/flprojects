@@ -1,7 +1,7 @@
 #include "bfs.h"
 #include <queue>
 
-BFS::BFS(const UndirectedGraph &graph) : m_graph(graph)
+BFS::BFS(const DirectedWeightedGraph &graph) : m_graph(graph)
 {
 }
 
@@ -31,7 +31,7 @@ void BFS::doSearch(int start, GraphVisitor &visitor) const
         queue.pop();
         visited.insert(vert);
 
-        auto neighbours = m_graph.neighbours(vert);
+        auto neighbours = m_graph.successors(vert);
         for(auto n = neighbours.begin(); n != neighbours.end(); ++n)
         {
             if(visited.count(*n) == 0)
