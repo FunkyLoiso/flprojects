@@ -8,11 +8,13 @@ SOURCES += main.cpp \
     Graph.cpp \
     bfs.cpp \
     graphvisitor.cpp \
-    shortestpathdijkstra.cpp
+    shortestpathdijkstra.cpp \
+    primsminimumspanningtree.cpp
 
 HEADERS += \
     Graph.h \
     bfs.h \
     graphvisitor.h \
-    shortestpathdijkstra.h
+    shortestpathdijkstra.h \
+    primsminimumspanningtree.h
 

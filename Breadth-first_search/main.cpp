@@ -2,6 +2,7 @@
 #include "Graph.h"
 #include "bfs.h"
 #include "shortestpathdijkstra.h"
+#include "primsminimumspanningtree.h"
 
 template<typename C>
 void printCollection(const C& coll)
@@ -31,15 +32,17 @@ int main()
     g.addPath( {7, 1, 4, 2}, {0.5, 0.5, 0.5} );
     std::cout << g.toString();
 
+    //достижимый подграф
     BFS bfs(g);
 
-    std::cout << "reachable component from 0: ";
-    printCollection(bfs.reachableComponent(0));
+    std::cout << "reachable component from 4: ";
+    printCollection(bfs.reachableComponent(4));
     std::cout << "\nreachable component from 5: ";
     printCollection(bfs.reachableComponent(5));
-    std::cout << "\nreachable component from 8: ";
-    printCollection(bfs.reachableComponent(8));
+    std::cout << "\nreachable component from 6: ";
+    printCollection(bfs.reachableComponent(6));
 
+    //кратчайший путь
     auto p = ShortestPathDijkstra(g, 0, 9);
     std::cout << "\nshortest path 0 -> 9 is: ";
     printCollection(p.path());
@@ -59,5 +62,13 @@ int main()
     std::cout << "shortest path 6 -> 4 is: ";
     printCollection(p.path());
     std::cout << "length: " << p.length() << std::endl;
-	return 0;
+
+    //минимальное дерево
+    std::cout << "Min spanning tree from 4:" << std::endl << PrimsMinimumSpanningTree(g, 4).tree().toString() << std::endl;
+    std::cout << "Min spanning tree from 5:" << std::endl << PrimsMinimumSpanningTree(g, 5).tree().toString() << std::endl;
+    std::cout << "Min spanning tree from 6:" << std::endl << PrimsMinimumSpanningTree(g, 6).tree().toString() << std::endl;
+
+    //
+    return 0;
+
 }
