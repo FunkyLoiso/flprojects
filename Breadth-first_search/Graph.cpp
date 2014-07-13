@@ -12,7 +12,7 @@ DirectedWeightedGraph::DirectedWeightedGraph(int numVertices) : m_numVertices(nu
 	}
 }
 
-void DirectedWeightedGraph::addEdges(std::vector<EdgeDsc>&& edges)
+void DirectedWeightedGraph::addEdges(const std::vector<EdgeDsc>& edges)
 {
     for(auto e : edges)
 	{
@@ -23,7 +23,7 @@ void DirectedWeightedGraph::addEdges(std::vector<EdgeDsc>&& edges)
 	}
 }
 
-void DirectedWeightedGraph::addPath(std::vector<int>&& verts, std::vector<double>&& weights)
+void DirectedWeightedGraph::addPath(const std::vector<int>& verts, const std::vector<double>& weights)
 {
     assert(verts.size() > 1);
     assert(weights.size() == verts.size()-1);
