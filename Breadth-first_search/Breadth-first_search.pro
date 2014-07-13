@@ -9,12 +9,15 @@ SOURCES += main.cpp \
     bfs.cpp \
     graphvisitor.cpp \
     shortestpathdijkstra.cpp \
-    primsminimumspanningtree.cpp
+    primsminimumspanningtree.cpp \
+    kruskalsminimumspanningtree.cpp
 
 HEADERS += \
     Graph.h \
     bfs.h \
     graphvisitor.h \
     shortestpathdijkstra.h \
-    primsminimumspanningtree.h
+    primsminimumspanningtree.h \
+    kruskalsminimumspanningtree.h \
+    DisjointSet.h
 
