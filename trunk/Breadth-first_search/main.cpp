@@ -1,9 +1,9 @@
 #include <iostream>
 #include "Graph.h"
-#include "bfs.h"
-#include "shortestpathdijkstra.h"
-#include "primsminimumspanningtree.h"
-#include "kruskalsminimumspanningtree.h"
+#include "BFS.h"
+#include "ShortestPathDijkstra.h"
+#include "PrimsMinimumSpanningTree.h"
+#include "KruskalsMinimumSpanningTree.h"
 
 template<typename C>
 void printCollection(const C& coll)

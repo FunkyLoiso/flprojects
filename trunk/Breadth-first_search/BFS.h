@@ -5,7 +5,7 @@
 #include <list>
 
 #include "Graph.h"
-#include "graphvisitor.h"
+#include "GraphVisitor.h"
 
 class BFS
 {

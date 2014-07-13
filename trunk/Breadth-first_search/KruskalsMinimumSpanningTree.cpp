@@ -1,4 +1,4 @@
-#include "kruskalsminimumspanningtree.h"
+#include "KruskalsMinimumSpanningTree.h"
 
 #include <algorithm>
 #include <set>

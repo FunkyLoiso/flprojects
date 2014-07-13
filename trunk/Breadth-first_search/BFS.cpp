@@ -1,4 +1,4 @@
-#include "bfs.h"
+#include "BFS.h"
 #include <queue>
 
 BFS::BFS(const DirectedWeightedGraph &graph) : m_graph(graph)
