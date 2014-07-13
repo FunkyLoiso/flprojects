@@ -6,18 +6,17 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     Graph.cpp \
-    bfs.cpp \
-    graphvisitor.cpp \
-    shortestpathdijkstra.cpp \
-    primsminimumspanningtree.cpp \
-    kruskalsminimumspanningtree.cpp
+    BFS.cpp \
+    GraphVisitor.cpp \
+    KruskalsMinimumSpanningTree.cpp \
+    PrimsMinimumSpanningTree.cpp \
+    ShortestPathDijkstra.cpp
 
 HEADERS += \
     Graph.h \
-    bfs.h \
-    graphvisitor.h \
-    shortestpathdijkstra.h \
-    primsminimumspanningtree.h \
-    kruskalsminimumspanningtree.h \
-    DisjointSet.h
+    BFS.h \
+    GraphVisitor.h \
+    KruskalsMinimumSpanningTree.h \
+    PrimsMinimumSpanningTree.h \
+    ShortestPathDijkstra.h
 

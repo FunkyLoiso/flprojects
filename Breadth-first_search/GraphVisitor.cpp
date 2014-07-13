@@ -1,4 +1,4 @@
-#include "graphvisitor.h"
+#include "GraphVisitor.h"
 
 #include <limits>
 
