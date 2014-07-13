@@ -31,6 +31,7 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
         for(auto e : edgesFromCur)
         {
             if(visited.count(e.to) != 0) continue;
+            if(prev[e.to] == -1) verts.push_back(e.to);//добавляем в список на обработку только если встречаем первый раз
 
             double thisPathDst = dst[e.from] + e.weight;
             if(thisPathDst < dst[e.to])
