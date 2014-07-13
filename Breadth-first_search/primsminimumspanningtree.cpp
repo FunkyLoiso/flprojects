@@ -36,6 +36,7 @@ PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &
         {
             if(visited.count(e.to) != 0) continue;
             if(prev[e.to] == -1) verts.push_back(e.to);//добавляем в список на обработку только если встречаем первый раз
+
             if(e.weight < dst[e.to])
             {
                 dst[e.to] = e.weight;
