@@ -67,6 +67,21 @@ std::vector<EdgeDsc> DirectedWeightedGraph::edges(int from) const
     return result;
 }
 
+std::vector<EdgeDsc> DirectedWeightedGraph::allEdges() const
+{
+    std::vector<EdgeDsc> result;
+    for(int vert = 0; vert < m_numVertices; ++vert)
+    {
+        const auto succs = m_successors.at(vert);
+        const auto weights = m_weights.at(vert);
+        for(size_t s = 0; s < succs.size(); ++s)
+        {
+            result.push_back({ vert, succs.at(s), weights.at(s) });
+        }
+    }
+    return result;
+}
+
 std::string DirectedWeightedGraph::toString() const
 {
     std::ostringstream str;

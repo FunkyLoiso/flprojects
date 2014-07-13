@@ -10,6 +10,7 @@ public:
     {
         for(int i = 0; i < count; ++i) m_parent[i] = i;
     }
+    //найти представителя множества, включающего элемент x
     int find(int x) const
     {
         //return ( x == m_parent[x] ? x : m_parent[x] = find(m_parent[x]) );
@@ -17,7 +18,7 @@ public:
 
         if(x == m_parent[x]) return x;
 
-        //найдём корень дерева, попутно перенося все листся к корню
+        //найдём корень дерева, попутно перенося все элементы к корню
         std::vector<int> treeElements;
         do
         {
@@ -32,7 +33,7 @@ public:
         }
         return x;
     }
-
+    //объединить множества, содержащие элементы x и y.
     void join(int x, int y)
     {
         x = find(x);
@@ -49,7 +50,7 @@ public:
 
 private:
     mutable std::vector<int> m_parent;//элемент-родитель
-    std::vector<int> m_rank;//ранк дерева с корневым элементом
+    std::vector<int> m_rank;//ранк дерева с соответствующим корневым элементом
 };
 
 #endif // DISJOINTSET_H

@@ -3,8 +3,7 @@
 #include "bfs.h"
 #include "shortestpathdijkstra.h"
 #include "primsminimumspanningtree.h"
-
-#include "DisjointSet.h"
+#include "kruskalsminimumspanningtree.h"
 
 template<typename C>
 void printCollection(const C& coll)
@@ -65,17 +64,13 @@ int main()
     printCollection(p.path());
     std::cout << "length: " << p.length() << std::endl;
 
-    //минимальное дерево
+    //минимальное дерево по Приму
     std::cout << "Min spanning tree from 4:" << std::endl << PrimsMinimumSpanningTree(g, 4).tree().toString() << std::endl;
     std::cout << "Min spanning tree from 5:" << std::endl << PrimsMinimumSpanningTree(g, 5).tree().toString() << std::endl;
     std::cout << "Min spanning tree from 6:" << std::endl << PrimsMinimumSpanningTree(g, 6).tree().toString() << std::endl;
 
-    DisjointSet ds(3);
-    std::cout << ds.find(0) << ' ' << ds.find(1) << ' ' << ds.find(2) << std::endl;
-    ds.join(1, 2);
-    std::cout << ds.find(0) << ' ' << ds.find(1) << ' ' << ds.find(2) << std::endl;
-    ds.join(3, 1);
-    std::cout << ds.find(0) << ' ' << ds.find(1) << ' ' << ds.find(2) << std::endl;
+    //минимальное дерево по Краскалу
+    std::cout << "Min spanning tree (Kruskal):" << std::endl << KruskalsMinimumSpanningTree(g).tree().toString() << std::endl;
 
     //
     return 0;
