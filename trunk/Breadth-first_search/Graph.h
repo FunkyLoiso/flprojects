@@ -17,8 +17,8 @@ class DirectedWeightedGraph
 {
 public:
     DirectedWeightedGraph(int numVertices);
-    void addEdges(std::vector<EdgeDsc>&& edges);
-    void addPath(std::vector<int>&& verts, std::vector<double>&& weights);
+    void addEdges(const std::vector<EdgeDsc>& edges);
+    void addPath(const std::vector<int>& verts, const std::vector<double>& weights);
     int vertCount() const;
 
     const std::vector<int>& successors(int vert) const; // вершины, до которых есть ребро
