@@ -23,6 +23,7 @@ public:
 
     const std::vector<int>& successors(int vert) const; // вершины, до которых есть ребро
     std::vector<EdgeDsc> edges(int from) const; // рёбра из вершины
+    std::vector<EdgeDsc> allEdges() const;  // все рёбра
 
     std::string toString() const;
 
