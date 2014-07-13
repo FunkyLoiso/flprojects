@@ -9,9 +9,9 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
     dst[from] = 0.0f;
     std::vector<int> prev(graph.vertCount(), -1);
 
-    std::list<int> edges;
+    std::list<int> verts;
     std::set<int> visited;
-    edges.push_back(from);
+    verts.push_back(from);
 
     struct
     {
@@ -19,12 +19,12 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
         const std::vector<double>& m_dst;
     }lessDst {dst};
 
-    while(!edges.empty())
+    while(!verts.empty())
     {
-        auto i = std::min_element(edges.begin(), edges.end(), lessDst);
+        auto i = std::min_element(verts.begin(), verts.end(), lessDst);
         int vert = *i;
         if(vert == to) break;//если целевая вершина здесь, то её расстояние окончательно
-        edges.erase(i);
+        verts.erase(i);
         visited.insert(vert);
 
         auto edgesFromCur = graph.edges(vert);
@@ -38,7 +38,7 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
                 dst[e.to] = thisPathDst;
                 prev[e.to] = e.from;
             }
-            edges.push_back(e.to);
+            verts.push_back(e.to);
         }
     }
 
