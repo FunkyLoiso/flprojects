@@ -49,7 +49,7 @@ PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &
 DirectedWeightedGraph PrimsMinimumSpanningTree::tree() const
 {
     DirectedWeightedGraph graph(m_numVertices);
-    graph.addEdges(std::move(m_edges));
+    graph.addEdges(m_edges);
     return graph;
 }
 

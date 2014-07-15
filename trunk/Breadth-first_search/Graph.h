@@ -28,9 +28,10 @@ public:
     std::string toString() const;
 
 private:
+    int m_numVertices;
     std::vector<std::vector<int>> m_successors;
     std::vector<std::vector<double>> m_weights;
-	int m_numVertices;
+
 
     void addEdge(int from, int to, double weight);
 };
