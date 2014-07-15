@@ -24,7 +24,7 @@ KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedG
             m_edges.push_back(e);
             visitedVertices.insert(e.from);
             visitedVertices.insert(e.to);
-            if(visitedVertices.size() == graph.vertCount()) return;
+            if( visitedVertices.size() == static_cast<std::size_t>(graph.vertCount()) ) return;
 
             ds.join(e.from, e.to);
         }
@@ -34,7 +34,7 @@ KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedG
 DirectedWeightedGraph KruskalsMinimumSpanningTree::tree() const
 {
     DirectedWeightedGraph graph(m_numVertices);
-    graph.addEdges(std::move(m_edges));
+    graph.addEdges(m_edges);
     return graph;
 }
 

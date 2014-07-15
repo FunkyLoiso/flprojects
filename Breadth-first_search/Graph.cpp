@@ -3,14 +3,11 @@
 #include <assert.h>
 #include <sstream>
 
-DirectedWeightedGraph::DirectedWeightedGraph(int numVertices) : m_numVertices(numVertices)
-{
-	for(int i = 0; i < m_numVertices; ++i)
-	{
-        m_successors.push_back(std::vector<int>());
-        m_weights.push_back(std::vector<double>());
-	}
-}
+DirectedWeightedGraph::DirectedWeightedGraph(int numVertices)
+    : m_numVertices(numVertices)
+    , m_successors(numVertices)
+    , m_weights(numVertices)
+{}
 
 void DirectedWeightedGraph::addEdges(const std::vector<EdgeDsc>& edges)
 {
@@ -105,6 +102,6 @@ std::string DirectedWeightedGraph::toString() const
 
 void DirectedWeightedGraph::addEdge(int from, int to, double weight)
 {
-    m_successors[from].push_back(to);
-    m_weights[from].push_back(weight);
+    m_successors.at(from).push_back(to);
+    m_weights.at(from).push_back(weight);
 }
