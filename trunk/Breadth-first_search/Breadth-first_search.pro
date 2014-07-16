@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     GraphVisitor.cpp \
     KruskalsMinimumSpanningTree.cpp \
     PrimsMinimumSpanningTree.cpp \
-    ShortestPathDijkstra.cpp
+    ShortestPathDijkstra.cpp \
+    KosarajusSCCs.cpp
 
 HEADERS += \
     Graph.h \
@@ -18,5 +19,6 @@ HEADERS += \
     GraphVisitor.h \
     KruskalsMinimumSpanningTree.h \
     PrimsMinimumSpanningTree.h \
-    ShortestPathDijkstra.h
+    ShortestPathDijkstra.h \
+    KosarajusSCCs.h
 
