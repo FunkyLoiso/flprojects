@@ -14,11 +14,7 @@ PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &
     std::set<int> visited;
     verts.push_back(from);  //добавим начальную вершину
 
-    struct
-    {
-        bool operator()(int f, int s) { return m_dst[f] < m_dst[s]; }
-        const std::vector<double>& m_dst;
-    }lessDst {dst};
+    auto lessDst = [&dst](int f, int s) {return dst[f] < dst[s];};
 
     while(!verts.empty())
     {
