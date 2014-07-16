@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <sstream>
+#include <algorithm>
 
 DirectedWeightedGraph::DirectedWeightedGraph(int numVertices)
     : m_numVertices(numVertices)
@@ -11,13 +12,7 @@ DirectedWeightedGraph::DirectedWeightedGraph(int numVertices)
 
 void DirectedWeightedGraph::addEdges(const std::vector<EdgeDsc>& edges)
 {
-    for(auto e : edges)
-	{
-        assert(e.from < m_numVertices);
-        assert(e.to < m_numVertices);
-
-        addEdge(e.from, e.to, e.weight);
-	}
+    std::for_each(edges.begin(), edges.end(), [this](const EdgeDsc& e) {addEdge(e);});
 }
 
 void DirectedWeightedGraph::addPath(const std::vector<int>& verts, const std::vector<double>& weights)
@@ -33,7 +28,7 @@ void DirectedWeightedGraph::addPath(const std::vector<int>& verts, const std::ve
         assert(from < m_numVertices);
         assert(to < m_numVertices);
 
-        addEdge(from, to, weights[i-1]);
+        addEdge({ from, to, weights[i-1] });
         from = to;
     }
 }
@@ -46,7 +41,7 @@ int DirectedWeightedGraph::vertCount() const
 DirectedWeightedGraph DirectedWeightedGraph::inverted() const
 {
     DirectedWeightedGraph result(m_numVertices);
-    auto addInverted = [&result](const EdgeDsc& e) {result.addEdge(e.to, e.from, e.weight);};
+    auto addInverted = [&result](const EdgeDsc& e) {result.addEdge({ e.to, e.from, e.weight });};
     forAllEdges(addInverted);
     return result;
 }
@@ -101,10 +96,10 @@ std::string DirectedWeightedGraph::toString() const
     return str.str();
 }
 
-void DirectedWeightedGraph::addEdge(int from, int to, double weight)
+void DirectedWeightedGraph::addEdge(const EdgeDsc& e)
 {
-    m_successors.at(from).push_back(to);
-    m_weights.at(from).push_back(weight);
+    m_successors.at(e.from).push_back(e.to);
+    m_weights.at(e.from).push_back(e.weight);
 }
 
 void DirectedWeightedGraph::forAllEdges(std::function<void(const EdgeDsc&)> func) const

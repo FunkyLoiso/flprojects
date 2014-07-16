@@ -4,6 +4,7 @@
 #include "ShortestPathDijkstra.h"
 #include "PrimsMinimumSpanningTree.h"
 #include "KruskalsMinimumSpanningTree.h"
+#include "KosarajusSCCs.h"
 
 template<typename C>
 void printCollection(const C& coll)
@@ -16,7 +17,11 @@ void printCollection(const C& coll)
             std::cout << val << ", ";
         }
     }
-//    std::cout << std::endl;
+}
+
+std::ostream& operator<<(std::ostream& stream, const EdgeDsc& e)
+{
+    return stream << e.from << "->" << e.to << "(" << e.weight << ")";
 }
 
 std::tuple<int, int> var {1,2};
@@ -71,6 +76,23 @@ int main()
 
     //минимальное дерево по Краскалу
     std::cout << "Min spanning tree (Kruskal):" << std::endl << KruskalsMinimumSpanningTree(g).tree().toString() << std::endl;
+
+    //сильно связанные компоненты Косарайю
+    DirectedWeightedGraph g2(10);
+    g2.addPath({1, 7, 9, 6, 8, 2, 5, 8}, {1, 1, 1, 1, 1, 1, 1});
+    g2.addPath({7, 4, 1}, {1, 1});
+    g2.addPath({6, 3, 9}, {1, 1});
+
+    std::cout << "g2:" << std::endl << g2.toString() << std::endl;
+    std::cout << "SCCs of g2 :" << std::endl;
+    KosarajusSCCs sccs(g2);
+    for(auto scc : sccs.SCCs())
+    {
+        static int counter = 0;
+        std::cout << counter++ << ": ";
+        printCollection(scc);
+        std::cout << std::endl;
+    }
 
     //
     return 0;

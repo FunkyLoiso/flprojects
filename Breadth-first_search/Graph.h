@@ -11,13 +11,13 @@ struct EdgeDsc
 {
     int from, to;
     double weight;
-
 };
 
 class DirectedWeightedGraph
 {
 public:
     DirectedWeightedGraph(int numVertices);
+
     void addEdges(const std::vector<EdgeDsc>& edges);
     void addPath(const std::vector<int>& verts, const std::vector<double>& weights);
     int vertCount() const;
@@ -34,8 +34,7 @@ private:
     std::vector<std::vector<int>> m_successors;
     std::vector<std::vector<double>> m_weights;
 
-
-    void addEdge(int from, int to, double weight);
+    void addEdge(const EdgeDsc& edge);
     void forAllEdges(std::function<void(const EdgeDsc&)>) const;
 };
 
