@@ -7,12 +7,8 @@
 KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedGraph& graph)
     : m_numVertices(graph.vertCount())
 {
-    struct
-    {
-        bool operator()(const EdgeDsc& f, const EdgeDsc& s) { return f.weight < s.weight; }
-    }lessWeight;
-
     std::vector<EdgeDsc> edges = graph.allEdges();
+    auto lessWeight = [](const EdgeDsc& f, const EdgeDsc& s) { return f.weight < s.weight; };
     std::sort(edges.begin(), edges.end(), lessWeight);
 
     DisjointSet ds(m_numVertices);
