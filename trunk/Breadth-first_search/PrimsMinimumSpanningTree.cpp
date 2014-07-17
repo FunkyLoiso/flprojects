@@ -6,7 +6,7 @@
 PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &graph, int from)
     : m_numVertices(graph.vertCount())
 {
-    std::vector<double> dst(graph.vertCount(), std::numeric_limits<double>::infinity());
+    std::vector<double> dst(graph.vertCount(), std::numeric_limits<double>::infinity());//расстояния от текущего дерева
     dst[from] = 0.0f;
     std::vector<int> prev(graph.vertCount(), -1);
     std::vector<bool> visited(graph.vertCount(), false);
