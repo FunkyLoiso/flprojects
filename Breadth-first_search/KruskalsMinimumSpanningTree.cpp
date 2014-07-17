@@ -9,7 +9,7 @@ KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedG
 {
     std::vector<EdgeDsc> edges = graph.allEdges();
     auto lessWeight = [](const EdgeDsc& f, const EdgeDsc& s) { return f.weight < s.weight; };
-    std::sort(edges.begin(), edges.end(), lessWeight);
+    std::sort(edges.begin(), edges.end(), lessWeight);// N log N
 
     DisjointSet ds(m_numVertices);
     std::unordered_set<int> visitedVertices;

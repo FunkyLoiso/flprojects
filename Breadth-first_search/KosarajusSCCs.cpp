@@ -3,26 +3,28 @@
 #include <set>
 #include <stack>
 
+#include <cstring>
+
 KosarajusSCCs::KosarajusSCCs(const DirectedWeightedGraph& graph)
 {
-    std::set<int> visited;
+    std::vector<bool> visited(graph.vertCount(), false);
     std::stack<int> finishOrder;
 
     //перый проход DFS
-    for(int vert = 0; vert < graph.vertCount(); ++vert)
+    for(int vert = 0; vert < graph.vertCount(); ++vert) // N
     {
-        if(visited.count(vert) != 0) continue;
+        if(visited[vert]) continue;
         std::stack<int> dfsStack;
         dfsStack.push(vert);
         while (!dfsStack.empty())
         {
             int dfsVert = dfsStack.top();//пока не извлекаем из стека
-            visited.insert(dfsVert);
+            visited[dfsVert] = true;
 
             bool finished = true;
             for(const EdgeDsc& e : graph.edges(dfsVert))
             {
-                if(visited.count(e.to) != 0) continue;
+                if(visited[e.to]) continue;
                 dfsStack.push(e.to);
                 finished = false;
             }
@@ -34,31 +36,30 @@ KosarajusSCCs::KosarajusSCCs(const DirectedWeightedGraph& graph)
         }
     }
 
+    std::fill(visited.begin(), visited.end(), false);// N
     //второй проход DFS
-    visited.clear();
-    DirectedWeightedGraph inv = graph.inverted();
-    while (!finishOrder.empty())
+    DirectedWeightedGraph inv = graph.inverted();// N
+    while (!finishOrder.empty()) // N
     {
         int vert = finishOrder.top();
         finishOrder.pop();
 
-        if(visited.count(vert) != 0) continue;
+        if(visited[vert]) continue;
 
         std::vector<int> scc;
-//        scc.push_back(vert);
         std::stack<int> dfsStack;
         dfsStack.push(vert);
         while(!dfsStack.empty())
         {
             int dfsVert = dfsStack.top();
             dfsStack.pop();
-            if(visited.count(dfsVert) != 0) continue;
-            visited.insert(dfsVert);
+            if(visited[dfsVert]) continue;
+            visited[dfsVert] = true;
             scc.push_back(dfsVert);//добавим вершину к сильно связанному компоненту
 
             for(const EdgeDsc& e : inv.edges(dfsVert))
             {
-                if(visited.count(e.to) != 0) continue;
+                if(visited[e.to]) continue;
                 dfsStack.push(e.to);
             }
         }
