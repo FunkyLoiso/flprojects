@@ -1,6 +1,6 @@
 #include "PrimsMinimumSpanningTree.h"
 
-#include <algorithm>
+#include <limits>
 #include <set>
 
 PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &graph, int from)
@@ -9,19 +9,18 @@ PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &
     std::vector<double> dst(graph.vertCount(), std::numeric_limits<double>::infinity());
     dst[from] = 0.0f;
     std::vector<int> prev(graph.vertCount(), -1);
+    std::vector<bool> visited(graph.vertCount(), false);
 
-    std::list<int> verts;
-    std::set<int> visited;
-    verts.push_back(from);  //добавим начальную вершину
+    auto lessDst = [&dst](int f, int s) {return dst[f] != dst[s] ? dst[f] < dst[s] : f < s;};
+    std::set<int, decltype(lessDst)> verts(lessDst);
+    verts.insert(from);
 
-    auto lessDst = [&dst](int f, int s) {return dst[f] < dst[s];};
-
-    while(!verts.empty())
+    while(!verts.empty()) // N * log N
     {
-        auto i = std::min_element(verts.begin(), verts.end(), lessDst);
+        auto i = verts.begin();
         int vert = *i;
         verts.erase(i);
-        visited.insert(vert);
+        visited[vert] = true;
         if(vert != from)//грань до первой вершины добавлять не надо
         {
             m_edges.push_back({ prev[vert], vert, dst[vert] });
@@ -30,12 +29,11 @@ PrimsMinimumSpanningTree::PrimsMinimumSpanningTree(const DirectedWeightedGraph &
         auto edgesFromCur = graph.edges(vert);
         for(auto e : edgesFromCur)
         {
-            if(visited.count(e.to) != 0) continue;
-            if(prev[e.to] == -1) verts.push_back(e.to);//добавляем в список на обработку только если встречаем первый раз
-
+            if(visited.at(e.to) == true) continue;
             if(e.weight < dst[e.to])
             {
                 dst[e.to] = e.weight;
+                verts.insert(e.to);// log N. Заменяем, чтобы найти новое место
                 prev[e.to] = e.from;
             }
         }
