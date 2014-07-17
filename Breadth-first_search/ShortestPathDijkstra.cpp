@@ -1,18 +1,17 @@
 #include "ShortestPathDijkstra.h"
 
+#include <limits>
 #include <set>
 #include <unordered_set>
-#include <queue>
 
 ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, int from, int to)
 {
-    std::vector<double> dst(graph.vertCount(), std::numeric_limits<double>::infinity());
+    std::vector<double> dst(graph.vertCount(), std::numeric_limits<double>::infinity());//расстояния от from
     dst[from] = 0.0f;
     std::vector<int> prev(graph.vertCount(), -1);
-
     std::unordered_set<int> visited;// даёт пространственный выигрыш по сравнению с массивом длины vertCount тольо если ищем один кратчайший путь
 
-    auto lessDst = [&dst](int f, int s) {return dst[f] < dst[s];};
+    auto lessDst = [&dst](int f, int s) {return dst[f] != dst[s] ? dst[f] < dst[s] : f < s;};
     std::set<int, decltype(lessDst)> verts(lessDst);
     verts.insert(from);
 
@@ -28,8 +27,6 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
         for(auto e : edgesFromCur)
         {
             if(visited.count(e.to) != 0) continue; // C
-            if(prev[e.to] == -1) verts.insert(e.to); // log N. Добавляем в список на обработку только если встречаем первый раз
-
             double thisPathDst = dst[e.from] + e.weight;
             if(thisPathDst < dst[e.to])
             {
@@ -37,7 +34,6 @@ ShortestPathDijkstra::ShortestPathDijkstra(const DirectedWeightedGraph& graph, i
                 verts.insert(e.to);// log N. Заменяем, чтобы найти новое место
                 prev[e.to] = e.from;
             }
-            verts.insert(e.to); // log N.
         }
     }
 
