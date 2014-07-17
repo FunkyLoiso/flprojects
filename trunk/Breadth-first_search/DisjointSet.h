@@ -11,7 +11,7 @@ public:
         for(int i = 0; i < count; ++i) m_parent[i] = i;
     }
     //найти представителя множества, включающего элемент x
-    int find(int x) const
+    int find(int x) const// C
     {
         //return ( x == m_parent[x] ? x : m_parent[x] = find(m_parent[x]) );
         // заменим рекурсию итерацией
@@ -34,7 +34,7 @@ public:
         return x;
     }
     //объединить множества, содержащие элементы x и y.
-    void join(int x, int y)
+    void join(int x, int y)// C
     {
         x = find(x);
         y = find(y);

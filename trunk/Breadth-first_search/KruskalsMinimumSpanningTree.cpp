@@ -1,7 +1,7 @@
 #include "KruskalsMinimumSpanningTree.h"
 
 #include <algorithm>
-#include <set>
+#include <unordered_set>
 #include "DisjointSet.h"
 
 KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedGraph& graph)
@@ -12,17 +12,17 @@ KruskalsMinimumSpanningTree::KruskalsMinimumSpanningTree(const DirectedWeightedG
     std::sort(edges.begin(), edges.end(), lessWeight);
 
     DisjointSet ds(m_numVertices);
-    std::set<int> visitedVertices;
-    for(auto e : edges)
+    std::unordered_set<int> visitedVertices;
+    for(auto e : edges) // N
     {
-        if(ds.find(e.from) != ds.find(e.to))
+        if(ds.find(e.from) != ds.find(e.to)) // C
         {
             m_edges.push_back(e);
-            visitedVertices.insert(e.from);
-            visitedVertices.insert(e.to);
+            visitedVertices.insert(e.from); // C
+            visitedVertices.insert(e.to);   // C
             if( visitedVertices.size() == static_cast<std::size_t>(graph.vertCount()) ) return;
 
-            ds.join(e.from, e.to);
+            ds.join(e.from, e.to); // C
         }
     }
 }
