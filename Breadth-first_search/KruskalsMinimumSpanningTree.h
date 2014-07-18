@@ -1,7 +1,7 @@
 #ifndef KRUSKALSMINIMUMSPANNINGTREE_H
 #define KRUSKALSMINIMUMSPANNINGTREE_H
 
-#include <Graph.h>
+#include "Graph.h"
 
 class KruskalsMinimumSpanningTree
 {

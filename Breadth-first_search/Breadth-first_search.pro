@@ -20,5 +20,6 @@ HEADERS += \
     KruskalsMinimumSpanningTree.h \
     PrimsMinimumSpanningTree.h \
     ShortestPathDijkstra.h \
-    KosarajusSCCs.h
+    KosarajusSCCs.h \
+    DisjointSet.h
 
