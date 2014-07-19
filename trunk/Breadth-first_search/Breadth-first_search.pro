@@ -21,5 +21,9 @@ HEADERS += \
     PrimsMinimumSpanningTree.h \
     ShortestPathDijkstra.h \
     KosarajusSCCs.h \
-    DisjointSet.h
+    DisjointSet.h \
+    trees/AVLTree.h \
+    trees/BinarySearchTree.h \
+    TestGraphs.h \
+    trees/testTrees.h
 
