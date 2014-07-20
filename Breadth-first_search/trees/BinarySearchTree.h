@@ -29,7 +29,7 @@ public:
         return *this;
     }
 
-    ~BinarySearchTree()
+    virtual ~BinarySearchTree()
     {
         while(m_head != nullptr) remove(m_head->key);
     }
@@ -82,40 +82,7 @@ public:
 
     virtual bool remove(const Key& key)
     {
-        Node** ptr = findPtr(key);//адрес поля родителя, указывающей на удаляемый узел
-        if(*ptr == nullptr) return false;// не найдено
-
-        for(;;)
-        {
-            Node* node = *ptr;
-
-            if(node->left != nullptr && node->right != nullptr)
-            {// оба ребёнка есть
-                //найдём самый левый узел в правом поддереве
-                Node** succ = inOrderSuccessor(node);
-                //перенесём его ключ и значение в удаляемый узел
-                node->key = (*succ)->key;
-                node->val = (*succ)->val;
-                //удалим его вместо удаляемого узла
-                ptr = succ;
-                continue;
-            }
-            else
-            {
-                if(node->left == nullptr && node->left == nullptr)
-                {// детей нет, это лист
-                    *ptr = nullptr;
-                }
-                else
-                {// есть один ребёнок
-                    Node* child = node->left != nullptr ? node->left : node->right;
-                    *ptr = child;
-                }
-                delete node;
-                return true;
-            }
-        }
-
+        return remove(key, nullptr);
     }
 
     using fn = std::function<bool(const Key&, const Value&)>;
@@ -233,8 +200,10 @@ public:
         printNode(str, node->right, spaces+2);
     }
 
+    using visitor = std::function<void(Node** node)>;
+
     // Возвращает адрес родительского поля, указывающего на искомый узел
-    Node** findPtr(const Key& key, std::function<void(Node** node)> fn = nullptr)
+    Node** findPtr(const Key& key, visitor fn = nullptr)
     {
         Node** cur = &m_head;
         for(;;)
@@ -248,7 +217,7 @@ public:
     }
 
     // Возвращает следующий по ключу узел, то есть самый глубокий левый узел в правом поддереве
-    Node** inOrderSuccessor(Node*& node, std::function<void(Node** node)> fn = nullptr)
+    Node** inOrderSuccessor(Node*& node, visitor fn = nullptr)
     {
         assert(node != nullptr);
         assert(node->right != nullptr);
@@ -262,16 +231,21 @@ public:
         return result;
     }
    // Возвращает предыдущий по ключу узел, то есть самый глубокий правый узел в левом поддереве
-    Node** inOrderPredecessor(Node*& node)
+    Node** inOrderPredecessor(Node*& node, visitor fn = nullptr)
     {
         assert(node != nullptr);
         assert(node->left != nullptr);
         Node** result = &(node->left);
-        while((*result)->right != nullptr) result = &((*result)->right);
+        if(fn) fn(result);
+        while((*result)->right != nullptr)
+        {
+            result = &((*result)->right);
+            if(fn) fn(result);
+        }
         return result;
     }
 
-    bool remove(const Key& key, std::function<void(Node** node)> fn)
+    bool remove(const Key& key, visitor fn)
     {
         Node** ptr = findPtr(key, fn);//адрес поля родителя, указывающей на удаляемый узел
         if(*ptr == nullptr) return false;// не найдено
@@ -302,12 +276,15 @@ public:
                     Node* child = node->left != nullptr ? node->left : node->right;
                     *ptr = child;
                 }
+                deleteInternalPtr(node);
                 delete node;
                 return true;
             }
         }
 
     }
+
+    virtual void deleteInternalPtr(Node* const) {}
 };
 
 #endif // BINARYSEARCHTREE_H

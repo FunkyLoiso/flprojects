@@ -9,7 +9,7 @@ template <typename Key, typename Value = Key>
 class AVLTree : public BinarySearchTree<Key, Value>
 {
 public:
-    virtual void insert(const Key &key, const Value &value)
+    virtual void insert(const Key &key, const Value &value) override
     {
         std::stack<Node**> insertPath;
         Node** cur = &m_head;
@@ -46,7 +46,7 @@ public:
     // Альтернативно можно писать AVLTree<int> avl; avl.BinarySearchTree<int>::insert(...);
     using BinarySearchTree::insert;
 
-    virtual bool remove(const Key &key)
+    virtual bool remove(const Key &key) override
     {
         std::stack<Node**> trace;
         auto tracer = [&trace](Node** n) {trace.push(n);};
@@ -143,6 +143,10 @@ private:
         }
     }
 
+    void deleteInternalPtr(Node* node)
+    {
+        delete node->internalPtr;
+    }
 };
 
 #endif // AVLTREE_H
