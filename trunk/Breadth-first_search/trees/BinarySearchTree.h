@@ -212,10 +212,11 @@ public:
         return str.str();
     }
 
-   private:
+   protected:
     struct Node
     {
         Key key; Value val; Node* left; Node* right;
+        void* internalPtr;
         std::string toString()
         {
             if(std::is_same<Key, Value>::value && key == val) return std::to_string(key);
@@ -228,30 +229,36 @@ public:
         if(node == nullptr) return;
 
         str << std::string(spaces, ' ') << node->toString() << std::endl;
-        printNode(str, node->left, spaces+1);
-        printNode(str, node->right, spaces+1);
+        printNode(str, node->left, spaces+2);
+        printNode(str, node->right, spaces+2);
     }
 
     // Возвращает адрес родительского поля, указывающего на искомый узел
-    Node** findPtr(const Key& key)
+    Node** findPtr(const Key& key, std::function<void(Node** node)> fn = nullptr)
     {
         Node** cur = &m_head;
         for(;;)
         {
             if(*cur == nullptr) return cur;
-            else if(key == (*cur)->key) return cur;
+            if(fn) fn(cur);
+            if(key == (*cur)->key) return cur;
             else if(key < (*cur)->key) cur = &((*cur)->left);
             else cur = &((*cur)->right);
         }
     }
 
     // Возвращает следующий по ключу узел, то есть самый глубокий левый узел в правом поддереве
-    Node** inOrderSuccessor(Node*& node)
+    Node** inOrderSuccessor(Node*& node, std::function<void(Node** node)> fn = nullptr)
     {
         assert(node != nullptr);
         assert(node->right != nullptr);
         Node** result = &(node->right);
-        while((*result)->left != nullptr) result = &((*result)->left);
+        if(fn) fn(result);
+        while((*result)->left != nullptr)
+        {
+            result = &((*result)->left);
+            if(fn) fn(result);
+        }
         return result;
     }
    // Возвращает предыдущий по ключу узел, то есть самый глубокий правый узел в левом поддереве
@@ -262,6 +269,44 @@ public:
         Node** result = &(node->left);
         while((*result)->right != nullptr) result = &((*result)->right);
         return result;
+    }
+
+    bool remove(const Key& key, std::function<void(Node** node)> fn)
+    {
+        Node** ptr = findPtr(key, fn);//адрес поля родителя, указывающей на удаляемый узел
+        if(*ptr == nullptr) return false;// не найдено
+
+        for(;;)
+        {
+            Node* node = *ptr;
+
+            if(node->left != nullptr && node->right != nullptr)
+            {// оба ребёнка есть
+                //найдём самый левый узел в правом поддереве
+                Node** succ = inOrderSuccessor(node, fn);
+                //перенесём его ключ и значение в удаляемый узел
+                node->key = (*succ)->key;
+                node->val = (*succ)->val;
+                //удалим его вместо удаляемого узла
+                ptr = succ;
+                continue;
+            }
+            else
+            {
+                if(node->left == nullptr && node->left == nullptr)
+                {// детей нет, это лист
+                    *ptr = nullptr;
+                }
+                else
+                {// есть один ребёнок
+                    Node* child = node->left != nullptr ? node->left : node->right;
+                    *ptr = child;
+                }
+                delete node;
+                return true;
+            }
+        }
+
     }
 };
 
