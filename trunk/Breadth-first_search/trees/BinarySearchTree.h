@@ -12,7 +12,7 @@ class BinarySearchTree
 public:
     BinarySearchTree() {}
     BinarySearchTree(const BinarySearchTree& other)
-    {
+  {
         auto inserter = [this](const Key& key, const Value& val)
         {
             insert(key, val);
@@ -116,7 +116,6 @@ public:
             }
         }
 
-
     }
 
     using fn = std::function<bool(const Key&, const Value&)>;
@@ -219,7 +218,7 @@ public:
         Key key; Value val; Node* left; Node* right;
         std::string toString()
         {
-            if(std::is_same<Key, Value>::value) return std::to_string(key);
+            if(std::is_same<Key, Value>::value && key == val) return std::to_string(key);
             else return std::string("(") + std::to_string(key) + ", " + std::to_string(val) + ")";
         }
     }* m_head = nullptr;
