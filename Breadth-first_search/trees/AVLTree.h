@@ -65,7 +65,7 @@ private:
     {
         return *static_cast<int *>(n->internalPtr);
     }
-    int bf(Node* n)
+    int balanceFactor(Node* n)
     {
         int hl = n->left ? height(n->left) : 0;
         int hr = n->right ? height(n->right) : 0;
@@ -124,17 +124,17 @@ private:
 
             updateHeight(n);
 
-            if(bf(n) == 2)
+            if(balanceFactor(n) == 2)
             {//левое поддерево длиннее на 2
-                if(bf(n->left) == -1)
+                if(balanceFactor(n->left) == -1)
                 {//левое поддерево длиннее справа
                     rotateLeft(n->left);
                 }
                 rotateRight(*node);
             }
-            else if(bf(n) == -2)
+            else if(balanceFactor(n) == -2)
             {//правое поддерево дриннее на 2
-                if(bf(n->right) == 1)
+                if(balanceFactor(n->right) == 1)
                 {//правое поддерево длиннее слева
                     rotateRight(n->right);
                 }
