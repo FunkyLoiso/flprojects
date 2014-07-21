@@ -34,6 +34,9 @@ public:
         while(m_head != nullptr) remove(m_head->key);
     }
 
+    /*
+     *  Вставка
+     */
     virtual void insert(const Key& key, const Value& value)
     {
         Node** cur = &m_head;
@@ -73,6 +76,9 @@ public:
         for(const Key& key : keys) insert(key);
     }
 
+    /*
+     * Поиск
+     */
     Value* find(const Key& key) const
     {
         Node** ptr = findPtr(key);
@@ -80,11 +86,17 @@ public:
         else return &(*ptr)->val;
     }
 
+    /*
+     * Удаление
+     */
     virtual bool remove(const Key& key)
     {
         return remove(key, nullptr);
     }
 
+    /*
+     * Обход
+     */
     using fn = std::function<bool(const Key&, const Value&)>;
     void traversePreorder(fn func) const
     {
@@ -284,7 +296,7 @@ public:
 
     }
 
-    virtual void deleteInternalPtr(Node* const) {}
+    virtual void deleteInternalPtr(Node*) {}
 };
 
 #endif // BINARYSEARCHTREE_H
