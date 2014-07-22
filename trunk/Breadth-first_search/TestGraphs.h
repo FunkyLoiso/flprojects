@@ -2,6 +2,8 @@
 #define TESTGRAPHS_H
 
 #include <iostream>
+\
+#include "common.h"
 #include "Graph.h"
 #include "BFS.h"
 #include "ShortestPathDijkstra.h"
@@ -9,18 +11,7 @@
 #include "KruskalsMinimumSpanningTree.h"
 #include "KosarajusSCCs.h"
 
-template<typename C>
-void printCollection(const C& coll)
-{
-    if(coll.size() == 0) std::cout << "<empty>";
-    else
-    {
-        for(auto val : coll)
-        {
-            std::cout << val << ", ";
-        }
-    }
-}
+
 
 std::ostream& operator<<(std::ostream& stream, const EdgeDsc& e)
 {
