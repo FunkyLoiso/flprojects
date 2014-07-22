@@ -9,61 +9,32 @@ template <typename Key, typename Value = Key>
 class AVLTree : public BinarySearchTree<Key, Value>
 {
 public:
-    virtual void insert(const Key &key, const Value &value) override
-    {
-        std::stack<Node**> insertPath;
-        Node** cur = &m_head;
-        for(;;)
-        {
-            Node* node = *cur;
-            if(node == nullptr)
-            {//добавляем узел, ребалансируем путь
-                *cur = new Node{key, value, nullptr, nullptr};
-                (*cur)->internalPtr = new int(1);//у листьев высота 1
-                rebalance(insertPath);
-
-                return;
-            }
-
-            insertPath.push(cur);
-            if(key < node->key)
-            {
-                cur = &(node->left);
-            }
-            else if(key > node->key)
-            {
-                cur = &(node->right);
-            }
-            else
-            {// ключи совпадают, заменяем
-                node->val = value;
-                return;
-            }
-        }
-    }
 
     // По-видимому обычный вызов перегруженных версий метода из базового класса не работает потому, что класс шаблонный.
     // Альтернативно можно писать AVLTree<int> avl; avl.BinarySearchTree<int>::insert(...);
-    using BinarySearchTree::insert;
-
-    virtual bool remove(const Key &key) override
-    {
-        std::stack<Node**> trace;
-        auto tracer = [&trace](Node** n) {trace.push(n);};
-        bool found = BinarySearchTree::remove(key, tracer);
-
-        if(found)
-        {
-            rebalance(trace);
-        }
-
-        return found;
-    }
+//    using BinarySearchTree::insert;
 
 private:
+    /*
+     * Дополнительная информация для узлов
+     */
+    struct info { Node* parent; int height; };
+
+    Node*& parent(Node* n)
+    {
+        return static_cast<info *>(n->internalPtr)->parent;
+    }
+    // получить ссылку на поле родителя, в поторой записан адрес n
+    Node*& parentPtrTo(Node* n)
+    {
+        Node* p = parent(n);
+        if(p == nullptr) return m_head;
+        if(p->left == n) return p->left;
+        else return p->right;
+    }
     int& height(Node* n)
     {
-        return *static_cast<int *>(n->internalPtr);
+        return static_cast<info *>(n->internalPtr)->height;
     }
     int balanceFactor(Node* n)
     {
@@ -78,6 +49,10 @@ private:
         height(n) = std::max(hl, hr) + 1;
     }
 
+    /*
+     * Повороты
+     */
+
     //      n            b
     //     / \   <-\    / \
     //    l   b   -/   n   r
@@ -87,8 +62,13 @@ private:
     {
         Node* n = node;
         node = n->right;   // внешний указатель теперь указывает на b
+        parent(node) = parent(n);
+
         n->right = n->right->left;// правый ребёнок n теперь c
+        if(n->right) parent(n->right) = n;//c может не быть
+
         node->left = n;  // левый ребёнок b теперь n
+        parent(node->left) = node;
 
         //запишем новые высоты в n и b. Необходимо ли это?
         updateHeight(node->left);
@@ -104,23 +84,27 @@ private:
     {
         Node* n = node;
         node = n->left;   // внешний указатель теперь указывает на b
+        parent(node) = parent(n);
+
         n->left = n->left->right;// левый ребёнок n теперь c
+        if(n->left) parent(n->left) = n;//с может не быть
+
         node->right = n;  // правый ребёнок b теперь n
+        parent(node->right) = node;
 
         //запишем новые высоты в n и b. Необходимо ли это?
         updateHeight(node->right);
         updateHeight(node);
     }
 
-    void rebalance(std::stack<Node**>& path)
+    /*
+     * Ребалансировка
+     */
+    void rebalance(Node* node)
     {
-        while(!path.empty())
+        while(node != nullptr)
         {
-            Node** node = path.top();
-            path.pop();
-            if(*node == nullptr) continue;
-            Node* n = *node;
-
+            Node*& n = parentPtrTo(node);
 
             updateHeight(n);
 
@@ -130,7 +114,7 @@ private:
                 {//левое поддерево длиннее справа
                     rotateLeft(n->left);
                 }
-                rotateRight(*node);
+                rotateRight(n);
             }
             else if(balanceFactor(n) == -2)
             {//правое поддерево дриннее на 2
@@ -138,14 +122,25 @@ private:
                 {//правое поддерево длиннее слева
                     rotateRight(n->right);
                 }
-                rotateLeft(*node);
+                rotateLeft(n);
             }
+            node = parent(n);// в результате вращения узел из node мог замениться на другой. Он содержится в n
         }
     }
 
-    void deleteInternalPtr(Node* node)
+
+    void doInsert(Node *newNode, Node *parent) override
     {
-        delete node->internalPtr;
+        newNode->internalPtr = new info{parent, 1};//у листьев высота 1
+        rebalance(parent);
+    }
+
+    void doRemove(Node *&nodeToRemove) override
+    {
+        Node* rebalanceStart = parent(nodeToRemove);
+        delete nodeToRemove->internalPtr;
+        BinarySearchTree::doRemove(nodeToRemove);
+        rebalance(rebalanceStart);
     }
 };
 

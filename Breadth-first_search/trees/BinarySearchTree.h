@@ -37,18 +37,22 @@ public:
     /*
      *  Вставка
      */
-    virtual void insert(const Key& key, const Value& value)
+    void insert(const Key& key, const Value& value)
     {
         Node** cur = &m_head;
+        Node* parent = nullptr;
         for(;;)
         {
             Node* node = *cur;
             if(node == nullptr)
             {
                 *cur = new Node{key, value, nullptr, nullptr};
+                doInsert(*cur, parent);
                 return;
             }
-            else if(key < node->key)
+
+            parent = *cur;
+            if(key < node->key)
             {
                 cur = &(node->left);
             }
@@ -71,7 +75,7 @@ public:
         insert(key, key);
     }
 
-    void insert(const std::vector<Key> keys)
+    void insert(const std::vector<Key>& keys)
     {
         for(const Key& key : keys) insert(key);
     }
@@ -89,9 +93,34 @@ public:
     /*
      * Удаление
      */
-    virtual bool remove(const Key& key)
+    bool remove(const Key& key)
     {
-        return remove(key, nullptr);
+        Node** ptr = findPtr(key);//адрес поля родителя, указывающего на удаляемый узел
+        if(*ptr == nullptr) return false;// не найдено
+
+        for(;;)
+        {
+            Node* node = *ptr;
+
+            if(node->left != nullptr && node->right != nullptr)
+            {// оба ребёнка есть
+                //найдём самый левый узел в правом поддереве
+                Node** succ = inOrderSuccessor(node);
+                //перенесём его ключ и значение в удаляемый узел
+                node->key = (*succ)->key;
+                node->val = (*succ)->val;
+                //удалим его вместо удаляемого узла
+                ptr = succ;
+                continue;
+            }
+            else
+            {
+                doRemove(*ptr);
+                delete node;
+                return true;
+            }
+        }
+
     }
 
     /*
@@ -191,7 +220,7 @@ public:
         return str.str();
     }
 
-   protected:
+protected:
     struct Node
     {
         Key key; Value val; Node* left; Node* right;
@@ -212,16 +241,13 @@ public:
         printNode(str, node->right, spaces+2);
     }
 
-    using visitor = std::function<void(Node** node)>;
-
     // Возвращает адрес родительского поля, указывающего на искомый узел
-    Node** findPtr(const Key& key, visitor fn = nullptr)
+    Node** findPtr(const Key& key)
     {
         Node** cur = &m_head;
         for(;;)
         {
             if(*cur == nullptr) return cur;
-            if(fn) fn(cur);
             if(key == (*cur)->key) return cur;
             else if(key < (*cur)->key) cur = &((*cur)->left);
             else cur = &((*cur)->right);
@@ -229,74 +255,48 @@ public:
     }
 
     // Возвращает следующий по ключу узел, то есть самый глубокий левый узел в правом поддереве
-    Node** inOrderSuccessor(Node*& node, visitor fn = nullptr)
+    Node** inOrderSuccessor(Node* node)
     {
         assert(node != nullptr);
         assert(node->right != nullptr);
         Node** result = &(node->right);
-        if(fn) fn(result);
         while((*result)->left != nullptr)
         {
             result = &((*result)->left);
-            if(fn) fn(result);
         }
         return result;
     }
    // Возвращает предыдущий по ключу узел, то есть самый глубокий правый узел в левом поддереве
-    Node** inOrderPredecessor(Node*& node, visitor fn = nullptr)
+    Node** inOrderPredecessor(Node* node)
     {
         assert(node != nullptr);
         assert(node->left != nullptr);
         Node** result = &(node->left);
-        if(fn) fn(result);
         while((*result)->right != nullptr)
         {
             result = &((*result)->right);
-            if(fn) fn(result);
         }
         return result;
     }
 
-    bool remove(const Key& key, visitor fn)
+    //newNode - адрес уже созданного узла, parent равен nullptr при вставке первого элемента.
+    //Метод должен привести дерево в актуальное состояние.
+    virtual void doInsert(Node*, Node*) {}
+
+    //nodeToRemove - адрес узла, корорый будет непосредственно удалён из дерева. У этого узла всегда менее двух потомков.
+    //Метод должнет привести дерево в актуальное состояние и высвободить память, выделенную в doInsert
+    virtual void doRemove(Node*& nodeToRemove)
     {
-        Node** ptr = findPtr(key, fn);//адрес поля родителя, указывающей на удаляемый узел
-        if(*ptr == nullptr) return false;// не найдено
-
-        for(;;)
-        {
-            Node* node = *ptr;
-
-            if(node->left != nullptr && node->right != nullptr)
-            {// оба ребёнка есть
-                //найдём самый левый узел в правом поддереве
-                Node** succ = inOrderSuccessor(node, fn);
-                //перенесём его ключ и значение в удаляемый узел
-                node->key = (*succ)->key;
-                node->val = (*succ)->val;
-                //удалим его вместо удаляемого узла
-                ptr = succ;
-                continue;
-            }
-            else
-            {
-                if(node->left == nullptr && node->left == nullptr)
-                {// детей нет, это лист
-                    *ptr = nullptr;
-                }
-                else
-                {// есть один ребёнок
-                    Node* child = node->left != nullptr ? node->left : node->right;
-                    *ptr = child;
-                }
-                deleteInternalPtr(node);
-                delete node;
-                return true;
-            }
+        if(nodeToRemove->left == nullptr && nodeToRemove->right == nullptr)
+        {// детей нет, это лист
+            nodeToRemove = nullptr;
         }
-
+        else
+        {// есть один ребёнок
+            Node* child = nodeToRemove->left != nullptr ? nodeToRemove->left : nodeToRemove->right;
+            nodeToRemove = child;
+        }
     }
-
-    virtual void deleteInternalPtr(Node*) {}
 };
 
 #endif // BINARYSEARCHTREE_H
