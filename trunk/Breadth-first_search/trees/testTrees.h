@@ -15,30 +15,37 @@ void testTrees()
     bst.insert(keys);
 
     std::cout << bst.toString() << std::endl;
+    bst.remove(4);
+    std::cout << "removed 4:\n" << bst.toString() << std::endl;
 
-    auto traversePrinter = [](const int& key, const int&)
-    {
-        std::cout << key << ", ";
-        return false;
-    };
+//    auto traversePrinter = [](const int& key, const int&)
+//    {
+//        std::cout << key << ", ";
+//        return false;
+//    };
 
-    std::cout << "\ntraversePreorder:  ";
-    bst.traversePreorder(traversePrinter);
-    std::cout << "\ntraverseInorder:   ";
-    bst.traverseInorder(traversePrinter);
-    std::cout << "\ntraversePostorder: ";
-    bst.traversePostorder(traversePrinter);
-    std::cout << std::endl;
+//    std::cout << "\ntraversePreorder:  ";
+//    bst.traversePreorder(traversePrinter);
+//    std::cout << "\ntraverseInorder:   ";
+//    bst.traverseInorder(traversePrinter);
+//    std::cout << "\ntraversePostorder: ";
+//    bst.traversePostorder(traversePrinter);
+//    std::cout << std::endl;
 
     //AVLTree
     AVLTree<int> avl;
     std::cout << "AVLTree:" << std::endl;
-    avl.insert(keys);
-    std::cout << avl.toString() << std::endl;
+    for(int key : keys)
+    {
+        avl.insert(key);
+        std::cout << "inserted " << key << std::endl;
+        std::cout << avl.toString() << std::endl;
+    }
+//    avl.insert(keys);
+//    std::cout << avl.toString() << std::endl;
 
-    std::cout << "remove 4:" << std::endl;
     avl.remove(4);
-    std::cout << avl.toString() << std::endl;
+    std::cout << "removed 4:\n" << avl.toString() << std::endl;
 }
 
 #endif // TESTTREES_H

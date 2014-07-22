@@ -25,5 +25,6 @@ HEADERS += \
     trees/AVLTree.h \
     trees/BinarySearchTree.h \
     TestGraphs.h \
-    trees/testTrees.h
+    trees/testTrees.h \
+    trees/RedBlackTree.h
 
