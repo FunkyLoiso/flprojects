@@ -25,5 +25,8 @@ HEADERS += \
     trees/AVLTree.h \
     trees/BinarySearchTree.h \
     TestGraphs.h \
-    trees/testTrees.h
+    trees/testTrees.h \
+    sorting/countSort.h \
+    sorting/testSortings.h \
+    common.h
 
