@@ -8,12 +8,6 @@
 template <typename Key, typename Value = Key>
 class AVLTree : public BinarySearchTree<Key, Value>
 {
-public:
-
-    // По-видимому обычный вызов перегруженных версий метода из базового класса не работает потому, что класс шаблонный.
-    // Альтернативно можно писать AVLTree<int> avl; avl.BinarySearchTree<int>::insert(...);
-//    using BinarySearchTree::insert;
-
 private:
     /*
      * Дополнительная информация для узлов
