@@ -8,7 +8,7 @@
 
 void testSortings()
 {
-    std::vector<unsigned int> v {1, 5, 8, 11, 9, 3, 1, 1};
+    std::vector<int> v {1, 5, 8, 11, 9, 3, 1, 1, -17};
     std::vector<int> result(v.size());
     countSort(v.begin(), v.end(), result.begin());
     std::cout << "in:  ";

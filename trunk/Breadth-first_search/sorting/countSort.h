@@ -10,7 +10,7 @@ template<typename InIterator, typename OutIterator>
 void countSort(InIterator inBegin, InIterator inEnd, OutIterator outBegin, std::pair<typename InIterator::value_type, typename InIterator::value_type> limits)
 {
     using TVal = InIterator::value_type;
-    static_assert(std::is_integral<TVal>::value && std::is_unsigned<TVal>::value, "Can only sort unsigned integral values");
+    static_assert(std::is_integral<TVal>::value, "Can only sort integral values");
     const auto min = limits.first;
     const auto max = limits.second;
     assert(min < max);
