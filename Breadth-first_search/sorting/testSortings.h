@@ -8,9 +8,12 @@
 
 void testSortings()
 {
-    std::vector<int> v {1, 5, 8, 11, 9, 3, 1, 1, -17};
-    std::vector<int> result(v.size());
-    countSort(v.begin(), v.end(), result.begin());
+//    std::vector<double> v {1, 5.1, 5.2, 5.0, 9, 3, 1, 1, -17};
+    std::vector<double> v {5.1, 5.2, 5.0};
+    decltype(v) result(v.size());
+
+    auto hasher = [](const decltype(v)::value_type& val) { return static_cast<int>(val*10); };
+    countSort(v.begin(), v.end(), result.begin(), hasher);
     std::cout << "in:  ";
     printCollection(v);
     std::cout << "\nout: ";
