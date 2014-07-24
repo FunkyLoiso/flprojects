@@ -28,5 +28,6 @@ HEADERS += \
     trees/testTrees.h \
     sorting/countSort.h \
     sorting/testSortings.h \
-    common.h
+    common.h \
+    sorting/radixSort.h
 
