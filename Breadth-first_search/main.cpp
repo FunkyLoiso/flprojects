@@ -5,8 +5,8 @@
 int main()
 {
 //    testGraphs();
-//    testTrees();
-    testSortings();
+    testTrees();
+//    testSortings();
 
     return 0;
 
