@@ -7,6 +7,7 @@
 #include "../common.h"
 #include "countSort.h"
 #include "radixSort.h"
+#include "bucketSort.h"
 #include "chrono"
 
 void testSortings()
@@ -34,6 +35,13 @@ void testSortings()
         int m_byte;
     };
 
+    std::vector<unsigned int> v333 {2, 17, 5};
+    std::cout << "\nbefore bucketSort: ";
+    printCollection(v333);
+    bucketSort(v333.begin(), v333.end());
+    std::cout << "\nafter bucketSort:  ";
+    printCollection(v333);
+
     using namespace std::chrono;
     for(int count = 10000; count <= 100000000; count *= 10)
     {
@@ -42,7 +50,7 @@ void testSortings()
         {
             intVec.push_back(std::rand()*std::rand()*4);
         }
-        decltype(intVec) tmpVec1(intVec), tmpVec2(intVec.size(), 0);
+        decltype(intVec) tmpVec1(intVec), tmpVec2(intVec.size(), 0), bucketVec(intVec);
 
         std::cout << "\nsorting " << count << " integers" << std::endl;
 
@@ -55,16 +63,25 @@ void testSortings()
         auto out = radixSort(&tmpVec1, &tmpVec2, limits, hashers);
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
-        std::cout << "radix    : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
+        std::cout << "radix     : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
         //std::sort
         t1 = high_resolution_clock::now();
         std::sort(intVec.begin(), intVec.end());
         t2 = high_resolution_clock::now();
-        std::cout << "std::sort: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
+        std::cout << "std::sort : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
+
+        //bucketSort
+        t1 = high_resolution_clock::now();
+        bucketSort(bucketVec.begin(), bucketVec.end());
+        t2 = high_resolution_clock::now();
+        std::cout << "bucketSort: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
         assert(intVec == *out);
+        assert(intVec == bucketVec);
     }
+
+    //bucketSort
 
 }
 
