@@ -139,8 +139,8 @@ public:
             {
                 bool done = func(node->key, node->val);
                 if(done) return;
-                stack.push(node->right);
-                stack.push(node->left);
+                if(node->right) stack.push(node->right);
+                if(node->left) stack.push(node->left);
             }
         }
     }
@@ -155,7 +155,7 @@ public:
             Node* node = stack.top();
             if(node != nullptr)
             {
-                if(visited.count(node->left) == 0)
+                if(node->left && visited.count(node->left) == 0)
                 {// первое посещение - добавим левую ветвь
                     stack.push(node->left);
                     continue;
@@ -166,7 +166,7 @@ public:
                     if(done) return;
                     stack.pop();
                     visited.insert(node);
-                    stack.push(node->right);
+                    if(node->right) stack.push(node->right);
                 }
             }
             else
@@ -187,12 +187,12 @@ public:
             Node* node = stack.top();
             if(node != nullptr)
             {
-                if(visited.count(node->left) == 0)
+                if(node->left && visited.count(node->left) == 0)
                 {// первое посещение - добавим левую ветвь
                     stack.push(node->left);
                     continue;
                 }
-                else if(visited.count(node->right) == 0)
+                else if(node->right && visited.count(node->right) == 0)
                 {// второе посещение, добавим правую ветвь
                     stack.push(node->right);
                     continue;
