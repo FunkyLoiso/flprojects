@@ -29,5 +29,6 @@ HEADERS += \
     sorting/countSort.h \
     sorting/testSortings.h \
     common.h \
-    sorting/radixSort.h
+    sorting/radixSort.h \
+    sorting/bucketSort.h
 
