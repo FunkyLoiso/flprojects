@@ -81,20 +81,24 @@ Iterator right(Iterator begin, Iterator i)
 template<typename Iterator>
 void heapify(Iterator begin, Iterator end, Iterator i)
 {
-    if(i > parent(begin, end-1)) return;//parent(begin, end-1) - родитель посделнего элемента
-    Iterator l = left(begin, i);
-    Iterator r = right(begin, i);
-    Iterator smallest;
-
-    if(l < end && *l < *i) smallest = l;
-    else smallest = i;
-
-    if(r < end && *r < *smallest) smallest = r;
-
-    if(smallest != i)
+    Iterator lastParent = parent(begin, end-1);
+    while(i <= lastParent)
     {
-        std::iter_swap(i, smallest);
-        heapify(begin, end, smallest);
+        Iterator l = left(begin, i);
+        Iterator r = right(begin, i);
+        Iterator smallest;
+
+        if(l < end && *l < *i) smallest = l;
+        else smallest = i;
+
+        if(r < end && *r < *smallest) smallest = r;
+
+        if(smallest != i)
+        {
+            std::iter_swap(i, smallest);
+            i = smallest;
+        }
+        else break;
     }
 }
 
