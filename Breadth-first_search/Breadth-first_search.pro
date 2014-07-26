@@ -30,5 +30,6 @@ HEADERS += \
     sorting/testSortings.h \
     common.h \
     sorting/radixSort.h \
-    sorting/bucketSort.h
+    sorting/bucketSort.h \
+    trees/minHeap.h
 
