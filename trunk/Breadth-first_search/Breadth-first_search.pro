@@ -31,5 +31,7 @@ HEADERS += \
     common.h \
     sorting/radixSort.h \
     sorting/bucketSort.h \
-    trees/minHeap.h
+    trees/minHeap.h \
+    dynamic/longestCommonSequence.h \
+    dynamic/testDynamic.h
 
