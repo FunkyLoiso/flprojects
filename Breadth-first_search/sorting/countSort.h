@@ -76,19 +76,20 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
     const size_t elCount = inEnd - inBegin;
     const size_t jobSize = elCount/jobsCount;
 
-    std::vector<std::vector<int>> counts(jobsCount, std::vector<int>(max-min+1, 0)); // N
+    std::vector<std::vector<int>*> counts(jobsCount);
+    for(auto& p : counts) p = new std::vector<int>(max-min+1, 0); // N
     std::vector<int> offsets(jobsCount, 0);// смещения для каждого из диапазонов. Смещения для первого всегда равно 0
     std::list<std::future<void>> futures;
 
     // 1
     //посчитаем число появлений каждого значения, разбив диапазон [inBegin; inEnd) на jobsCount частей
-    auto counter = [=](InIterator begin, InIterator end/*, unsigned jobN*/, std::vector<int>& count)
+    auto counter = [=](InIterator begin, InIterator end/*, unsigned jobN*/, std::vector<int>* count)
     {
 //        auto& thisCount = counts.at(jobN);
         for(InIterator i = begin; i != end; ++i) // N
         {
             auto hash = static_cast<long long int>(hasher(*i));
-            ++count.at(hash-min);
+            ++(count->at(hash-min));
         }
     };
 
@@ -98,8 +99,8 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         InIterator end;
         if(job != jobsCount-1) end = begin + jobSize;
         else end = inEnd;
-//        futures.push_back(std::async(counter, begin,  end, counts.at(job)));
-        counter(begin, end, counts.at(job));
+        futures.push_back(std::async(counter, begin,  end, counts.at(job)));
+//        counter(begin, end, counts.at(job));
     }
 
     for(auto& f : futures)
@@ -118,7 +119,7 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         {
             for(auto& arr : counts)
             {//последовательно в порядке возрастания номера job-а
-                sum = (arr.at(val) += sum);//посчитаем и запишем кумулятивную сумму
+                sum = ((arr->at(val)) += sum);//посчитаем и запишем кумулятивную сумму
             }
         }
         if(jobN != jobsCount-1) offsets.at(jobN+1) = sum;
@@ -132,8 +133,8 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         if(job != jobsCount-1) thisMax = thisMin + jobRange;
         else thisMax = max+1;//потому что partialSums рассматривает [thisMin, thisMax)
 
-//        futures.push_back(std::async(partialSums, thisMin,  thisMax, job));
-        partialSums(thisMin, thisMax, job);
+        futures.push_back(std::async(partialSums, thisMin,  thisMax, job));
+//        partialSums(thisMin, thisMax, job);
     }
 
     for(auto& f : futures)
@@ -146,14 +147,10 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
     // 3
 //    //Обратный порядок для того, чтобы сортировка была стабильной
 //    //Пройдём по исходной коллекции и поместим каждое значение в соответствующую ячейку результирующей коллекции
-    auto fill = [=, &counts] (InIterator end, InIterator begin, unsigned jobN)
+    auto fill = [=] (InIterator end, InIterator begin/*, unsigned jobN*/, std::vector<int>* thisCount)
     {
-        auto& thisCount = counts.at(jobN);
-//        int offset = 0;
-//        if(jobN != 0)
-//        {
-//            for(unsigned i = 0; i < jobN; ++i) offset += offsets.at(i);
-//        }
+//        auto& thisCount = counts.at(jobN);
+
         for(InIterator i = end; i != begin;)
         {
             --i;
@@ -163,7 +160,7 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
             {
                 if(hash >= min+job*jobRange) offset += offsets.at(job);
             }
-            int& place = thisCount[hash-min];
+            int& place = thisCount->at(hash-min);
             *(outBegin + place+offset-1) = *i;
             --place;
         }
@@ -175,7 +172,7 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         InIterator end;
         if(job != jobsCount-1) end = begin + jobSize;
         else end = inEnd;
-        futures.push_back(std::async(fill, end,  begin, job));
+        futures.push_back(std::async(fill, end,  begin, counts.at(job)));
 //        fill(end, begin, job);
     }
 
@@ -195,6 +192,8 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
 //        *(outBegin + place-1) = *i;
 //        --place;//уменьшим номер места, чтобы значение, равные текущему, попало в предыдущее место
 //    }
+
+    for(auto p : counts) delete p;
 }
 
 
