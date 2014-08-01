@@ -42,8 +42,9 @@ void testSortings()
     std::cout << "\nafter bucketSort:  ";
     printCollection(v333);
 
+    std::cout << "\nstd::thread::hardware_concurrency() is "  << std::thread::hardware_concurrency() << std::endl;
     using namespace std::chrono;
-    for(int count = 10000; count <= 100000000; count *= 10)
+    for(int count = 1000000; count <= 100000000; count *= 10)
     {
         std::vector<unsigned int> intVec;
         for(int i = 0; i < count; ++i)
@@ -71,7 +72,7 @@ void testSortings()
             unsigned jobsCount = i;
             decltype(intVec) tmpVec3(intVec), tmpVec4(intVec.size(), 0);
             t1 = high_resolution_clock::now();
-            auto parallelOut = parallelRadixSort(&tmpVec3, &tmpVec4, limits, hashers, jobsCount);
+         auto parallelOut = parallelRadixSort(&tmpVec3, &tmpVec4, limits, hashers, jobsCount);
             t2 = high_resolution_clock::now();
             std::cout << "p("<< jobsCount << ") radix: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
         }
@@ -101,7 +102,7 @@ void testSortings()
     decltype(v19) result19(v19.size());
 
     auto intHasher = [](int val) { return val; };
-    parallelCountSort(v19.begin(), v19.end(), result19.begin(), {-10, 10}, intHasher);
+    parallelCountSort(v19.begin(), v19.end(), result19.begin(), {-10, 10}, intHasher, 2);
     std::cout << "Parallel sort:" << std::endl;
     std::cout << "in : ";
     printCollection(v19);
