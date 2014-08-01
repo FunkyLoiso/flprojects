@@ -27,7 +27,7 @@ void testSortings()
     struct perByteHasher
     {
         perByteHasher(int byte) : m_byte(byte) {}
-        int operator()(int val)
+        int operator()(int val) const
         {
             return (val >> m_byte*8) & 0xff;
         }
@@ -50,11 +50,11 @@ void testSortings()
         {
             intVec.push_back(std::rand()*std::rand()*4);
         }
-        decltype(intVec) tmpVec1(intVec), tmpVec2(intVec.size(), 0), bucketVec(intVec);
 
         std::cout << "\nsorting " << count << " integers" << std::endl;
 
         //radix
+        decltype(intVec) tmpVec1(intVec), tmpVec2(intVec.size(), 0);
         std::vector<perByteHasher> hashers;
         for(int i = 0; i < 4; ++i) hashers.push_back(perByteHasher(i));//будем сортировать по каждому байту отдельно
         auto limits = std::make_pair(std::numeric_limits<uint8_t>::min(), std::numeric_limits<uint8_t>::max());
@@ -65,6 +65,17 @@ void testSortings()
 
         std::cout << "radix     : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
+        //parallel radix
+        for(unsigned i = 1; i < std::thread::hardware_concurrency()*4; ++i)
+        {
+            unsigned jobsCount = i;
+            decltype(intVec) tmpVec3(intVec), tmpVec4(intVec.size(), 0);
+            t1 = high_resolution_clock::now();
+            auto parallelOut = parallelRadixSort(&tmpVec3, &tmpVec4, limits, hashers, jobsCount);
+            t2 = high_resolution_clock::now();
+            std::cout << "p("<< jobsCount << ") radix: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
+        }
+
         //std::sort
         t1 = high_resolution_clock::now();
         std::sort(intVec.begin(), intVec.end());
@@ -72,17 +83,30 @@ void testSortings()
         std::cout << "std::sort : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
         //bucketSort
-        t1 = high_resolution_clock::now();
-        bucketSort(bucketVec.begin(), bucketVec.end());
-        t2 = high_resolution_clock::now();
-        std::cout << "bucketSort: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
+//        decltype(intVec) bucketVec(intVec);
+//        t1 = high_resolution_clock::now();
+//        bucketSort(bucketVec.begin(), bucketVec.end());
+//        t2 = high_resolution_clock::now();
+//        std::cout << "bucketSort: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
         assert(intVec == *out);
-        assert(intVec == bucketVec);
+//        assert(intVec == *parallelOut);
+//        assert(intVec == bucketVec);
+
+
     }
 
-    //bucketSort
+    //parallelCountSort
+    std::vector<int> v19 {5, -7, 4, 9, 1, 0, 4, 5, 5};
+    decltype(v19) result19(v19.size());
 
+    auto intHasher = [](int val) { return val; };
+    parallelCountSort(v19.begin(), v19.end(), result19.begin(), {-10, 10}, intHasher);
+    std::cout << "Parallel sort:" << std::endl;
+    std::cout << "in : ";
+    printCollection(v19);
+    std::cout << "\nout: ";
+    printCollection(result19);
 }
 
 #endif // TESTSORTINGS_H
