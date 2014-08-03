@@ -67,7 +67,7 @@ void testSortings()
         std::cout << "radix     : " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
         //parallel radix
-        for(unsigned i = 1; i < std::thread::hardware_concurrency()*4; ++i)
+        for(unsigned i = 1; i <= std::thread::hardware_concurrency()*4; ++i)
         {
             unsigned jobsCount = i;
             decltype(intVec) tmpVec3(intVec), tmpVec4(intVec.size(), 0);

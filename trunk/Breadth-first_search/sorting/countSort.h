@@ -21,26 +21,19 @@ void countSort(InIterator inBegin, InIterator inEnd, OutIterator outBegin,
     const auto max = limits.second;
     assert(min <= max);
 
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     std::vector<int> count(max-min+1, 0); // N
     for(InIterator i = inBegin; i != inEnd; ++i) // N
     {//посчитаем число появлений каждого значения
         auto hash = static_cast<long long int>(hasher(*i));
         ++count[hash-min];
     }
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    std::cout << "part1: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
-    t1 = high_resolution_clock::now();
     for(auto i = count.begin(); i != count.end()-1; ++i) // N
     {//поместим в каждую ячейку count кумулятивную сумму предыдущих ячеек.
         *(i+1) += *i;
     }
-    t2 = high_resolution_clock::now();
-    std::cout << "part2: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
 
-    t1 = high_resolution_clock::now();
     //Обратный порядок для того, чтобы сортировка была стабильной
     //Пройдём по исходной коллекции и поместим каждое значение в соответствующую ячейку результирующей коллекции
     for(InIterator i = inEnd; i != inBegin;) // N
@@ -51,8 +44,6 @@ void countSort(InIterator inBegin, InIterator inEnd, OutIterator outBegin,
         *(outBegin + place-1) = *i;//@todo это же должно сломаться, если place == 0?
         --place;//уменьшим номер места, чтобы значение, равные текущему, попало в предыдущее место
     }
-    t2 = high_resolution_clock::now();
-    std::cout << "part3: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 }
 
 //Версия с автоматическим определением границ значений
@@ -103,7 +94,6 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         }
     };
 
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     for(unsigned job = 0; job < jobsCount; ++job)
     {
         InIterator begin = inBegin + (job*jobSize);
@@ -119,13 +109,10 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         f.get();
     }
     futures.clear();
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-    std::cout << "part1: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
     // 2
     // промежуточные суммы считаются очень быстро, в равнении с другими частями алгоритма, сделаем это в один поток.
     // Можно реализовать параллельный алгоритм, основанный на рекурсивном суммировании пар.
-    t1 = high_resolution_clock::now();
     int sum = 0;
     for(auto val = 0; val <= max-min; ++val)//для каждой колонки (возможного значения ключа)
     {
@@ -134,8 +121,6 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
             sum = (arr->at(val) += sum);//посчитаем и запишем кумулятивную сумму
         }
     }
-    t2 = high_resolution_clock::now();
-    std::cout << "part2: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
 
     // 3
@@ -153,7 +138,6 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         }
     };
 
-    t1 = high_resolution_clock::now();
     for(unsigned job = 0; job < jobsCount; ++job)
     {
         InIterator begin = inBegin + (job*jobSize);
@@ -169,8 +153,6 @@ void parallelCountSort(InIterator inBegin, InIterator inEnd, OutIterator outBegi
         f.get();
     }
     futures.clear();
-    t2 = high_resolution_clock::now();
-    std::cout << "part3: " << (duration_cast<milliseconds>(t2 - t1)).count() << " ms" << std::endl;
 
     for(auto p : counts) delete p;
 }
