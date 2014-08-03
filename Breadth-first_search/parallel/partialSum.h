@@ -4,6 +4,7 @@
 namespace parallel
 {
 
+//записывает в каждый step элемент его сумму с элементом, расположеным на step/2 позади
 template <class Iterator, class BinaryOperation>
    void __partial_sum_step (Iterator first, Iterator last,
                             BinaryOperation binary_op, unsigned step)
@@ -17,6 +18,7 @@ template <class Iterator, class BinaryOperation>
        }
    }
 
+   //копирует каждое нечётное значение без изменения, для каждого чётного записывает сумму с предыдущим
 template <class InIterator, class OutIterator, class BinaryOperation>
   void __partial_sum_special_step1 (InIterator first, InIterator last,
                                     OutIterator result, BinaryOperation binary_op)
@@ -46,7 +48,7 @@ template <class InIterator, class OutIterator, class BinaryOperation>
 
        for(; step >= 2; step >>= 1)
        {
-           if(step + (step>>1) > numElements) continue;
+           if(step + (step>>1) > numElements) continue;//на эиом этапе мы записываем начитная с step+step/2 элемента. Если такого нет, уменьшаем step.
            __partial_sum_step(result+(step>>1), result+numElements, binary_op, step);
        }
         return result;
