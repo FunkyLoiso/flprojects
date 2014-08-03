@@ -33,5 +33,7 @@ HEADERS += \
     sorting/bucketSort.h \
     trees/minHeap.h \
     dynamic/longestCommonSequence.h \
-    dynamic/testDynamic.h
+    dynamic/testDynamic.h \
+    parallel/partialSum.h \
+    parallel/testParallel.h
 
