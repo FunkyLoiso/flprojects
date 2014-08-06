@@ -64,19 +64,21 @@ OutIterator partial_sum (InIterator first, InIterator last,
 
     const size_t maxJobs = 3;// temp
 
-    size_t step = 2;
+    size_t step = 2;//текущий шаг суммирования (в каждый step элемент записывается его сумма с отстающим на step/2 назад). Минимальный размер задания равен step.
     for(; step <= numElements; step <<= 1)
     {
         size_t jobSize = std::max(numElements / maxJobs, step);
         auto remainder = jobSize % step;
-        if(remainder != 0)
+        if(remainder != 0)//размер задания должен быть кратен step
         {
-            jobSize += (step - remainder);
-            if(jobSize > numElements) jobSize -= step;
-//            jobSize -= remainder;//теперь jobSize больше step и кратен ему
+            jobSize += (step - remainder); //увеличим размер задания до следующего числа, кратного step
+            if(jobSize > numElements) jobSize -= step; // если размер привысил количество элементов, вернёмся к предыдущему кратному
+//            jobSize -= remainder;//так тоже можно, но разделение получается неоптимальным, в последнем задании оказывается больше чем 2*jobSize элементов
         }
         auto jobsN = std::min(numElements / jobSize, maxJobs);
-        if(numElements % jobSize >= step && jobsN < maxJobs) ++jobsN;
+        //если число заданий не максимально, и остаток коллекции после jobsN заданий по jobSize больше step (то есть в нём есть что обрабатывать),
+        //то выделим остаток в отдельное задание
+        if(jobsN < maxJobs && numElements % jobSize >= step) ++jobsN;
 
         //инварианты
         assert(jobSize >= step);
