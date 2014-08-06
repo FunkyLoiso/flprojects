@@ -5,7 +5,8 @@
 
 #include <vector>
 #include <numeric>
-#include<assert.h>
+#include <assert.h>
+#include <chrono>
 
 #include "../common.h"
 
@@ -31,6 +32,8 @@ void testParallel()
         std::partial_sum(v.begin(), v.end(), v.begin());
         assert(my == v);
     }
+
+
 }
 
 #endif // TESTPARALLEL_H

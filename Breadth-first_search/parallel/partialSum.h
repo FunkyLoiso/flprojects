@@ -19,6 +19,7 @@ void __partial_sum_step (Iterator first, Iterator last,
     {
         first[i] = binary_op(first[i], first[i - halfStep]);
     }
+//    std::cout << step << ": " << numElements << std::endl;
 }
 
 //копирует каждое нечётное значение без изменения, для каждого чётного записывает сумму с предыдущим
@@ -33,6 +34,7 @@ void __partial_sum_special_step1 (InIterator first, InIterator last,
         *(result+1) = binary_op(first[i-1], first[i]);
         result += 2;
     }
+//    std::cout << 2 << ": " << numElements << std::endl;
 }
 
 
@@ -42,27 +44,9 @@ OutIterator partial_sum (InIterator first, InIterator last,
 {
     const size_t numElements = last-first;
     if(numElements == 0) return result;
-    //       const size_t jobsN = std::min(size_t(2), (numElements)/2);//temp
-    //jobSize должен быть чётным
-    //       const size_t jobSize = numElements/jobsN;
-    //       std::vector<std::future<void>> futures;
-
-    //       for(unsigned job = 0; job < jobsN; ++job)
-    //       {
-    //           InIterator begin = first + job*jobSize;
-    //           OutIterator res = result + job*jobSize;
-    //           InIterator end;
-    //           if(job == jobsN-1) end = last;
-    //           else end = begin + jobSize;
-
-    ////           futures.push_back(std::async( __partial_sum_special_step1<InIterator, OutIterator, BinaryOperation>, begin, end, res, binary_op ));
-    //           __partial_sum_special_step1(begin, end, res, binary_op);
-    //       }
-    //       for(auto& f : futures) f.get();
-    //       futures.clear();
-    //       __partial_sum_special_step1(first, last, result, binary_op);
 
     const size_t maxJobs = 3;// temp
+    std::vector<std::future<void>> futures;
 
     size_t step = 2;//текущий шаг суммирования (в каждый step элемент записывается его сумма с отстающим на step/2 назад). Минимальный размер задания равен step.
     for(; step <= numElements; step <<= 1)
@@ -96,9 +80,10 @@ OutIterator partial_sum (InIterator first, InIterator last,
                 else end = begin + jobSize;
                 OutIterator res = result + job*jobSize;
 
-                __partial_sum_special_step1(begin, end, res, binary_op);
+//                __partial_sum_special_step1(begin, end, res, binary_op);
+                futures.push_back( std::async(__partial_sum_special_step1<InIterator, OutIterator, BinaryOperation>, begin, end, res, binary_op) );
 
-                std::cout << step << ": " << end-begin << std::endl;
+//                std::cout << std::this_thread::get_id() << ": " << end-begin << std::endl;
             }
             else
             {
@@ -106,21 +91,55 @@ OutIterator partial_sum (InIterator first, InIterator last,
                 OutIterator end;
                 if(job == jobsN -1) end = result + numElements;
                 else end = begin + jobSize;
-                __partial_sum_step(begin, end, binary_op, step);
+//                __partial_sum_step(begin, end, binary_op, step);
+                futures.push_back( std::async(__partial_sum_step<OutIterator, BinaryOperation>, begin, end, binary_op, step) );
 
-                std::cout << step << ": " << end-begin << std::endl;
+//                std::cout << std::this_thread::get_id() << ": " << end-begin << std::endl;
             }
         }
+       for(auto& f : futures) f.get();
+       futures.clear();
     }
 
     //далее выполняем шаги в обратном направлении, но со сдвигом на пол шага вперёд. Если step + step/2 больше, чем размер коллекции, начинаем с меньшего шага.
     if(step + (step >> 1) > numElements) step >>= 1;
     for(; step >= 2; step >>= 1)
     {
-        __partial_sum_step(result+(step>>1), result+numElements, binary_op, step);
+        size_t jobSize = std::max(numElements / maxJobs, step);
+        auto remainder = jobSize % step;
+        if(remainder != 0)//размер задания должен быть кратен step
+        {
+            jobSize += (step - remainder); //увеличим размер задания до следующего числа, кратного step
+            if(jobSize > numElements) jobSize -= step; // если размер привысил количество элементов, вернёмся к предыдущему кратному
+//            jobSize -= remainder;//так тоже можно, но разделение получается неоптимальным, в последнем задании оказывается больше чем 2*jobSize элементов
+        }
+        auto jobsN = std::min(numElements / jobSize, maxJobs);
+        //если число заданий не максимально, и остаток коллекции после jobsN заданий по jobSize больше step (то есть в нём есть что обрабатывать),
+        //то выделим остаток в отдельное задание
+        if(jobsN < maxJobs && numElements % jobSize >= step) ++jobsN;
+
+        //инварианты
+        assert(jobSize >= step);
+        assert(jobSize % step == 0);
+        assert(jobSize <= numElements);
+        assert(jobsN <= maxJobs);
+
+        for(unsigned job = 0; job < jobsN; ++job)
+        {
+            OutIterator begin = first + (step>>1) + job*jobSize;
+            OutIterator end;
+            if(job == jobsN -1) end = result + numElements;
+            else end = begin + jobSize;
+
+//            __partial_sum_step(begin, end, binary_op, step);
+            futures.push_back( std::async(__partial_sum_step<OutIterator, BinaryOperation>, begin, end, binary_op, step) );
+        }
+        for(auto& f : futures) f.get();
+        futures.clear();
     }
     return result;
 }
-}
+
+}// namespace parallel
 
 #endif // PARTIALSUM_H
