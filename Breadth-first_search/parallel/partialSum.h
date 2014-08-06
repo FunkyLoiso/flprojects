@@ -62,7 +62,7 @@ OutIterator partial_sum (InIterator first, InIterator last,
     //       futures.clear();
     //       __partial_sum_special_step1(first, last, result, binary_op);
 
-    const size_t maxJobs = 5;// temp
+    const size_t maxJobs = 3;// temp
 
     size_t step = 2;
     for(; step <= numElements; step <<= 1)
@@ -71,14 +71,18 @@ OutIterator partial_sum (InIterator first, InIterator last,
         auto remainder = jobSize % step;
         if(remainder != 0)
         {
-
-            jobSize -= remainder;//теперь jobSize больше step и кратен ему
+            jobSize += (step - remainder);
+            if(jobSize > numElements) jobSize -= step;
+//            jobSize -= remainder;//теперь jobSize больше step и кратен ему
         }
+        auto jobsN = std::min(numElements / jobSize, maxJobs);
+        if(numElements % jobSize >= step && jobsN < maxJobs) ++jobsN;
+
         //инварианты
         assert(jobSize >= step);
         assert(jobSize % step == 0);
         assert(jobSize <= numElements);
-        auto jobsN = numElements / jobSize;
+        assert(jobsN <= maxJobs);
 
         for(unsigned job = 0; job < jobsN; ++job)
         {
@@ -91,6 +95,8 @@ OutIterator partial_sum (InIterator first, InIterator last,
                 OutIterator res = result + job*jobSize;
 
                 __partial_sum_special_step1(begin, end, res, binary_op);
+
+                std::cout << step << ": " << end-begin << std::endl;
             }
             else
             {
@@ -99,6 +105,8 @@ OutIterator partial_sum (InIterator first, InIterator last,
                 if(job == jobsN -1) end = result + numElements;
                 else end = begin + jobSize;
                 __partial_sum_step(begin, end, binary_op, step);
+
+                std::cout << step << ": " << end-begin << std::endl;
             }
         }
     }

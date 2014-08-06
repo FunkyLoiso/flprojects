@@ -21,6 +21,7 @@ void testParallel()
 
         std::cout << "\n\nin : ";
         printCollection(v);
+        std::cout << std::endl;
 
         std::vector<int> my(v);
         parallel::partial_sum(my.begin(), my.end(), my.begin(), std::plus<int>());
