@@ -79,6 +79,7 @@
     <ClCompile Include="BFS.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphVisitor.cpp" />
+    <ClCompile Include="Hoffman\HoffmanTree.cpp" />
     <ClCompile Include="KosarajusSCCs.cpp" />
     <ClCompile Include="KruskalsMinimumSpanningTree.cpp" />
     <ClCompile Include="main.cpp" />
@@ -90,6 +91,8 @@
     <ClInclude Include="DisjointSet.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphVisitor.h" />
+    <ClInclude Include="Hoffman\HoffmanTree.h" />
+    <ClInclude Include="Hoffman\TestHoffman.h" />
     <ClInclude Include="KosarajusSCCs.h" />
     <ClInclude Include="KruskalsMinimumSpanningTree.h" />
     <ClInclude Include="PrimsMinimumSpanningTree.h" />
