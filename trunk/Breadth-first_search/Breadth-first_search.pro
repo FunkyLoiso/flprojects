@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     KruskalsMinimumSpanningTree.cpp \
     PrimsMinimumSpanningTree.cpp \
     ShortestPathDijkstra.cpp \
-    KosarajusSCCs.cpp
+    KosarajusSCCs.cpp \
+    Hoffman/HoffmanTree.cpp
 
 HEADERS += \
     Graph.h \
@@ -35,5 +36,7 @@ HEADERS += \
     dynamic/longestCommonSequence.h \
     dynamic/testDynamic.h \
     parallel/partialSum.h \
-    parallel/testParallel.h
+    parallel/testParallel.h \
+    Hoffman/HoffmanTree.h \
+    Hoffman/TestHoffman.h
 
