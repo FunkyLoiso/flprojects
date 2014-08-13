@@ -40,5 +40,6 @@ HEADERS += \
     parallel/testParallel.h \
     Hoffman/HoffmanTree.h \
     Hoffman/TestHoffman.h \
-    Hoffman/CanonicalHoffmanCoDec.h
+    Hoffman/CanonicalHoffmanCoDec.h \
+    Hoffman/HoffmanArchiver.h
 
