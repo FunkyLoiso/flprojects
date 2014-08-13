@@ -16,20 +16,20 @@ HoffmanTree HoffmanTree::build(std::istream& stream)
     while(stream.good())
     {
         uint8_t byte = stream.get();
-        if(stream.good()) ++nodes.at(byte)->m_quantity;
+        if(stream.good()) ++nodes.at(byte)->quantity;
     }
 
     //2. Упорядочим ноды в кучу по возрастанию числа появления
-    auto higherQuantity = [](Node* f, Node* s) { return f->m_quantity > s->m_quantity; };
+    auto higherQuantity = [](Node* f, Node* s) { return f->quantity > s->quantity; };
     std::make_heap(nodes.begin(), nodes.end(), higherQuantity);
 
-    //3. Создадим дерево снизу вверх, соединяя самые редкие ноды одним родителем. За ожно соберём адреса листьев в map
+    //3. Создадим дерево снизу вверх, соединяя самые редкие ноды одним родителем. За одно соберём адреса листьев в map
     std::unordered_map<uint8_t, Node*> leaves;
     while(nodes.size() > 1)
     {
         Node* n1 = nodes.front();
         std::pop_heap(nodes.begin(), nodes.end(), higherQuantity), nodes.pop_back();
-        if(n1->m_quantity == 0)//пропустим значения, которые не встречаются вообще
+        if(n1->quantity == 0)//пропустим значения, которые не встречаются вообще
         {
             delete n1;
             continue;
@@ -38,15 +38,15 @@ HoffmanTree HoffmanTree::build(std::istream& stream)
         std::pop_heap(nodes.begin(), nodes.end(), higherQuantity), nodes.pop_back();
 
         Node* p = new Node;
-        p->m_quantity = n1->m_quantity + n2->m_quantity;
+        p->quantity = n1->quantity + n2->quantity;
         p->setNode0(n1);
         p->setNode1(n2);
 
         nodes.push_back(p);
         std::push_heap(nodes.begin(), nodes.end(), higherQuantity);
 
-        if(n1->isLeaf()) leaves[n1->val()] = n1;
-        if(n2->isLeaf()) leaves[n2->val()] = n2;
+        if(n1->isLeaf()) leaves[n1->val] = n1;
+        if(n2->isLeaf()) leaves[n2->val] = n2;
     }
 
     //4. В куче остался только один нод, это голова дерева (если, конечно, его quantity не равно 0)
@@ -54,56 +54,56 @@ HoffmanTree HoffmanTree::build(std::istream& stream)
     HoffmanTree result;
 
     Node* last = nodes.front();
-    if(last->m_quantity != 0)
+    if(last->quantity != 0)
     {
-        result.m_head = last;
-        if(last->isLeaf()) leaves[last->val()] = last;
+        result.head = last;
+        if(last->isLeaf()) leaves[last->val] = last;
     }
     else
     {
         delete last;
-        result.m_head = nullptr;
+        result.head = nullptr;
     }
 
-    result.m_leaves = std::move(leaves);
+    result.leaves = std::move(leaves);
     return result;
 }
 
-HoffmanTree HoffmanTree::deserialize(const HoffmanTree::TSerialization &data)
-{
-    return HoffmanTree();
-}
+//HoffmanCode HoffmanTree::code(uint8_t val) const
+//{
+//    //лениво подсчитаем код для значения
+//    auto i = m_codes.find(val);
+//    if(i != m_codes.end())
+//    {
+//        return i->second;
+//    }
+//    else
+//    {
+//        HoffmanCode c;
+//        auto leafI = leaves.find(val);
+//        if(leafI != leaves.end())
+//        {
+//            Node* n = leafI->second;
+//            auto place = 0;
+//            while(n->parent != nullptr)
+//            {
+//                c.data.set(place++, n->is1());
+//                n = n->parent;
+//            }
+//            c.size = place;
+//        }
+//        m_codes[val] = c;
+//        return c;
+//    }
+//}
 
-HoffmanTree::TSerialization HoffmanTree::serialize() const
-{
-    return TSerialization();
-}
-
-HoffmanTree::Code HoffmanTree::code(uint8_t val) const
-{
-    //лениво подсчитаем код для значения
-    auto i = m_codes.find(val);
-    if(i != m_codes.end())
-    {
-        return i->second;
-    }
-    else
-    {
-        Code c;
-        auto leafI = m_leaves.find(val);
-        if(leafI != m_leaves.end())
-        {
-            Node* n = leafI->second;
-            auto place = 0;
-            while(n->m_parent != nullptr)
-            {
-                c.data.set(place++, n->is1());
-                n = n->m_parent;
-            }
-            c.size = place;
-        }
-        m_codes[val] = c;
-        return c;
-    }
-}
+//std::vector<HoffmanCode> HoffmanTree::codes() const
+//{
+//    std::vector<HoffmanCode> codes;
+//    for(auto leaf : leaves)
+//    {
+//        codes.push_back(code(leaf.first));
+//    }
+//    return codes;
+//}
 
