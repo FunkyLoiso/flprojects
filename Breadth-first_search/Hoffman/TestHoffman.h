@@ -2,11 +2,13 @@
 #define TESTHOFFMAN_H
 
 #include "HoffmanTree.h"
+#include "CanonicalHoffmanCoDec.h"
 
 #include <fstream>
 #include <iostream>
+#include <cassert>
 
-std::ostream& operator<<(std::ostream& stream, const HoffmanTree::Code& c)
+std::ostream& operator<<(std::ostream& stream, const HoffmanCode& c)
 {
     for(int i = c.size-1; i >= 0; --i)
     {
@@ -22,9 +24,29 @@ void testHoffman()
     HoffmanTree t = HoffmanTree::build(file);
     file.close();
 
+    CanonicalHoffmanCoDec codec(t);
+
     for(int i = 0; i <= 255; ++i)
     {
-        std::cout << char(i) << ": " << t.code(i) << std::endl;
+//        std::cout << char(i) << ": " << t.code(i) << std::endl;
+        std::cout << char(i) << ": " << codec.encode(i) << std::endl;
+    }
+
+    for(int i = 0; i <= 0xffff; ++i)
+    {
+        for(int l = 0; l < 255; ++l)
+        {
+            uint8_t val;
+            HoffmanCode c;
+            c.data = i;
+            c.size = l;
+
+            if(codec.decode(c, val))
+            {
+                std::cout << c << ": " << char(val) << std::endl;
+                assert(c.data == codec.encode(val).data);
+            }
+        }
     }
 }
 
