@@ -17,7 +17,11 @@ public:
     HoffmanCode encode(uint8_t value) const;
     bool decode(const HoffmanCode& code, uint8_t& outValue) const;
 
+
 private:
+    CanonicalHoffmanCoDec(){}
+    void calculateHoffmanCodes();
+
     std::unordered_map<uint8_t, HoffmanCode> m_valueToCodes;
 
     struct codeInfo

@@ -33,6 +33,11 @@ CanonicalHoffmanCoDec::CanonicalHoffmanCoDec(const HoffmanTree& tree)
     std::sort(m_codes.begin(), m_codes.end());//отсортируем коды по возрастанию длины кода, а внутри по возрастанию значения
 
     // 2. Рассчитаем канонические коды Хоффмана.
+    calculateHoffmanCodes();
+}
+
+void CanonicalHoffmanCoDec::calculateHoffmanCodes()
+{
     HoffmanCode lastCode = m_codes.at(0).code;
     m_shifts.resize(m_codes.back().code.size+2, 0);//сюда сначала запишем число кодов каждой длины (в позицию длина+1), потом получим смещения, рассчитав и записав частичные суммы
     ++m_shifts.at(lastCode.size+1);
@@ -54,12 +59,53 @@ CanonicalHoffmanCoDec::CanonicalHoffmanCoDec(const HoffmanTree& tree)
 
 CanonicalHoffmanCoDec::TSerialization CanonicalHoffmanCoDec::serialize() const
 {
-    return TSerialization();
+    //необходимо сформировать два массива: количества кодов каждой длинны и значения в порядке возрастания длины кода.
+    //формат сериализации таков: |число элементов массива количеств|количества начиная с 1 ...|значения...|
+    TSerialization result;
+    uint8_t sizesCount = m_codes.back().code.size;
+    result.push_back(sizesCount);
+
+    //количества
+    for(int i = 0; i < sizesCount; ++i)
+    {
+        uint8_t count = static_cast<uint8_t>(m_shifts.at(i+2) - m_shifts.at(i+1));
+        result.push_back(count);
+    }
+
+    //величины
+    for(const codeInfo& c : m_codes)
+    {
+        result.push_back(c.val);
+    }
+
+    return result;
 }
 
 CanonicalHoffmanCoDec CanonicalHoffmanCoDec::deserialize(const CanonicalHoffmanCoDec::TSerialization &data)
 {
-    return CanonicalHoffmanCoDec(HoffmanTree());
+    CanonicalHoffmanCoDec codec;
+
+    uint8_t sizesCount = data.at(0);
+//    auto sizesBegin = data.begin() + 1;
+    std::vector<uint8_t> sizes(data.begin()+1, data.begin()+1+sizesCount);
+    auto valuesI = data.begin() + 1 + sizesCount;
+
+    uint8_t curSize = 1;
+    for(; valuesI != data.end(); ++valuesI)
+    {
+        while(sizes.at(curSize-1) == 0) ++curSize;
+
+        codeInfo info;
+        info.val = *valuesI;
+        info.code.size = curSize;
+        codec.m_codes.push_back(info);
+        --sizes[curSize-1];
+    }
+
+    //m_codes уже отсортирован, осталось рассчитать канонические коды Хоффмана
+    codec.calculateHoffmanCodes();
+
+    return codec;
 }
 
 HoffmanCode CanonicalHoffmanCoDec::encode(uint8_t value) const
