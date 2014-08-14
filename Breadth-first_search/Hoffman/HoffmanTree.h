@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <bitset>
 #include <istream>
+#include <memory>
 
 struct HoffmanCode
 {
@@ -18,8 +19,9 @@ struct HoffmanCode
 class HoffmanTree
 {
 public:
+    ~HoffmanTree();
 
-    static HoffmanTree build(std::istream& stream);
+    static std::shared_ptr<HoffmanTree> build(std::istream& stream);
 
 //    HoffmanCode code(uint8_t val) const;
 //    std::vector<HoffmanCode> codes() const;
@@ -43,6 +45,9 @@ public:
 
 //    mutable std::unordered_map<uint8_t, HoffmanCode> m_codes;
     std::unordered_map<uint8_t, Node*> leaves;
+
+private:
+    void recursiveDeleteNode(Node* node);
 };
 
 #endif // HOFFMANTREE_H

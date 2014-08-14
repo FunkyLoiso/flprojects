@@ -46,7 +46,7 @@ private:
 
 void HoffmanCompress(std::istream& src, std::ostream& dst)
 {
-    HoffmanTree tree = HoffmanTree::build(src);
+    auto tree = HoffmanTree::build(src);
     CanonicalHoffmanCoDec codec(tree);
 
     src.clear();

@@ -10,7 +10,7 @@ void incrementBitSet(std::bitset<N>& set)
     set.set(i);
 }
 
-CanonicalHoffmanCoDec::CanonicalHoffmanCoDec(const HoffmanTree& tree)
+CanonicalHoffmanCoDec::CanonicalHoffmanCoDec(std::shared_ptr<HoffmanTree> tree)
 {
     auto getCodeLength = [](HoffmanTree::Node* n)
     {
@@ -20,7 +20,7 @@ CanonicalHoffmanCoDec::CanonicalHoffmanCoDec(const HoffmanTree& tree)
     };
 
     // 1. добавим все значения и длины соответствующих им кодов в m_codes
-    for(auto leaf : tree.leaves)
+    for(auto leaf : tree->leaves)
     {
         codeInfo info;
         info.val = leaf.first;

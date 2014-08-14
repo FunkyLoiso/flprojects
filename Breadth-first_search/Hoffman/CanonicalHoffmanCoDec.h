@@ -8,7 +8,7 @@
 class CanonicalHoffmanCoDec
 {
 public:
-    CanonicalHoffmanCoDec(const HoffmanTree& tree);
+    CanonicalHoffmanCoDec(std::shared_ptr<HoffmanTree> tree);
 
     using TSerialization = std::vector<uint8_t>;
     TSerialization serialize() const;

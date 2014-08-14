@@ -3,14 +3,19 @@
 #include <numeric>
 #include <algorithm>
 
-HoffmanTree HoffmanTree::build(std::istream& stream)
+HoffmanTree::~HoffmanTree()
+{
+    recursiveDeleteNode(head);
+}
+
+std::shared_ptr<HoffmanTree> HoffmanTree::build(std::istream& stream)
 {
     std::vector<Node*> nodes(256);
-//    std::iota(nodes.begin(), nodes.end(), 0);
     for(int i = 0; i < 256; ++i)
     {
         nodes.at(i) = new Node(i);
     }
+
 
     //1. Просканируем поток и посчитаем число появлений каждого байта
     while(stream.good())
@@ -51,22 +56,30 @@ HoffmanTree HoffmanTree::build(std::istream& stream)
 
     //4. В куче остался только один нод, это голова дерева (если, конечно, его quantity не равно 0)
 
-    HoffmanTree result;
+    auto result = std::shared_ptr<HoffmanTree>(new HoffmanTree);
 
     Node* last = nodes.front();
     if(last->quantity != 0)
     {
-        result.head = last;
+        result->head = last;
         if(last->isLeaf()) leaves[last->val] = last;
     }
     else
     {
         delete last;
-        result.head = nullptr;
+        result->head = nullptr;
     }
 
-    result.leaves = std::move(leaves);
+    result->leaves = std::move(leaves);
     return result;
+}
+
+void HoffmanTree::recursiveDeleteNode(HoffmanTree::Node *node)
+{
+    if(node == nullptr) return;
+    recursiveDeleteNode(node->node0);
+    recursiveDeleteNode(node->node1);
+    delete node;
 }
 
 //HoffmanCode HoffmanTree::code(uint8_t val) const
