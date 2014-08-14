@@ -82,7 +82,7 @@ void testHoffman()
 
 
     //проверка архиватора
-    std::ifstream srcFile("c:\\test3.txt", std::ios_base::binary);
+    std::ifstream srcFile("c:\\test8.txt", std::ios_base::binary);
     std::ofstream compressedFileO("c:\\test.compressed", std::ios_base::binary);
 
     HoffmanCompress(srcFile, compressedFileO);
