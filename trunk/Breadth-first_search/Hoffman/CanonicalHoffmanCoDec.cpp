@@ -46,7 +46,7 @@ void CanonicalHoffmanCoDec::calculateHoffmanCodes()
     {
         HoffmanCode::TData newData = lastCode.data;
         incrementBitSet(newData);//новый код больше предыдущего на единицу
-        if(i->code.size > lastCode.size) newData <<= 1;//если у нового значения код длиннее, то добавляем к увеличенному коду ноль справа
+        newData <<= (i->code.size - lastCode.size);//если у нового значения код длиннее, то дополним код нулями справа
         i->code.data = newData;//запишем новый код в m_codes
         m_valueToCodes[i->val] = i->code;//и в m_valueToCodes
         lastCode = i->code;
