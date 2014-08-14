@@ -68,7 +68,7 @@ CanonicalHoffmanCoDec::TSerialization CanonicalHoffmanCoDec::serialize() const
     //количества
     for(int i = 0; i < sizesCount; ++i)
     {
-        uint8_t count = static_cast<uint8_t>(m_shifts.at(i+2) - m_shifts.at(i+1));
+        uint8_t count = static_cast<uint8_t>(m_shifts.at(i+2) - m_shifts.at(i+1));// здесь может получиться 256, то есть 0, если все коды одинаковой длины
         result.push_back(count);
     }
 
@@ -86,8 +86,10 @@ CanonicalHoffmanCoDec CanonicalHoffmanCoDec::deserialize(const CanonicalHoffmanC
     CanonicalHoffmanCoDec codec;
 
     uint8_t sizesCount = data.at(0);
-//    auto sizesBegin = data.begin() + 1;
-    std::vector<uint8_t> sizes(data.begin()+1, data.begin()+1+sizesCount);
+    std::vector<int> sizes(data.begin()+1, data.begin()+1+sizesCount); //int по описанной ниже причине
+    //Возможна особая ситуация, когда все 256 величин распределены почти равномерно и потому все 256 кодов имеют одинаковую длину.
+    //В таком случае sizesCount == 8, но все размеры равны 0, так как uint8_t(256) == 0. Обработаем эту ситуацию.
+    if(sizesCount == 8 && sizes.at(7) == 0) sizes.at(7) = 256;
     auto valuesI = data.begin() + 1 + sizesCount;
 
     uint8_t curSize = 1;
