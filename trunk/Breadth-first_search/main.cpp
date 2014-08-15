@@ -3,7 +3,8 @@
 //#include "sorting/testSortings.h"
 //#include "dynamic/testDynamic.h"
 //#include "parallel/testParallel.h"
-#include "Hoffman/TestHoffman.h"
+//#include "Hoffman/TestHoffman.h"
+#include "hashtables/testHashTables.h"
 
 int main()
 {
@@ -14,7 +15,8 @@ int main()
 //    testSortings();
 //    testDynamic();
 //    testParallel();
-    testHoffman();
+//    testHoffman();
+    testHashTables();
 
     return 0;
 }
