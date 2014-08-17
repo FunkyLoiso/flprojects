@@ -43,5 +43,6 @@ HEADERS += \
     Hoffman/CanonicalHoffmanCoDec.h \
     Hoffman/HoffmanArchiver.h \
     hashtables/HashTableLinkedList.h \
-    hashtables/testHashTables.h
+    hashtables/testHashTables.h \
+    hashtables/HashTableOpen.h
 
