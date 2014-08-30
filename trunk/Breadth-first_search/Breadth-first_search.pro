@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     ShortestPathDijkstra.cpp \
     KosarajusSCCs.cpp \
     Hoffman/HoffmanTree.cpp \
-    Hoffman/CanonicalHoffmanCoDec.cpp
+    Hoffman/CanonicalHoffmanCoDec.cpp \
+    stringMatching/RabinKarp.cpp
 
 HEADERS += \
     Graph.h \
@@ -44,5 +45,7 @@ HEADERS += \
     Hoffman/HoffmanArchiver.h \
     hashtables/HashTableLinkedList.h \
     hashtables/testHashTables.h \
-    hashtables/HashTableOpen.h
+    hashtables/HashTableOpen.h \
+    stringMatching/RabinKarp.h \
+    stringMatching/testStringMatching.h
 
