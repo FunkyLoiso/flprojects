@@ -8,11 +8,12 @@ TVal modularExponent(TVal value, TExp exp, TMod modulus)
 {
     if(exp == 0) return 1;
     value %= modulus;
+    TVal result = value;
     for(; exp > 1; --exp)
     {
-        value = (value * value) % modulus;
+        result = (result * value) % modulus;
     }
-    return value;
+    return result;
 }
 
 RabinKarp::RabinKarp(std::string::iterator textBeg, std::string::iterator textEnd,
