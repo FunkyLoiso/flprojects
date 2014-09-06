@@ -24,7 +24,7 @@ private:
     const unsigned int m_patternVal;//численное представление шаблона
     unsigned int m_textVal = 0;//численное представление текущей порции текста
     const int m_patternLength;
-    int m_h;// значение старшего разряда по модулю q
+    unsigned int m_h;// значение старшего разряда по модулю q
 
     unsigned int integerValue(std::string::iterator beg, std::string::iterator end) const;
 };

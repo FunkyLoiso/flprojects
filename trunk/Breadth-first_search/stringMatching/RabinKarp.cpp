@@ -16,6 +16,12 @@ TVal modularExponent(TVal value, TExp exp, TMod modulus)
     return result;
 }
 
+template<typename TVal, typename TMod>
+TVal modularSubstract(TVal f, TVal s, TMod modulus)
+{
+    return (int(f-s) % int(modulus)) + (f > s ? 0 : modulus);
+}
+
 RabinKarp::RabinKarp(std::string::iterator textBeg, std::string::iterator textEnd,
                      std::string::iterator patternBeg, std::string::iterator patternEnd)
     : m_textCur(textBeg), m_textEnd(textEnd), m_patternBeg(patternBeg), m_patternEnd(patternEnd)
@@ -41,7 +47,8 @@ std::string::iterator RabinKarp::nextMatch()
         {
             unsigned char curSignificant = *m_textCur;
             unsigned char newChar = *(m_textCur+m_patternLength);
-            m_textVal = ( radix*(m_textVal - curSignificant * m_h) + newChar ) % q;
+            auto withoutSignificant = modularSubstract(m_textVal, curSignificant*m_h, q);
+            m_textVal = ( radix*withoutSignificant + newChar ) % q;
         }
         ++m_textCur;
 
