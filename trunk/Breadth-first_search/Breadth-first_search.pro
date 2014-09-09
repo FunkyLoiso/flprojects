@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     KosarajusSCCs.cpp \
     Hoffman/HoffmanTree.cpp \
     Hoffman/CanonicalHoffmanCoDec.cpp \
-    stringMatching/RabinKarp.cpp
+    stringMatching/RabinKarp.cpp \
+    stringMatching/KnuthMorrisPratt.cpp
 
 HEADERS += \
     Graph.h \
@@ -47,5 +48,7 @@ HEADERS += \
     hashtables/testHashTables.h \
     hashtables/HashTableOpen.h \
     stringMatching/RabinKarp.h \
-    stringMatching/testStringMatching.h
+    stringMatching/testStringMatching.h \
+    stringMatching/KnuthMorrisPratt.h \
+    sorting/mergeSort.h
 
