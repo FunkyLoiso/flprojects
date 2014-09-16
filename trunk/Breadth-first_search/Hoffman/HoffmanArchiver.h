@@ -62,11 +62,11 @@ void HoffmanCompress(std::istream& src, std::ostream& dst)
     dst.seekp(1, std::ios_base::cur);//сдвинемся на 1 вперёд
 
     HoffmanCodeWriter writer(dst);
-    size_t dataRead = 0;//debug
+//    size_t dataRead = 0;//debug
     while(src.good())
     {
         uint8_t data = src.get();
-        dataRead += 8;
+//        dataRead += 8;
         if(src.good())
         {
             writer.write(codec.encode(data));
@@ -97,11 +97,11 @@ void HoffmanDecompress(std::istream& src, std::ostream& dst)
 
     HoffmanCode code;
     uint8_t value;
-    size_t dataRead = 0;//debug
+//    size_t dataRead = 0;//debug
     while (src.good() && bitsLeft > 0)
     {
         std::bitset<8> data = src.get();
-        dataRead += 8;
+//        dataRead += 8;
         for(int pos = 7; pos >= 0; --pos)
         {
             code.data <<= 1;
