@@ -23,7 +23,7 @@ class MinimizeBot:
     results = []
     for action in [Actions.UP, Actions.DOWN, Actions.LEFT, Actions.RIGHT]:
       fieldCopy = copy.deepcopy(field)
-      GC.doAction(fieldCopy, action)
+      GC.doAction(fieldCopy, action, add=False)
       if(fieldCopy.cells != field.cells):
         results.append( (len(fieldCopy.getEmpty()), action) )
       
@@ -40,7 +40,7 @@ class MaxScoreBot:
     results = []
     for action in [Actions.UP, Actions.DOWN, Actions.LEFT, Actions.RIGHT]:
       fieldCopy = copy.deepcopy(field)
-      score = GC.doAction(fieldCopy, action)
+      score = GC.doAction(fieldCopy, action, add=False)
       if(fieldCopy.cells != field.cells):
         results.append( (score, action) )
       
