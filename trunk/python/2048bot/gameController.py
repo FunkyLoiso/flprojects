@@ -71,7 +71,7 @@ def addTile(field):
     return False
   
 
-def doAction(field, action):
+def doAction(field, action, add=True):
   if action in (Actions.UP, Actions.DOWN):
     get = field.getCol
     set = field.setCol
@@ -92,7 +92,7 @@ def doAction(field, action):
       moved = True
       score += pts
       
-  if moved:
+  if moved and add:
     addTile(field)
     
   return score
