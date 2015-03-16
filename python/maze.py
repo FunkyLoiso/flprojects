@@ -110,8 +110,7 @@ class Maze:
     self.height = len(self.lines)
     self.width = len(self.lines[0])
     self.start = (self.lines[0].find(' '), 0)
-    # self.finish = (self.lines[-1].find(' '), self.height-1)
-    self.finish = (95, 73)
+    self.finish = (self.lines[-1].find(' '), self.height-1)
     
   def neighbours(self, (x, y)):
     return {(x_, y_) for x_, y_
