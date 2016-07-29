@@ -6,6 +6,7 @@ local math = math
 local table = table
 local type = type
 local string = string
+local os = require('os')
 local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
@@ -17,6 +18,11 @@ local superproperties = require('blingbling.superproperties')
 local linegraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
+
+function map_range(value, from_beg, from_end, to_beg, to_end)
+  local slope = (to_end - to_beg) / (from_end - from_beg)
+  return to_beg + math.floor(slope * (value - from_beg) + 0.5)  
+end
 
 ---Fill all the widget (width * height) with this color (default is none ).
 --@usage mygraph:set_background_color(string) -->"#rrggbbaa"
@@ -180,7 +186,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     for i=1,column_count * props.parts do
       --the following line feed the graph with random value if you uncomment it and comment the line after it
       --data[graph].values[i]=math.random(0,100) / 100
-      data[graph].values[i] = "#000000" -- black
+      data[graph].values[i] = 0
     end
   end
   local values = data[graph].values
@@ -193,7 +199,14 @@ function linegraph.draw(graph, wibox, cr, width, height)
   		local x = width - (props.h_margin + props.rounded_size * less_value) - col*(side + props.spacing)
   		local y = height/2 + graph_height/2 - row*(side + props.spacing)
 
-  		local r,g,b,a = helpers.hexadecimal_to_rgba_percent(values[(col-1) * props.parts + row])
+      local value = values[(col-1) * props.parts + row]
+  		local br,bg,bb,ba = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[1])
+      local er,eg,eb,ea = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[2])
+      local r = map_range(value, 0, data[graph].max, br, er)
+      local g = map_range(value, 0, data[graph].max, bg, eg)
+      local b = map_range(value, 0, data[graph].max, bb, eb)
+      local a = map_range(value, 0, data[graph].max, ba, ea)
+      
   		cr:set_source_rgba(r, g, b, a)
   		cr:rectangle(x, y, side, side)
   		cr:fill()
@@ -289,17 +302,50 @@ end
 --@param value The value between 0 and 1.
 --@param group The stack color group index.
 local function add_value(graph, value, group)
+  local props = helpers.load_properties(properties, data, graph, superproperties)
+
   if not graph then return end
   local value = value or 0
-  local values = data[graph].values
+  local gdata = data[graph]
+  local values = gdata.values
 
   if string.find(value, "nan") then
     value=0
   end
 
-  local values = data[graph].values
-  table.remove(values, #values)
-  table.insert(values,1,value)
+  local parts = props.parts or 4
+
+  -- check for first call
+  if not gdata.last_update or not gdata.last_value then
+    gdata.last_update = os.time()
+    gdata.last_value = value
+    gdata.max = 1
+    return graph
+  end
+
+  -- check if munute has passed
+  local now = os.time()
+  if now - gdata.last_update > 60 then
+    -- shift values
+    for _, parts do
+      table.remove(values)
+      table.insert(values, 1, 0)
+    end
+  end
+  gdata.last_update = now
+
+  local seconds = os.date("%S")
+  seconds >= 60 and seconds = 59 -- leap second
+
+  -- map 00-59 to 1-parts
+  local part = map_range(seconds, 0, 59, 1, parts)
+
+  local part_value = values[part] + value - gdata.last_value
+  if not gdata.max or gdata.max < part_value then gdata.max = part_value end
+  values[part] = part_value
+  
+  gdata.last_value = value
+
   graph:emit_signal("widget::updated")
   return graph
 end
