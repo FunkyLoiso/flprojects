@@ -11,17 +11,29 @@ local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
+local naughty = require("naughty")
 
 ---Graph widget.
---@module blingbling.linegraph
+--@module blingbling.my_graph
 
-local linegraph = { mt = {} }
+function dbg(value)
+  naughty.notify({ preset = naughty.config.presets.debug,
+               title = "debug",
+               text = "val: " .. value })
+  end
+
+local my_graph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
 
 function map_range(value, from_beg, from_end, to_beg, to_end)
   local slope = (to_end - to_beg) / (from_end - from_beg)
   return to_beg + math.floor(slope * (value - from_beg) + 0.5)  
+end
+
+function map_range_f(value, from_beg, from_end, to_beg, to_end)
+  local slope = (to_end - to_beg) / (from_end - from_beg)
+  return to_beg + slope * (value - from_beg)  
 end
 
 ---Fill all the widget (width * height) with this color (default is none ).
@@ -116,13 +128,13 @@ end
 
 local properties = { "width", "height", "h_margin", "v_margin",
                      "background_color", "graph_background_color",
-                     "rounded_size", --[["graph_color", "graph_line_color",
+                     "rounded_size", --[["graph_color", "graph_line_color"
                      "show_text", "text_color", "font_size", "font",
                      "text_background_color", "label", "value_format"]]
                      "graph_gradient", "parts", "spacing"
                    }
 
-function linegraph.draw(graph, wibox, cr, width, height)
+function my_graph.draw(graph, wibox, cr, width, height)
 
   -- Set the values we need
   local props = helpers.load_properties(properties, data, graph, superproperties)
@@ -131,7 +143,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
   cr:set_line_width(line_width)
   cr:set_antialias("subpixel")
 
-  -- Draw the widget background
+  -- Draw the widget background``R
   helpers.draw_rounded_corners_rectangle(	cr,
                                           0,
                                           0,
@@ -163,8 +175,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
 
 
   -- calculate square side
-  props.spacing == nil and props.spacing = 1
-  props.parts == nil and props.parts = 4
+  if props.spacing == nil then props.spacing = 1 end
+  if props.parts == nil then props.parts = 4 end
 
   local less_value = height > width and width / 2 or height / 2
   local alowed_height = height - (2*props.v_margin + 2 * (props.rounded_size * less_value)) -- rounded part is copied from below, I do not understand it
@@ -178,9 +190,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
   local column_count = math.ceil(allowed_width / (side + props.spacing))
 
   --Check if the table graph values is empty / not initialized
-  if  #data[graph].values ~= max_column then
+  if  #data[graph].values ~= column_count*props.parts then
     -- initialize graph_values with empty values:
-    data[graph].min = 0
     data[graph].max = 0
     data[graph].values={}
     for i=1,column_count * props.parts do
@@ -192,20 +203,26 @@ function linegraph.draw(graph, wibox, cr, width, height)
   local values = data[graph].values
 
   --Fill the graph
+  local br,bg,bb,ba = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[1])
+  local er,eg,eb,ea = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[2])
 
   local graph_height = props.parts * (side + props.spacing)
   for col = 1, column_count do
   	for row = 1, props.parts do
   		local x = width - (props.h_margin + props.rounded_size * less_value) - col*(side + props.spacing)
-  		local y = height/2 + graph_height/2 - row*(side + props.spacing)
+  		-- local y = height/2 + graph_height/2 - row*(side + props.spacing)
+      local y = height/2 - graph_height/2 - (side + props.spacing) + row*(side + props.spacing)
 
       local value = values[(col-1) * props.parts + row]
-  		local br,bg,bb,ba = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[1])
-      local er,eg,eb,ea = helpers.hexadecimal_to_rgba_percent(props.graph_gradient[2])
-      local r = map_range(value, 0, data[graph].max, br, er)
-      local g = map_range(value, 0, data[graph].max, bg, eg)
-      local b = map_range(value, 0, data[graph].max, bb, eb)
-      local a = map_range(value, 0, data[graph].max, ba, ea)
+
+      --dbg("br: " .. br .. " er: " ..er)
+
+      local r = map_range_f(value, 0, data[graph].max, br, er)
+      local g = map_range_f(value, 0, data[graph].max, bg, eg)
+      local b = map_range_f(value, 0, data[graph].max, bb, eb)
+      local a = map_range_f(value, 0, data[graph].max, ba, ea)
+
+      --if value ~= 0 then dbg("val: " .. value .. " max: " .. data[graph].max .. " r: " .. r) end
       
   		cr:set_source_rgba(r, g, b, a)
   		cr:rectangle(x, y, side, side)
@@ -291,7 +308,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
   -- end
 end
 
-function linegraph.fit(graph, width, height)
+function my_graph.fit(graph, width, height)
   return data[graph].width, data[graph].height
 end
 
@@ -316,8 +333,8 @@ local function add_value(graph, value, group)
   local parts = props.parts or 4
 
   -- check for first call
-  if not gdata.last_update or not gdata.last_value then
-    gdata.last_update = os.time()
+  if not gdata.last_shift or not gdata.last_value then
+    gdata.last_shift = os.time()
     gdata.last_value = value
     gdata.max = 1
     return graph
@@ -325,17 +342,17 @@ local function add_value(graph, value, group)
 
   -- check if munute has passed
   local now = os.time()
-  if now - gdata.last_update > 60 then
+  -- dbg(now - gdata.last_shift)
+  if now - gdata.last_shift > 60 then
     -- shift values
-    for _, parts do
+    gdata.last_shift = now
+    for i = 1, parts do
       table.remove(values)
       table.insert(values, 1, 0)
     end
   end
-  gdata.last_update = now
 
-  local seconds = os.date("%S")
-  seconds >= 60 and seconds = 59 -- leap second
+  local seconds = now - gdata.last_shift
 
   -- map 00-59 to 1-parts
   local part = map_range(seconds, 0, 59, 1, parts)
@@ -343,6 +360,8 @@ local function add_value(graph, value, group)
   local part_value = values[part] + value - gdata.last_value
   if not gdata.max or gdata.max < part_value then gdata.max = part_value end
   values[part] = part_value
+
+  -- dbg(gdata.max .. data[graph].max)
   
   gdata.last_value = value
 
@@ -353,7 +372,7 @@ end
 
 ---Set the graph height.
 --@param height The height to set.
-function linegraph:set_height( height)
+function my_graph:set_height( height)
   if height >= 5 then
     data[self].height = height
     self:emit_signal("widget::updated")
@@ -363,7 +382,7 @@ end
 
 ---Set the graph width.
 --@param width The width to set.
-function linegraph:set_width( width)
+function my_graph:set_width( width)
   if width >= 5 then
     data[self].width = width
     self:emit_signal("widget::updated")
@@ -373,8 +392,8 @@ end
 
 -- Build properties function
 for _, prop in ipairs(properties) do
-  if not linegraph["set_" .. prop] then
-    linegraph["set_" .. prop] = function(graph, value)
+  if not my_graph["set_" .. prop] then
+    my_graph["set_" .. prop] = function(graph, value)
     data[graph][prop] = value
     graph:emit_signal("widget::updated")
       return graph
@@ -386,7 +405,7 @@ end
 --@param args Standard widget() arguments. You should add width and height
 --key to set graph geometry.
 --@return A graph widget.
-function linegraph.new(args)
+function my_graph.new(args)
   local args = args or {}
 
   args.width = args.width or 100
@@ -406,18 +425,18 @@ function linegraph.new(args)
     -- Set methods
   graph.set_value = add_value
   graph.add_value = add_value
-  graph.draw = linegraph.draw
-  graph.fit = linegraph.fit
+  graph.draw = my_graph.draw
+  graph.fit = my_graph.fit
 
   for _, prop in ipairs(properties) do
-    graph["set_" .. prop] = linegraph["set_" .. prop]
+    graph["set_" .. prop] = my_graph["set_" .. prop]
   end
 
   return graph
 end
 
-function linegraph.mt:__call(...)
-  return linegraph.new(...)
+function my_graph.mt:__call(...)
+  return my_graph.new(...)
 end
 
-return setmetatable(linegraph, linegraph.mt)
+return setmetatable(my_graph, my_graph.mt)
