@@ -18,14 +18,13 @@
 #pragma once
 
 #include <cmath>
-#include <boost/array.hpp>
 
 namespace magnet {
   namespace math {
     inline double quarticError(const double& a, const double& b, const double& c, const double& d,
 			       const double roots[4], const size_t rootCount)
     {
-      boost::array<double, 4> errors;
+      double errors[4] = {};
 
       for (size_t root = 0; root < rootCount; ++ root)
 	{
@@ -53,7 +52,7 @@ namespace magnet {
 	    }
 	}
 
-      return *std::max_element(errors.begin(), errors.begin()+rootCount);
+      return *std::max_element(errors, errors+rootCount);
     }
   }
 }

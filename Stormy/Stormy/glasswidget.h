@@ -1,7 +1,7 @@
 #ifndef GLASSWIDGET_H
 #define GLASSWIDGET_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class Glass;
 

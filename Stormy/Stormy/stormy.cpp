@@ -14,7 +14,7 @@ qreal randBetween(qreal lower, qreal upper)
 	return map(qrand(), 0, RAND_MAX, lower, upper);
 }
 
-Stormy::Stormy(QWidget *parent, Qt::WFlags flags)
+Stormy::Stormy(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
@@ -115,10 +115,10 @@ void Stormy::glassWasUpdated()
 void Stormy::onButton1()
 {
 	Particle p;
-	p.setPos(QVector2D(0.2, 0.05));
+	p.setPos(QVector2D(0.2f, 0.05f));
 	p.setRadius(0.01);
 	p.setMass(c_pi*p.radius()*p.radius() * p.radius() * 7800);
-	p.setSpeed(QVector2D(0.001, 0.0));
+	p.setSpeed(QVector2D(0.001f, 0.0f));
 	//m_glass.particles.push_back(p);
 	m_glass.particles.insert(p.posTime(), p);
 }

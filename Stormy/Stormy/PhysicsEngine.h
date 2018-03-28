@@ -18,7 +18,6 @@ static int sign(T val)
 
 class PhysicsEngine : public QObject
 {
-	Q_OBJECT
 public:
 	PhysicsEngine() /*: m_friction(0.0f), m_restitution(0.0f)*/ {}
 	virtual ~PhysicsEngine() {}
